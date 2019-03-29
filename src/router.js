@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import LandingPage from './views/LandingPage.vue'
+import Help from './views/Help.vue'
+import Profile from './views/Profile.vue'
 import Home from './views/Home.vue'
+import ProfileTemplate from './views/ProfileTemplate.vue'
+import BookingDetails from './views/BookingDetails.vue'
+
 
 Vue.use(Router)
 
@@ -10,16 +16,28 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      component: LandingPage,
+    },
+    {
+      path: '/help',
+      component: Help
+    },
+    {
+    path: '/profile/:id',
+    component: Profile
+    },
+    {
+      path: '/home/:search',
       component: Home
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/bandvenue/:id',
+      component: ProfileTemplate
+    },
+    {
+      path: "/booking",
+      name: "booking",
+      component: BookingDetails
     }
   ]
 })

@@ -1,29 +1,51 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
 
+<script>
+export default {};
+</script>
+
+
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+:root {
+  --primary: #EE7396;
+  --alt-primary: #565A5C;
+  --secondary-one: #5CD2C2;
+  --secondary-two: #307B87;
+  --secondary-three: #7C2051;
+  --secondary-four: #F4A991;
+  --heading-font: "Benton Sans";
+  --text-font: "Helevetica Neue";
+  --subheading-size: 1.2rem;
+  --gradient-three: #7C2051, #F4A991;
+  --gradient-two: #307B87, #5CD2C2;
+  --gradient-one: #32FBFC, #3214F2;
+  --spacing: 10px;
+  --border-radius: 10px;
+  --text-color: white;
+  --divider-height: 1vh
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0px;
+  height: 100vh;
+}
+
+a, .fake-link {
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: var(--primary)
+  }
+  &:active {
+    color: var(--alt-primary)
   }
 }
 </style>
