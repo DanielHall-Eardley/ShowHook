@@ -1,6 +1,7 @@
 <template>
   <div id="reviews" v-bind:style="reviewPos">
     <h2>Reviews</h2>
+    <ReviewBreakdown v-bind:ratings="averageRatings"></ReviewBreakdown>
     <div v-for="review in reviews">
       <img  alt="Profile picture" v-bind:src="review.profilePic">
       <p>{{review.comment}}<br>-{{review.name}} from {{review.location}}</p>
@@ -9,13 +10,17 @@
 </template>
 
 <script>
+import ReviewBreakdown from '@/components/ReviewBreakdown.vue'
 
-import ProfilePic from "@/components/ProfilePic.vue"
 export default {
   props:{
     reviews: Array,
-    reviewPos: Object
-  }
+    reviewPos: Object,
+    averageRatings: Array
+  },
+  components:{
+    ReviewBreakdown,
+  },
 };
 </script>
 

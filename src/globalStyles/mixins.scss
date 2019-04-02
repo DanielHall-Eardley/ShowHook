@@ -8,17 +8,18 @@
 
 @mixin button(){
   padding: 10px 20px;
-  border-radius: 20px;
-  background: linear-gradient(to right, var(--gradient-one));
-  border: solid 0.5px var(--secondary-three);
+  border-radius: 4px;
+  background: var(--primary);
+  border: solid 0.5px var(--primary);
   color: white;
-  transition: all 0.5s linear;
+  transition: all 0.3s linear;
   &:hover{
     color: var(--primary);
     border: solid 0.5px var(--primary);
     background: white;
   }
   &:active{
+    border: solid 0.5px var(--secondary-four);
     background: var(--secondary-four)
   }
 }

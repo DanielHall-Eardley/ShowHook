@@ -18,8 +18,10 @@
       </BookShow>
     </div>
     <AboutUser v-bind:about="getDetails"></AboutUser>
-    <slot></slot>
-    <Reviews v-bind:reviews="getDetails.reviews"></Reviews>
+    <slot name="slot-one"></slot>
+    <Reviews v-bind:reviews="getDetails.reviews"
+      v-bind:averageRatings="getDetails.ratingsAveraged">
+    </Reviews>
     <AboutUser v-bind:about="getDetails">
       <ProfileSummary></ProfileSummary>
     </AboutUser>
@@ -45,12 +47,10 @@
       Title,
       FeatureIcons,
       BookShow,
-      ProfileSummary
+      ProfileSummary,
     },
-    computed:{
-      getDetails(){
-        return this.$store.state.userConfig.user
-      }
+    props:{
+      getDetails: Object,
     },
     data(){
       return{
@@ -73,7 +73,7 @@
  }
 
  #banner-profile{
-   height: 60%;
+   height: 60vh;
    width: 100%;
  }
 

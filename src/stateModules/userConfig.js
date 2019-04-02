@@ -15,6 +15,14 @@ const userConfig = {
       genres: ["edm", "bangerz", "dance"],
       members: ["userId1", "userId2"],
       offers:[],
+      ratingsAveraged:[
+        {title: "Accuracy", rating: 3},
+        {title: "Communication", rating: 5},
+        {title: "Cleanliness", rating: 5},
+        {title: "Location", rating: 2},
+        {title: "Promotions", rating: 1},
+        {title: "Occupancy", rating: 4},
+      ],
       responseData: {
         rate: "70%",
         time: "within an hour",
@@ -79,17 +87,43 @@ const userConfig = {
           comment: "sick show",
           name: "bob",
           location: "somewhere",
-          profilePic: "https://via.placeholder.com/150"
+          profilePic: "https://via.placeholder.com/150",
+
         },
         {
           id: "show unique id",
           comment: "sick show",
           name: "bob",
           location: "somewhere",
-          profilePic: "https://via.placeholder.com/150"
+          profilePic: "https://via.placeholder.com/150",
+
         },
-      ]
-    },
+      ],
+      venueDetails:[
+        {
+        subHeading: 'Rules',
+        content: [
+          {rule: "capacity", text: "200"},
+          {rule: "capacity", text: "200"},
+          {rule: "capacity", text: "200"},
+          {rule: "capacity", text: "200"},
+          {rule: "capacity", text: "200"},
+          {rule: "capacity", text: "200"},
+          {rule: "capacity", text: "200"},
+        ],
+      },
+      {
+        subHeading: "Amenities",
+        content:[
+          {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
+          {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
+          {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
+          {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
+          {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
+          {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
+        ],
+      }
+    ]
   },
   mutations: {
     addOffer: (state, payload) => {
@@ -108,6 +142,7 @@ const userConfig = {
       context.commit("addOffer", payload)
     }
   }
+}
 }
 
 export default userConfig

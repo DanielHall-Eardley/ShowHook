@@ -4,7 +4,7 @@ import LandingPage from './views/LandingPage.vue'
 import Help from './views/Help.vue'
 import Profile from './views/Profile.vue'
 import Home from './views/Home.vue'
-import ProfileTemplate from './views/ProfileTemplate.vue'
+import VenueProfile from './views/VenueProfile.vue'
 import BookingDetails from './views/BookingDetails.vue'
 
 
@@ -31,8 +31,8 @@ export default new Router({
       component: Home
     },
     {
-      path: '/bandvenue/:id',
-      component: ProfileTemplate
+      path: '/venue/:id',
+      component: VenueProfile
     },
     {
       path: "/booking",
