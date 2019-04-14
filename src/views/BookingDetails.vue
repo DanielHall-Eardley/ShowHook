@@ -8,7 +8,7 @@
 export default {
   computed:{
     getParams(){
-      return this.$route.params.date
+      return this.$route.params.id
     }
   }
 }

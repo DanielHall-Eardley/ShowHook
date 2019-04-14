@@ -12,7 +12,7 @@ export default {};
 <style lang="scss">
 :root {
   --primary: #EE7396;
-  --alt-primary: #565A5C;
+  --alt-primary:#E8DFC5;
   --secondary-one: #5CD2C2;
   --secondary-two: #307B87;
   --secondary-three: #7C2051;
@@ -23,7 +23,7 @@ export default {};
   --gradient-three: #7C2051, #F4A991;
   --gradient-two: #307B87, #5CD2C2;
   --gradient-one: #32FBFC, #3214F2;
-  --spacing: 10px;
+  --spacing: 20px;
   --border-radius: 10px;
   --text-color: white;
   --divider-height: 1vh

@@ -47,7 +47,6 @@ export default {
 #profile-summary{
   display: flex;
   height: 5vh;
-  width: 70%;
   padding: var(--spacing);
   justify-content: space-between;
   div{

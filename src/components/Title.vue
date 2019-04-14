@@ -24,7 +24,7 @@
       showGenres(){
         let genres = ""
         for(let i of this.info.genres){
-          genres += "#" + i + " "
+          genres +=  i + " "
         }
         return genres
       }
@@ -34,16 +34,13 @@
 
 <style lang="scss">
   #title-container{
-    padding: var(--spacing);
     h2{
       font-family: var(--heading-font);
     }
     span{
       display: inline-block;
       font-size: var(--subheading-size);
-      padding: var(--spacing);
       border-radius: 5px;
-      background: var(--secondary-three);
       margin-right: var(--spacing);
     }
   }

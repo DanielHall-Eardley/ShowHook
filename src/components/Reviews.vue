@@ -1,6 +1,6 @@
 <template>
   <div id="reviews" v-bind:style="reviewPos">
-    <h2>Reviews</h2>
+    <h3>Reviews</h3>
     <ReviewBreakdown v-bind:ratings="averageRatings"></ReviewBreakdown>
     <div v-for="review in reviews">
       <img  alt="Profile picture" v-bind:src="review.profilePic">
@@ -28,7 +28,8 @@ export default {
   #reviews{
     margin: var(--spacing);
     padding: var(--spacing);
-    background: var(--primary);
+    background: var(--alt-primary);
+    border-radius: var(--border-radius);
     div{
       display: flex;
       height: 10vh;

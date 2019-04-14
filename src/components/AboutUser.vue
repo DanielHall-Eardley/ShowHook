@@ -37,8 +37,9 @@ export default {
 <style lang="scss">
 #about-me {
   padding: var(--spacing);
-  margin: 10px;
-  background: var(--primary);
+  margin: var(--spacing);
+  background: var(--alt-primary);
+  border-radius: var(--border-radius);
   p {
     margin-top: 2px;
   }

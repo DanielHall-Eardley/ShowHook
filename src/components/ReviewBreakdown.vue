@@ -26,7 +26,6 @@ export default {
 
 <style lang="scss" scoped>
   #review-breakdown{
-    width: 90%;
     display: flex;
     flex-flow: column wrap;
     margin: 0px;

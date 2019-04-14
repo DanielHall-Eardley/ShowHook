@@ -19,8 +19,6 @@
 <style lang="scss">
   #features{
     display: flex;
-    margin: var(--spacing);
-    margin-right: 50px;
     justify-content: space-between;
     figure{
       height: 14vh;

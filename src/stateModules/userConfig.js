@@ -1,3 +1,5 @@
+import key from "@/../keys.js"
+
 const userConfig = {
   state: {
     user: {
@@ -14,7 +16,19 @@ const userConfig = {
       banner: "https://via.placeholder.com/1000",
       genres: ["edm", "bangerz", "dance"],
       members: ["userId1", "userId2"],
+      video:{title: "Music video", videoId: "xWIlizw7M1M"},
+      featuredTrack: "285823350",
       offers:[],
+      pictures: [
+        "https://via.placeholder.com/500",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+      ],
       ratingsAveraged:[
         {title: "Accuracy", rating: 3},
         {title: "Communication", rating: 5},
@@ -58,13 +72,13 @@ const userConfig = {
             date: "2019, 4, 5",
             venueAddress: "in the sun",
             venueName: "A cool place",
-            ticketsOnSale: false,
+            ticketsOnSale: true,
             ticketCount: 10000,
             ticketsPurchased: 5000,
           },
         ],
         past: [{
-            date: "2019, 4, 3",
+            date: "2018, 11, 17",
             venueAddress: "in the sun",
             venueName: "A cool place",
             ticketsOnSale: false,
@@ -72,10 +86,10 @@ const userConfig = {
             ticketsPurchased: 5000,
           },
           {
-            date: "2019, 4, 16",
+            date: "2018, 11, 17",
             venueAddress: "in the sun",
             venueName: "A cool place",
-            ticketsOnSale: true,
+            ticketsOnSale: false,
             ticketCount: 10000,
             ticketsPurchased: 10000,
           },
@@ -121,13 +135,39 @@ const userConfig = {
           {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
           {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
           {rule: "kitchen", text: "open til 10pm", icon: "https://via.placeholder.com/40"},
-        ],
-      }
-    ]
+          ],
+        }
+      ],
+      featuredNews:[
+        {
+          image: "https://via.placeholder.com/500",
+          title: "Some news article",
+          link: {url:"www.google.com", name: "Article source"},
+          content: "1 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        },
+        {
+          image: "https://via.placeholder.com/500",
+          title: "Some news article",
+          link: {url:"www.google.com", name: "Article source"},
+          content: "2 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        },
+        {
+          image: "https://via.placeholder.com/500",
+          title: "Some news article",
+          link: {url:"www.google.com", name: "Article source"},
+          content: "3 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        },
+      ]
+    }
   },
   mutations: {
     addOffer: (state, payload) => {
       state.user.offers = [...state.user.offers, payload]
+    },
+    getVideo: state => {
+      fetch(`https://www.googleapis.com/youtube/v3/videos?id=${state.user.video.videoId}&key=${key.youtube}`)
+      .then(res => res.json)
+      .then(res => console.log(res))
     }
   },
   actions: {
@@ -140,9 +180,12 @@ const userConfig = {
     },
     addOffer: (context, payload) => {
       context.commit("addOffer", payload)
+    },
+    getVideo: (context) => {
+      context.commit("getVideo")
     }
   }
-}
+
 }
 
 export default userConfig

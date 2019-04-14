@@ -1,13 +1,15 @@
 <template>
-  <div id="menu" v-bind:style="menuPos">
+  <div class="menu" v-bind:style="menuPos">
     <DropDownMenu v-bind:menuContent="menuLinks">
       <img src="https://via.placeholder.com/50">
     </DropDownMenu>
     <AppName></AppName>
-    <input v-if="showSearchInput" v-model="search">
-    <router-link v-bind:to="toggleLink()">
-      <img v-on:click="toggleSearchInput()" src="https://via.placeholder.com/50">
-    </router-link>
+    <div>
+      <input v-if="showSearchInput" v-model="search">
+      <router-link v-bind:to="toggleLink()">
+        <img v-on:click="toggleSearchInput()" src="https://via.placeholder.com/50">
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -46,13 +48,19 @@ export default {
 </script>
 
 <style lang="scss">
-#menu {
-  display: flex;
-  div{
-    flex:1;
+.menu {
+  background: white;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  img{
+    height: 60%;
+    object-fit: contain;
   }
-  img, input{
-    margin: 1rem;
+  div:last-of-type{
+    display: flex;
+    padding-right: var(--spacing);
+    justify-content: flex-end;
+    align-items: center;
   }
 }
 </style>

@@ -1,9 +1,9 @@
 <template lang="html">
-  <div id="venue-profile">
+  <div class="venue-profile">
     <ProfileTemplate v-bind:getDetails="getDetails">
       <VenueDetails
-      slot="slot-one"
-      v-bind:venueDetails="getDetails.venueDetails">
+        slot="slot-one"
+        v-bind:venueDetails="getDetails.venueDetails">
       </VenueDetails>
     </ProfileTemplate>
   </div>

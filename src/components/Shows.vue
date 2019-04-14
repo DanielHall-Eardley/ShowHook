@@ -39,6 +39,8 @@ export default {
         return( "Upcoming")
       }else if(show.ticketCount === show.ticketsPurchased){
         return "Sold Out"
+      }else if(new Date(show.date) < new Date()){
+        return "Not Available"
       }
     },
     addTickets(e){
@@ -54,7 +56,8 @@ export default {
 #shows {
   margin: var(--spacing);
   padding: var(--spacing);
-  background: var(--secondary-three);
+  background: var(--alt-primary);
+  border-radius: var(--border-radius);
   button{
     margin-right: var(--spacing);
     @include button();

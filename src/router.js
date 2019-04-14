@@ -6,6 +6,7 @@ import Profile from './views/Profile.vue'
 import Home from './views/Home.vue'
 import VenueProfile from './views/VenueProfile.vue'
 import BookingDetails from './views/BookingDetails.vue'
+import BandProfile from './views/BandProfile.vue'
 
 
 Vue.use(Router)
@@ -33,6 +34,10 @@ export default new Router({
     {
       path: '/venue/:id',
       component: VenueProfile
+    },
+    {
+      path: '/band/:id',
+      component: BandProfile
     },
     {
       path: "/booking",
