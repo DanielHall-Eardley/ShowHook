@@ -7,6 +7,8 @@ import Home from './views/Home.vue'
 import VenueProfile from './views/VenueProfile.vue'
 import BookingDetails from './views/BookingDetails.vue'
 import BandProfile from './views/BandProfile.vue'
+import EditDetails from './views/EditDetails.vue'
+import PageTemplate from './views/PageTemplate.vue'
 
 
 Vue.use(Router)
@@ -43,6 +45,18 @@ export default new Router({
       path: "/booking",
       name: "booking",
       component: BookingDetails
+    },
+    {
+      path: "/edit/:id",
+      name: "edit",
+      component: EditDetails,
+      children:[
+        {
+        name: "page",
+        path: 'page/:pageNumber',
+        component: PageTemplate,
+        }
+      ]
     }
   ]
 })
