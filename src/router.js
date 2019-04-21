@@ -50,13 +50,6 @@ export default new Router({
       path: "/edit/:id",
       name: "edit",
       component: EditDetails,
-      children:[
-        {
-        name: "page",
-        path: 'page/:pageNumber',
-        component: PageTemplate,
-        }
-      ]
     }
   ]
 })

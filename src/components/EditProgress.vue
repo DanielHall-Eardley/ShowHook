@@ -19,10 +19,14 @@
 
 <script>
 export default {
+  data(){
+    return{
+      type: this.$store.state.userConfig.user.userType
+    }
+  },
   computed:{
     getSteps(){
-      let type = "act" //this.$route.params.type
-      return this.$store.state.appConfig.steps[type]
+      return this.$store.state.appConfig.steps[this.type]
     },
   }
 }

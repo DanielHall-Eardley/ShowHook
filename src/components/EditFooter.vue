@@ -2,7 +2,7 @@
   <div class="edit-footer">
     <img src="https://via.placeholder.com/30" alt="Back icon">
     <button id="back"
-      v-show="getSteps[0].completed"
+      v-show="currentPage > 0"
       v-on:click="switchPage($event)">
       Back
     </button>
@@ -11,7 +11,7 @@
       "Save & Exit" : "Finish"}}
     </button>
     <button id="next"
-      v-show="!getSteps[getSteps.length - 1].completed"
+      v-show="currentPage < getSteps[currentStep].pages.length"
       v-on:click="switchPage($event)">
       Next
     </button>
@@ -21,30 +21,34 @@
 
 <script>
 export default {
+  data(){
+    return{
+      type: this.$store.state.userConfig.user.userType
+    }
+  },
   props:{
     currentStep: Number,
+    currentPage: Number
   },
   computed:{
     getSteps(){
-      let type = this.$store.state.userConfig.user.userType
-      return this.$store.state.appConfig.steps[type]
+      return this.$store.state.appConfig.steps[this.type]
     },
   },
   methods:{
     switchPage(e){
-      let step = this.getSteps[this.currentStep].pages
-      let getPage = this.$route.params
-      let newParam = parseInt(getPage.pageNumber)
-      if(newParam !== step[step.length] - 1){
+      let newPage = this.currentPage
+      if(newPage <= this.getSteps[this.currentStep].pages.length - 1){
         if(e.target.id === "next"){
-          newParam++
+          newPage++
         }else if(e.target.id === "back"){
-          newParam--
+          newPage--
         }
-        this.$router.push({path: `/edit/${getPage.id}/page/${newParam}`})
+        this.$emit('switchPage', newPage)
       }else{
         console.log("f")
-        this.$store.dispatch("incrementStep")
+        this.$emit('switchPage', 0)
+        this.$store.dispatch("incrementStep", {type: this.type, step: this.currentStep})
       }
     }
   }

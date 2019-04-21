@@ -168,12 +168,20 @@ const userConfig = {
       fetch(`https://www.googleapis.com/youtube/v3/videos?id=${state.user.video.videoId}&key=${key.youtube}`)
       .then(res => res.json)
       .then(res => console.log(res))
+    },
+    updateBasicDetails: (state, e) => {
+      let category = e.target.placeholder.toLowerCase()
+      state.user[category] = {content: e.target.value, verified: false}
+      console.log(state.user[category])
     }
   },
   actions: {
     sendUserDetails: (context, payload) => {
       console.log(payload)
       //send post request with user details
+    },
+    updateBasicDetails: (context, e) => {
+      context.commit("updateBasicDetails", e)
     },
     addTickets: (context, event) => {
       console.log(event.target.innerText)
