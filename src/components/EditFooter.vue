@@ -2,7 +2,7 @@
   <div class="edit-footer">
     <img src="https://via.placeholder.com/30" alt="Back icon">
     <button id="back"
-      v-show="currentPage > 0"
+      v-show='showBack()'
       v-on:click="switchPage($event)">
       Back
     </button>
@@ -11,7 +11,7 @@
       "Save & Exit" : "Finish"}}
     </button>
     <button id="next"
-      v-show="currentPage < getSteps[currentStep].pages.length"
+      v-show="currentStep < getSteps.length"
       v-on:click="switchPage($event)">
       Next
     </button>
@@ -38,17 +38,51 @@ export default {
   methods:{
     switchPage(e){
       let newPage = this.currentPage
-      if(newPage <= this.getSteps[this.currentStep].pages.length - 1){
+      let pagesCount = this.getSteps[this.currentStep].pages.length
+      let stepsCount = this.getSteps.length
+
+        if(pagesCount === this.currentStep && stepsCount === this.currentStep){
+          console.log('finished')
+          return
+        }
+
         if(e.target.id === "next"){
           newPage++
         }else if(e.target.id === "back"){
           newPage--
         }
-        this.$emit('switchPage', newPage)
+
+        if(newPage === pagesCount){
+          this.$store.dispatch("changeStep",
+          {
+            type: this.type,
+            step: this.currentStep,
+            change: 'inc'
+          })
+          this.$emit('switchPage', 0)
+          console.log('inc')
+          return
+        }
+
+        if(newPage < 0 && this.currentStep > 0){
+          this.$store.dispatch('changeStep',
+          {
+            type: this.type,
+            step: this.currentStep,
+            change: 'dec'
+          })
+          pagesCount = this.getSteps[this.currentStep - 1].pages.length
+          this.$emit('switchPage', pagesCount - 1)
+          console.log('dec')
+          return
+        }
+      this.$emit('switchPage', newPage)
+    },
+    showBack(){
+      if(this.currentStep === 0 && this.currentPage < 1){
+        return false
       }else{
-        console.log("f")
-        this.$emit('switchPage', 0)
-        this.$store.dispatch("incrementStep", {type: this.type, step: this.currentStep})
+        return true
       }
     }
   }
@@ -56,12 +90,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/globalStyles/mixins.scss';
+
   .edit-footer{
     display: grid;
     grid-template-columns: 0.4fr 1fr 5fr 1fr 0.4fr;
+    padding: var(--alt-spacing);
+    margin-top: var(--alt-spacing);
+    border-top: solid 1px var(--alt-primary);
     img{
       justify-self: right;
       grid-column: 1/2;
+      align-self: center;
     }
     img:last-of-type{
       justify-self: left;
@@ -70,10 +110,11 @@ export default {
   }
 
   button{
+    @include button();
     width: 20%;
     justify-self: center;
-    grid-column: 3/4
-  }
+    grid-column: 3/4;
+}
 
   #back{
     justify-self: left;

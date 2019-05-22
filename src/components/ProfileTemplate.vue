@@ -69,7 +69,7 @@
 <style lang="scss">
  #band-venue-profile{
    height:100%;
-   background: var(--primary);
+   background: var(--secondary-six);
  }
 
  #banner-profile{

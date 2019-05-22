@@ -1,12 +1,15 @@
 <template>
-  <div id="app-name">
-   <h1>SHOWHOOK</h1>
+  <div class="app-name">
+   <h1>shh.</h1>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  #app-name {
+  .app-name {
     text-align: center;
-    font-family: var(--heading-font);
+    h1{
+      font-family: var(--heading-font);
+      color: var(--primary);
+    }
   }
 </style>

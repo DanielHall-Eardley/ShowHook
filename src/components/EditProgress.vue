@@ -34,7 +34,7 @@ export default {
 
 <style lang="scss" scoped>
   .progress-bar{
-    padding: var(--spacing);
+    padding: var(--alt-spacing);
     display: flex;
     div{
       flex: 1;

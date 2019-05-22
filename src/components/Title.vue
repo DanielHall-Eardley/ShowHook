@@ -22,8 +22,9 @@
         }
       },
       showGenres(){
+        console.log(this.info)
         let genres = ""
-        for(let i of this.info.genres){
+        for(let i in this.info.genres){
           genres +=  i + " "
         }
         return genres

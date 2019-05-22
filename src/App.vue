@@ -12,11 +12,12 @@ export default {};
 <style lang="scss">
 :root {
   --primary: #EE7396;
-  --alt-primary:#E8DFC5;
+  --alt-primary:  #d6d6d6;
   --secondary-one: #5CD2C2;
   --secondary-two: #307B87;
   --secondary-three: #7C2051;
   --secondary-four: #F4A991;
+  --secondary-six: #eadee0;
   --heading-font: "Benton Sans";
   --text-font: "Helevetica Neue";
   --subheading-size: 1.2rem;
@@ -24,6 +25,7 @@ export default {};
   --gradient-two: #307B87, #5CD2C2;
   --gradient-one: #32FBFC, #3214F2;
   --spacing: 20px;
+  --alt-spacing: 10px;
   --border-radius: 10px;
   --text-color: white;
   --divider-height: 1vh

@@ -19,10 +19,10 @@
       <select v-on:input='updateUserType($event)'
         v-if="loginType === 'signUp' ? true : false"
         name="userType">
-        <option value>Choose Profile Type</option>
-        <option value="User">User</option>
-        <option value="Venue">Venue</option>
-        <option value="Musician">Musician</option>
+        <option>Choose Profile Type</option>
+        <option>User</option>
+        <option>Venue</option>
+        <option>Act</option>
       </select>
       <div>
         <button>
@@ -62,7 +62,7 @@ export default {
       this.$store.dispatch("updateBasicDetails", e)
     },
     updateUserType(e){
-      this.$store.dispatch("update", e)
+      this.$store.dispatch("updateUserType", e)
     },
     sendUserDetails() {
       this.$store.dispatch("sendUserDetails");

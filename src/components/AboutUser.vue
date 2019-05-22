@@ -7,7 +7,7 @@
       {{getUserType? "Hosted by" : "About"}}
       {{about.name.content}}</h3>
     <p v-if="getUserType">
-      {{about.location.content}},
+      {{about.address}},
       Joined in {{about.dateJoined}}
     </p>
     <p>{{about.bio}}</p>

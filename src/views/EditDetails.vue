@@ -41,7 +41,10 @@ export default {
     while(steps[i].completed){
       i++
     }
-    return i
+      if(i === steps.length -1){
+        //return some action
+      }
+      return i
     }
   },
   methods:{
@@ -61,6 +64,7 @@ export default {
 
   .edit-header{
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 2fr 0.5fr;
+    border-bottom: solid 5px var(--alt-primary);
   }
 </style>

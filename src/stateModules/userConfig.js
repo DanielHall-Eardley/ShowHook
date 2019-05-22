@@ -4,17 +4,15 @@ const userConfig = {
   state: {
     user: {
       id: '1',
-      userType: "act",
+      userType: "venue",
       name: {content:"Motley Crue", verified: true},
       email: {content:"350chevy8@gmail.com", verified: true},
       phone: {content:236890346, verified: true},
       price: `\$${200}`,
-      location: {content: "Everywhere, I'm a ninja", verified: false},
       bio: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       pic: "https://via.placeholder.com/300",
       dateJoined: "July 15th 2018",
       banner: "https://via.placeholder.com/1000",
-      genres: ["edm", "bangerz", "dance"],
       members: ["userId1", "userId2"],
       video:{title: "Music video", videoId: "xWIlizw7M1M"},
       featuredTrack: "285823350",
@@ -158,6 +156,9 @@ const userConfig = {
           content: "3 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         },
       ]
+    },
+    rawUserData:{
+      address: null
     }
   },
   mutations: {
@@ -171,8 +172,68 @@ const userConfig = {
     },
     updateBasicDetails: (state, e) => {
       let category = e.target.placeholder.toLowerCase()
-      state.user[category] = {content: e.target.value, verified: false}
-      console.log(state.user[category])
+      state.rawUserData[category] = {
+        content: e.target.value,
+        verified: false
+      }
+    },
+    updateUserType: (state, e) => {
+      let category = e.target.Name
+      state.rawUserData[category] = e.target.value
+    },
+    updateUserProfile: (state, e) => {
+      let name = e.target.name
+      let tag = e.target.id
+      if(!tag){
+        state.rawUserData[name] = e.target.value
+        console.log(state.rawUserData[name])
+      }else if(e.target.type == 'checkbox'){
+        name = e.target.id
+        tag = e.target.name
+        if(!state.rawUserData[tag]){
+          state.rawUserData[tag] = {
+            [name]: name
+          }
+        }else if(state.rawUserData[tag] &&
+        !state.rawUserData[tag][name]){
+          state.rawUserData[tag] = {
+            ...state.rawUserData[tag],
+            [name]: e.target.value
+          }
+        }else{
+          state.rawUserData[tag][name] = false
+        }
+        console.log(state.rawUserData[tag])
+      }else if(e.target.type === 'radio'){
+        name = e.target.id
+        tag = e.target.name
+        state.rawUserData[tag] = {
+          [name]: e.target.value
+        }
+        console.log(state.rawUserData[tag])
+      }else{
+        state.rawUserData[tag] = {
+          ...state.rawUserData[tag],
+          [name]:e.target.value
+        }
+        console.log(state.rawUserData[tag])
+      }
+    },
+    updateGenre: (state, name) => {
+      if(!state.rawUserData.genres){
+        state.rawUserData.genres = {
+          [name]: name
+        }
+      }else if(state.rawUserData.genres &&
+      !state.rawUserData.genres[name]){
+        state.rawUserData.genres = {
+          ...state.rawUserData.genres,
+          [name]: name
+        }
+      }else{
+        state.rawUserData.genres[name] = false
+      }
+      console.log(state.rawUserData.genres)
     }
   },
   actions: {
@@ -182,6 +243,9 @@ const userConfig = {
     },
     updateBasicDetails: (context, e) => {
       context.commit("updateBasicDetails", e)
+    },
+    updateUserType: (context, e) => {
+      context.commit("updateUserType", e)
     },
     addTickets: (context, event) => {
       console.log(event.target.innerText)
