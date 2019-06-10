@@ -41,7 +41,6 @@
     span{
       display: inline-block;
       font-size: var(--subheading-size);
-      border-radius: 5px;
       margin-right: var(--spacing);
     }
   }

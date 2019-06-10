@@ -18,15 +18,19 @@
 </template>
 
 <script>
-import InputComp from "@/components/InputComp.vue"
-import GenreComp from '@/components/GenreComp.vue'
-import RulesComp from '@/components/RulesComp.vue'
+import InputComp from "@/components/edit/InputComp.vue"
+import GenreComp from '@/components/edit/GenreComp.vue'
+import RulesComp from '@/components/edit/RulesComp.vue'
+import LocalLawsTaxes from '@/components/edit/LocalLawsTaxes.vue'
+import ExampleMatches from '@/components/edit/ExampleMatches.vue'
 
 export default {
   components:{
     InputComp,
     GenreComp,
-    RulesComp
+    RulesComp,
+    LocalLawsTaxes,
+    ExampleMatches
   },
   data(){
     return{
@@ -55,6 +59,13 @@ export default {
         return 'RulesComp'
       }
 
+      if(type === 'example'){
+        return 'ExampleMatches'
+      }
+
+      if(type === 'laws'){
+        return 'LocalLawsTaxes'
+      }
     }
   },
   methods:{
@@ -83,7 +94,7 @@ export default {
     }
   }
   .info{
-    background: var(--secondary-six);
+    background: var(--alt-primary);
     padding: var(--spacing);
     div{
       background: white;

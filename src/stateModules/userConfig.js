@@ -8,6 +8,7 @@ const userConfig = {
       name: {content:"Motley Crue", verified: true},
       email: {content:"350chevy8@gmail.com", verified: true},
       phone: {content:236890346, verified: true},
+      location:{content: 'somewhere', verified: false},
       price: `\$${200}`,
       bio: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       pic: "https://via.placeholder.com/300",
@@ -186,7 +187,6 @@ const userConfig = {
       let tag = e.target.id
       if(!tag){
         state.rawUserData[name] = e.target.value
-        console.log(state.rawUserData[name])
       }else if(e.target.type == 'checkbox'){
         name = e.target.id
         tag = e.target.name
@@ -194,8 +194,7 @@ const userConfig = {
           state.rawUserData[tag] = {
             [name]: name
           }
-        }else if(state.rawUserData[tag] &&
-        !state.rawUserData[tag][name]){
+        }else if(state.rawUserData[tag] && !state.rawUserData[tag][name]){
           state.rawUserData[tag] = {
             ...state.rawUserData[tag],
             [name]: e.target.value
@@ -203,20 +202,16 @@ const userConfig = {
         }else{
           state.rawUserData[tag][name] = false
         }
-        console.log(state.rawUserData[tag])
       }else if(e.target.type === 'radio'){
         name = e.target.id
         tag = e.target.name
         state.rawUserData[tag] = {
           [name]: e.target.value
         }
-        console.log(state.rawUserData[tag])
-      }else{
         state.rawUserData[tag] = {
           ...state.rawUserData[tag],
           [name]:e.target.value
         }
-        console.log(state.rawUserData[tag])
       }
     },
     updateGenre: (state, name) => {
@@ -224,8 +219,7 @@ const userConfig = {
         state.rawUserData.genres = {
           [name]: name
         }
-      }else if(state.rawUserData.genres &&
-      !state.rawUserData.genres[name]){
+      }else if(state.rawUserData.genres && !state.rawUserData.genres[name]){
         state.rawUserData.genres = {
           ...state.rawUserData.genres,
           [name]: name
@@ -233,7 +227,9 @@ const userConfig = {
       }else{
         state.rawUserData.genres[name] = false
       }
-      console.log(state.rawUserData.genres)
+    },
+    submitRules: (state, rules) =>{
+      state.rawUserData.rules = rules
     }
   },
   actions: {

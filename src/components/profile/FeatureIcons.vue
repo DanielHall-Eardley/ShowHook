@@ -1,5 +1,5 @@
 <template>
-  <div id="features" v-bind:style="featurePos">
+  <div class="features-container" v-bind:style="featurePos">
     <figure v-for="feature in features">
       <img v-bind:src="feature.src" alt="icon">
       <figcaption>{{feature.feature}}</figcaption>
@@ -17,9 +17,10 @@
 </script>
 
 <style lang="scss">
-  #features{
+  .features-container{
     display: flex;
     justify-content: space-between;
+    margin-bottom: var(--spacing);
     figure{
       height: 14vh;
       margin: 20px 0px;

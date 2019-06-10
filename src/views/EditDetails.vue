@@ -17,9 +17,9 @@
 
 <script>
 import AppName from "@/components/AppName.vue"
-import EditProgress from "@/components/EditProgress.vue"
-import EditFooter from "@/components/EditFooter.vue"
-import InputDetails from "@/components/InputDetails.vue"
+import EditProgress from "@/components/edit/EditProgress.vue"
+import EditFooter from "@/components/edit/EditFooter.vue"
+import InputDetails from "@/components/edit/InputDetails.vue"
 
 export default {
   data(){

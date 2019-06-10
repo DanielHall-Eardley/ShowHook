@@ -55,9 +55,7 @@ export default {
 
 #shows {
   margin: var(--spacing);
-  padding: var(--spacing);
-  background: var(--alt-primary);
-  border-radius: var(--border-radius);
+  border-bottom: solid 0.5px var(--primary);
   button{
     margin-right: var(--spacing);
     @include button();

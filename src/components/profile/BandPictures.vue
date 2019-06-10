@@ -16,9 +16,7 @@ export default {
 <style lang="scss" scoped>
   .pictures{
     margin: var(--spacing);
-    padding: var(--spacing);
-    background: var(--alt-primary);
-    border-radius: var(--border-radius);
+    border-bottom: solid 0.5px var(--primary);
     img{
       height: 30vh;
       display: inline-block;

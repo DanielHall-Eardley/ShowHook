@@ -41,15 +41,15 @@ export default {
       let pagesCount = this.getSteps[this.currentStep].pages.length
       let stepsCount = this.getSteps.length
 
-        if(pagesCount === this.currentStep && stepsCount === this.currentStep){
-          console.log('finished')
-          return
-        }
-
         if(e.target.id === "next"){
           newPage++
         }else if(e.target.id === "back"){
           newPage--
+        }
+
+        if(pagesCount === newPage && stepsCount - 1 === this.currentStep){
+          console.log('finished')
+          return
         }
 
         if(newPage === pagesCount){

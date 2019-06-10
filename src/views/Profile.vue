@@ -23,12 +23,12 @@
 </template>
 
 <script>
-import AboutUser from "@/components/AboutUser";
-import Menu from "@/components/Menu";
-import ProfilePic from "@/components/ProfilePic";
-import Reviews from "@/components/Reviews";
-import Shows from "@/components/Shows";
-import VerifiedInfo from "@/components/VerifiedInfo";
+import AboutUser from "@/components/profile/AboutUser";
+import Menu from "@/components/profile/Menu";
+import ProfilePic from "@/components/profile/ProfilePic";
+import Reviews from "@/components/profile/Reviews";
+import Shows from "@/components/profile/Shows";
+import VerifiedInfo from "@/components/profile/VerifiedInfo";
 
 export default {
   components: {

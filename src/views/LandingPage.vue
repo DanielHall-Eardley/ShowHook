@@ -1,6 +1,9 @@
 <template>
   <div id="landing-page">
-    <Login v-bind:loginType="loginType" v-bind:toggleLogin="toggleLogin" v-if="loginState"></Login>
+    <Login v-bind:loginType="loginType"
+      v-bind:toggleLogin="toggleLogin"
+      v-if="loginState">
+    </Login>
     <header>
       <AppName></AppName>
       <nav>
@@ -33,8 +36,8 @@
 <script>
 import AppName from "@/components/AppName.vue";
 import Banner from "@/components/Banner.vue";
-import SearchLink from "@/components/SearchLink.vue";
-import Login from "@/components/Login.vue";
+import SearchLink from "@/components/landing/SearchLink.vue";
+import Login from "@/components/landing/Login.vue";
 
 export default {
   components: {
@@ -48,6 +51,11 @@ export default {
       loginState: false,
       loginType: ""
     };
+  },
+  mounted(){
+    if(Object.keys(this.$route.params).length > 0){
+      this.toggleLogin(this.$route.params.action)
+    }
   },
   computed: {
     getMainBanner() {

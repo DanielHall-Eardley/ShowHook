@@ -46,12 +46,11 @@ export default {
 <style lang="scss" scoped>
   .news{
     margin: var(--spacing);
-    padding: var(--spacing);
-    background: var(--alt-primary);
-    border-radius: var(--border-radius);
+    border-bottom: solid 0.5px var(--primary);
     .article-container{
       display: flex;
       justify-content: space-between;
+
       div{
         height: 25vh;
         padding: var(--spacing)

@@ -35,14 +35,14 @@
 </template>
 
 <script>
-  import Menu from '@/components/Menu.vue'
+  import Menu from './Menu.vue'
   import Banner from '@/components/Banner.vue'
-  import AboutUser from '@/components/AboutUser.vue'
-  import Title from '@/components/Title.vue'
-  import FeatureIcons from '@/components/FeatureIcons.vue'
-  import BookShow from '@/components/BookShow.vue'
-  import Reviews from '@/components/Reviews.vue'
-  import ProfileSummary from '@/components/ProfileSummary.vue'
+  import AboutUser from './AboutUser.vue'
+  import Title from './Title.vue'
+  import FeatureIcons from './FeatureIcons.vue'
+  import BookShow from './BookShow.vue'
+  import Reviews from './Reviews.vue'
+  import ProfileSummary from './ProfileSummary.vue'
 
   export default{
     components:{
@@ -69,7 +69,6 @@
 <style lang="scss">
  #band-venue-profile{
    height:100%;
-   background: var(--secondary-six);
  }
 
  #banner-profile{
@@ -83,9 +82,7 @@
  }
 
 #header-wrapper{
-  background: var(--alt-primary);
-  border-radius: var(--border-radius);
   margin: var(--spacing);
-  padding: var(--spacing)
+  border-bottom: solid 0.5px var(--primary);
 }
 </style>

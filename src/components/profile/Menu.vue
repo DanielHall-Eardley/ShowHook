@@ -15,7 +15,7 @@
 
    <script>
 import AppName from "@/components/AppName.vue";
-import DropDownMenu from "@/components/DropDownMenu.vue";
+import DropDownMenu from "./DropDownMenu.vue";
 
 export default {
   props: {

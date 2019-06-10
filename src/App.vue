@@ -17,7 +17,7 @@ export default {};
   --secondary-two: #307B87;
   --secondary-three: #7C2051;
   --secondary-four: #F4A991;
-  --secondary-six: #eadee0;
+  --secondary-six: #8b8d8e;
   --heading-font: "Benton Sans";
   --text-font: "Helevetica Neue";
   --subheading-size: 1.2rem;

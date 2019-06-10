@@ -7,7 +7,7 @@
       {{getUserType? "Hosted by" : "About"}}
       {{about.name.content}}</h3>
     <p v-if="getUserType">
-      {{about.address}},
+      {{about.location.content}},
       Joined in {{about.dateJoined}}
     </p>
     <p>{{about.bio}}</p>
@@ -36,10 +36,8 @@ export default {
 
 <style lang="scss">
 #about-me {
-  padding: var(--spacing);
   margin: var(--spacing);
-  background: var(--alt-primary);
-  border-radius: var(--border-radius);
+  border-bottom: solid 0.5px var(--primary);
   p {
     margin-top: 2px;
   }

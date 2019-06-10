@@ -31,3 +31,19 @@
   border: solid 2px var(--secondary-five);
   outline: none;
 }
+
+@mixin cancel-button(){
+  background: none;
+  outline: none;
+  border: none;
+  color: var(--secondary-six);
+}
+
+@mixin drop-down($width){
+  border: solid 0.4px black;
+  padding: var(--spacing);
+  margin-top: var(--spacing);
+  background-color: white;
+  position: absolute;
+  width: $width
+}

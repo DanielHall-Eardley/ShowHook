@@ -6,7 +6,8 @@
       v-bind:class='addMargin(option.style.width)'>
       <select v-if='option.type === "select"'
         v-on:input='updateUserProfile($event)'
-        v-bind:placeholder='option.name'
+        v-bind:name='option.name'
+        v-bind:key='option.name'
         required>
         <option v-for='choice in option.selectOptions'>
           {{choice}}
@@ -20,7 +21,10 @@
       <textarea
         v-else-if='option.type === "textarea"'
         v-on:input='updateUserProfile($event)'
-        v-bind:placeholder='option.name'
+        v-bind:placeholder='option.placeholder'
+        v-bind:key='option.name'
+        v-bind:name='option.name'
+        v-bind:id='option.tag'
         required>
       </textarea>
       <div v-else-if='option.type === "checkbox" || option.type === "radio"'
@@ -28,6 +32,7 @@
         <label v-html='formatText(option.placeholder)'>
         </label>
         <input
+        v-bind:key='option.tag'
         v-bind:name='option.tag'
         v-bind:value='option.placeholder'
         v-on:input='updateUserProfile($event)'
@@ -38,6 +43,7 @@
         v-bind:placeholder='option.placeholder'
         v-on:input='updateUserProfile($event)'
         v-bind:type='option.type'
+        v-bind:key='option.name'
         v-bind:name='option.name'
         v-bind:id='option.tag'
         required>

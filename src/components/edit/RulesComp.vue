@@ -14,25 +14,45 @@
       </button>
     </div>
     <div class='rule'>
-      <input type="text" placeholder="Add more rules">
-      <button>Add</button>
+      <input type="text"
+        placeholder="Add more rules"
+        v-model='ruleInput'>
+      <button v-on:click='makeRule()'
+        class='rule-add'>
+        Add
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  data(){
+    return{
+      ruleInput: ''
+    }
+  },
   props:{
-    page: Object
+    page: Object,
   },
   methods:{
     toggleRule(bool, i){
       if(bool === this.page.options[i].enforced){
         return
       }else{
-        this.page.options[i].enforced =
-        !this.page.options[i].enforced
+        this.page.options[i].enforced = !this.page.options[i].enforced
       }
+      let filterArray = this.page.options.filter(rule => rule.enforced)
+      this.$store.commit('submitRules', filterArray)
+    },
+    makeRule(){
+      this.page.options = [
+        ...this.page.options,
+        {
+          rule: this.ruleInput,
+          enforced: true
+        }
+      ]
     }
   }
 }
@@ -45,6 +65,7 @@ export default {
       display: inline-block;
       width: 50%;
     }
+
   }
 
   .right-button{
@@ -67,5 +88,16 @@ export default {
   .highlight{
     background-color: var(--primary);
     color: white;
+  }
+
+  input{
+    height: 5vh;
+    width: 50%;
+    box-sizing: border-box;
+  }
+
+  .rule-add{
+    height: 5vh;
+    padding: 0px 20px;
   }
 </style>

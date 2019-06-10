@@ -9,6 +9,7 @@ import BookingDetails from './views/BookingDetails.vue'
 import BandProfile from './views/BandProfile.vue'
 import EditDetails from './views/EditDetails.vue'
 import PageTemplate from './views/PageTemplate.vue'
+import SearchPage from './views/SearchPage.vue'
 
 
 Vue.use(Router)
@@ -20,6 +21,7 @@ export default new Router({
     {
       path: '/',
       component: LandingPage,
+      name: 'landing'
     },
     {
       path: '/help',
@@ -50,6 +52,11 @@ export default new Router({
       path: "/edit/:id",
       name: "edit",
       component: EditDetails,
+    },
+    {
+      path: "/search",
+      name: "search",
+      component: SearchPage,
     }
   ]
 })

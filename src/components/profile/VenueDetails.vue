@@ -34,15 +34,11 @@ export default {
 
 <style lang="scss" scoped>
   .venue-details{
-    padding: var(--spacing);
-    background: var(--alt-primary);
-    border-radius: var(--border-radius);
     margin: var(--spacing);
+    border-bottom: solid 0.5px var(--primary);
     div{
       display: grid;
       grid-template-columns: 1fr 3fr;
-      margin: var(--spacing);
-      border-bottom: solid 1px var(--primary);
       p{
         grid-column: 1/2;
         grid-row: 1/2;
@@ -50,10 +46,10 @@ export default {
       div{
         grid-column: 2/3;
         grid-row: 1/2;
-        margin: var(--spacing);
+        padding: var(--spacing);
         display: flex;
         flex-wrap: wrap;
-        border: none;
+        border-bottom: solid 0.5px var(--primary)
       }
       span{
         width: 50%;

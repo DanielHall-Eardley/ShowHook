@@ -8,6 +8,87 @@ const appConfig = {
       {name: "search", url: "/search"},
       {name: "home", url: "/"}
     ],
+    filterMenu:[
+      {
+        name: 'Artist',
+        altName: 'Venue',
+        active: false,
+        img: 'https://via.placeholder.com/100',
+        module: 'SelectType'
+      },
+      {
+        name: 'Price Range',
+        active: false,
+        img: 'https://via.placeholder.com/100',
+        module: 'SelectPriceRange'
+      },
+      {
+        name: 'Split (%)',
+        active: false,
+        img: 'https://via.placeholder.com/100',
+        module: 'SelectSplit'
+      },
+      {
+        name: 'More Filters',
+        active: false,
+        img: 'https://via.placeholder.com/100',
+        module: 'SelectMoreFilters'
+      },
+    ],
+    searchQuery:{},
+    mapObject: {
+      shown: false
+    },
+    resultsArray:[
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+    ],
     steps:{
       act: [
         {
@@ -277,7 +358,7 @@ const appConfig = {
                 },
                 {
                   type: 'card',
-                  name: 'My space is good for...',
+                  placeholder: 'My space is good for...',
                   style: {width: '100%'}
                 },
                 {
@@ -320,7 +401,9 @@ const appConfig = {
               options:[
                 {
                   type: 'textarea',
-                  name: 'Edit your description',
+                  name: 'venueSummary',
+                  placeholder: 'Edit your venue description',
+                  tag: 'venueDescription',
                   style: {width: '100%', height: '40vh'},
                 }
               ]
@@ -332,7 +415,9 @@ const appConfig = {
               options:[
                 {
                   type: 'text',
-                  name: 'Listing title',
+                  name: 'venueName',
+                  placeholder: 'Listing Title',
+                  tag: 'venueDescription',
                   style: {width: '100%', height: '5vh'},
                 }
               ]
@@ -351,11 +436,15 @@ const appConfig = {
               options: [
                 {
                   type: 'radio',
+                  name: 'haveOrganizedShows',
+                  tag: 'venueDescription',
                   placeholder: 'I have',
                   style: {width: '100%', height: '5vh'}
                 },
                 {
                   type: 'radio',
+                  name: 'haveOrganizedShows',
+                  tag: 'venueDescription',
                   placeholder: 'I\'m new to this',
                   style: {width: '100%', height: '5vh'}
                 },
@@ -370,16 +459,22 @@ const appConfig = {
               options: [
                 {
                   type: 'radio',
+                  name: 'often',
+                  tag: 'showReg',
                   placeholder: 'As often as possible',
                   style: {width: '100%', height: '5vh'}
                 },
                 {
                   type: 'radio',
+                  name: 'partTime',
+                  tag: 'showReg',
                   placeholder: 'Part-time',
                   style: {width: '100%', height: '5vh'}
                 },
                 {
                   type: 'radio',
+                  name: 'undecided',
+                  tag: 'showReg',
                   placeholder: 'Not sure yet',
                   style: {width: '100%', height: '5vh'}
                 },
@@ -394,6 +489,8 @@ const appConfig = {
               options: [
                 {
                   type: 'radio',
+                  tag: 'profitSplit',
+                  name: 'split',
                   placeholder: '*%*Price adapts to ticket sales'
                   + ' Set a base price for tickets and offer a'
                   + ' split between you and the artists who is playing'
@@ -403,6 +500,8 @@ const appConfig = {
                 },
                 {
                   type: 'radio',
+                  tag: 'profitSplit',
+                  name: 'flat',
                   placeholder: '*$*Price is a flat rental fee'
                   + ' Set a base price. We will give you price'
                   + ' tips that you can accept or ignore.',
@@ -417,8 +516,10 @@ const appConfig = {
               + ' price and raise it after earning positive reviews.',
               options:[
                 {
-                  type: 'text',
-                  name: '$per show',
+                  type: 'number',
+                  tag: null,
+                  name: 'price',
+                  placeholder: '$per show',
                   style: {width: '50%', height: '5vh'}
                 }
               ]
@@ -433,17 +534,23 @@ const appConfig = {
               options:[
                 {
                   type: 'text',
-                  name: 'Sound tech fee - $per show',
+                  tag: 'extras',
+                  name: 'soundTech',
+                  placeholder: 'Sound tech fee - $per show',
                   style: {width: '50%', height: '5vh'}
                 },
                 {
                   type: 'text',
-                  name: 'Light tech fee - $per show',
+                  tag: 'extras',
+                  name: 'lightTech',
+                  placeholder: 'Light tech fee - $per show',
                   style: {width: '50%', height: '5vh'}
                 },
                 {
                   type: 'text',
-                  name: 'Poster design fee - $per show',
+                  tag: 'extras',
+                  name: 'posterTech',
+                  placeholder: 'Poster design fee - $per show',
                   style: {width: '50%', height: '5vh'}
                 },
               ]
@@ -455,24 +562,22 @@ const appConfig = {
               + ' booking. Let them know how you expect them to behave'
               + ' when playing a show.',
               options:[
-                {rule: 'All ages', enforced: false},
-                {rule: 'Smoking', enforced: false},
-                {rule: 'All ages', enforced: true},
-                {rule: 'All ages', enforced: false},
-                {rule: 'All ages', enforced: false},
+                {rule: 'rule 1', enforced: false},
+                {rule: 'rule 2', enforced: false},
+                {rule: 'rule 3', enforced: true},
+                {rule: 'rule 4', enforced: false},
+                {rule: 'rule 4', enforced: false},
               ]
             },
             {
-              title: 'Based on your settings, here\'s what to expect',
+              title: 'Based on your settings, here\'s what to expect:',
               inputType: 'example',
-              information: 'Meet Bill. His profile shows that he plays'
-              + ' in a indie band, with 3 great reviews from other venues.'
-              + ' You get an email confirmation when she books your place'
+              information: 'Here are some examples of some acts that are well matched with your venue.'
             },
             {
               title: 'Local laws and taxes',
               inputType: 'laws',
-              information: ''
+              information: 'It is important to comply with local laws and taxes.'
             }
           ]
         }
@@ -490,7 +595,22 @@ const appConfig = {
          state.steps[payload.type][payload.step].completed = false
       }
     },
-
+    addToSearchQuery: (state, payload) =>{
+      state.searchQuery = Object.assign(
+        state.searchQuery,
+        payload
+      )
+      console.log(state.searchQuery)
+    },
+    updateFilterMenu: (state, payload) => {
+      state.filterMenu = payload
+      console.log(state.filterMenu)
+    },
+    showMap:(state, location) => {
+      state.mapObject.shown = true
+      state.mapObject.location = location
+      console.log(state.mapObject)
+    }
   },
   actions:{
     changeStep: (context, payload) => {

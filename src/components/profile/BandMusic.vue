@@ -19,9 +19,6 @@ export default {
 <style lang="scss" scoped>
   .music{
     margin: var(--spacing);
-    padding: var(--spacing);
-    background: var(--alt-primary);
-    border-radius: var(--border-radius);
     iframe{
       width: 100%;
     }

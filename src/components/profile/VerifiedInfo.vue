@@ -29,10 +29,13 @@
 <style lang="scss">
   #verified-info{
     margin: var(--spacing);
-    padding: var(--spacing);
-    background: var(--primary);
+    border: solid 0.5px var(--primary);
     p{
-      border-bottom: solid 0.5 black;
+      display: flex;
+      padding: var(--spacing);
+      border-bottom: solid 0.5px var(--primary);
+      margin: 0px;
+      text-align: center;
     }
     img{
       height: 5vh;
@@ -42,7 +45,7 @@
       display: flex;
       padding: var(--spacing);
       align-items: center;
-      border-bottom: solid 0.5px black;
+      border-bottom: solid 0.5px var(--primary);
     }
   }
 

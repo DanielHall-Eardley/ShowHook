@@ -1,7 +1,9 @@
 <template>
   <div id="reviews" v-bind:style="reviewPos">
     <h3>Reviews</h3>
-    <ReviewBreakdown v-bind:ratings="averageRatings"></ReviewBreakdown>
+    <ReviewBreakdown
+      v-bind:ratings="averageRatings">
+    </ReviewBreakdown>
     <div v-for="review in reviews">
       <img  alt="Profile picture" v-bind:src="review.profilePic">
       <p>{{review.comment}}<br>-{{review.name}} from {{review.location}}</p>
@@ -10,13 +12,13 @@
 </template>
 
 <script>
-import ReviewBreakdown from '@/components/ReviewBreakdown.vue'
+import ReviewBreakdown from './ReviewBreakdown.vue'
 
 export default {
   props:{
     reviews: Array,
     reviewPos: Object,
-    averageRatings: Array
+    averageRatings: Array,
   },
   components:{
     ReviewBreakdown,
@@ -27,16 +29,11 @@ export default {
 <style lang="scss">
   #reviews{
     margin: var(--spacing);
-    padding: var(--spacing);
-    background: var(--alt-primary);
-    border-radius: var(--border-radius);
-    div{
+    border-bottom: solid 0.5px var(--primary);
+  div{
       display: flex;
       height: 10vh;
-      margin-top: var(--spacing);
-    }
-    h2{
-      margin: 5px;
+      margin-bottom: var(--spacing);
     }
     img{
       height: 100%;

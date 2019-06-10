@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import MakeOffer from "@/components/MakeOffer.vue"
+import MakeOffer from "./MakeOffer.vue"
 
 export default {
   components:{

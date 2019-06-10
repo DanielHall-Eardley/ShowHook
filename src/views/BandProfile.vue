@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import ProfileTemplate from "@/components/ProfileTemplate.vue"
-import Shows from "@/components/Shows.vue"
-import Video from "@/components/Video.vue"
-import BandNews from "@/components/BandNews.vue"
-import BandPictures from "@/components/BandPictures.vue"
-import BandMusic from "@/components/BandMusic.vue"
+import ProfileTemplate from "@/components/profile/ProfileTemplate.vue"
+import Shows from "@/components/profile/Shows.vue"
+import Video from "@/components/profile/Video.vue"
+import BandNews from "@/components/profile/BandNews.vue"
+import BandPictures from "@/components/profile/BandPictures.vue"
+import BandMusic from "@/components/profile/BandMusic.vue"
 
 export default {
   components:{

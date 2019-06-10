@@ -22,9 +22,7 @@ export default{
 <style lang="scss" scoped>
   .video{
     margin: var(--spacing);
-    padding: var(--spacing);
-    background: var(--alt-primary);
-    border-radius: var(--border-radius);
+    border-bottom: solid 0.5px var(--primary);
     div{
       height: 50vh;
       iframe{

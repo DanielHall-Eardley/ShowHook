@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import ProfileTemplate from "@/components/ProfileTemplate.vue"
-import VenueDetails from "@/components/VenueDetails.vue"
+import ProfileTemplate from "@/components/profile/ProfileTemplate.vue"
+import VenueDetails from "@/components/profile/VenueDetails.vue"
 
 export default {
   components:{
