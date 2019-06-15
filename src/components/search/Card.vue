@@ -19,13 +19,20 @@
 
 <script>
 export default {
+  data(){
+    return{
+      startPoint: 0,
+      showNext: true,
+      showBack: false,
+    }
+  },
   computed:{
+    mapActive(){
+      return this.$store.state.appConfig.mapObject.shown
+    },
     resultsArray(){
       return this.$store.state.appConfig.resultsArray
     },
-    mapActive(){
-      return this.$store.state.appConfig.mapObject.shown
-    }
   },
   methods:{
     showMap(location){
@@ -42,11 +49,11 @@ export default {
     box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-rows: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 30%;
     grid-row-gap: var(--spacing);
     grid-column-gap: var(--spacing);
+    position: relative;
     overflow-y: scroll;
-    margin-right: var(--alt-spacing)
     span{
       margin-left: 5px;
     }
@@ -54,7 +61,7 @@ export default {
 
   .mapActive{
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 30vh;;
+    margin-right: var(--alt-spacing);
     flex: 1
   }
 
@@ -80,9 +87,7 @@ export default {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }
-  .card-container::-webkit-scrollbar {
-    display: none;
-  }
+
   .main-img-container{
     height: 70%;
   }
@@ -98,4 +103,10 @@ export default {
     box-sizing: border-box;
   }
 
+  .scroll-down{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 </style>

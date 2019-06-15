@@ -5,11 +5,11 @@ import Help from './views/Help.vue'
 import Profile from './views/Profile.vue'
 import Home from './views/Home.vue'
 import VenueProfile from './views/VenueProfile.vue'
-import BookingDetails from './views/BookingDetails.vue'
 import BandProfile from './views/BandProfile.vue'
 import EditDetails from './views/EditDetails.vue'
 import PageTemplate from './views/PageTemplate.vue'
 import SearchPage from './views/SearchPage.vue'
+import OfferPage from './views/OfferPage.vue'
 
 
 Vue.use(Router)
@@ -44,11 +44,6 @@ export default new Router({
       component: BandProfile
     },
     {
-      path: "/booking",
-      name: "booking",
-      component: BookingDetails
-    },
-    {
       path: "/edit/:id",
       name: "edit",
       component: EditDetails,
@@ -57,6 +52,11 @@ export default new Router({
       path: "/search",
       name: "search",
       component: SearchPage,
+    },
+    {
+      path: "/offer/:id",
+      name: "offer",
+      component: OfferPage,
     }
   ]
 })

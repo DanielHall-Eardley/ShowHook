@@ -4,7 +4,7 @@ const userConfig = {
   state: {
     user: {
       id: '1',
-      userType: "venue",
+      userType: "act",
       name: {content:"Motley Crue", verified: true},
       email: {content:"350chevy8@gmail.com", verified: true},
       phone: {content:236890346, verified: true},
@@ -160,6 +160,11 @@ const userConfig = {
     },
     rawUserData:{
       address: null
+    },
+    currentUser:{
+      id: 2,
+      name: "person making offer",
+      location: 'Toronto'
     }
   },
   mutations: {

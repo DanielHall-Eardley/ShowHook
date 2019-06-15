@@ -88,6 +88,36 @@ const appConfig = {
         name: 'Iron Man',
         location: 'Paradise city',
       },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Paradise city',
+      },
     ],
     steps:{
       act: [

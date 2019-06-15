@@ -12,7 +12,7 @@
       v-bind:shows="shows">
       </MakeOffer>
       <router-link
-        v-bind:to="{name: 'booking', params: {id: id}}">
+        v-bind:to="{name: 'offer', params: {id: id}}">
         Book
       </router-link>
       <button class="alt-button">Save to wishlist</button>

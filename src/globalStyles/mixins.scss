@@ -45,5 +45,6 @@
   margin-top: var(--spacing);
   background-color: white;
   position: absolute;
-  width: $width
+  width: $width;
+  z-index: 1;
 }
