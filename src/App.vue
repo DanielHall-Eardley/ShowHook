@@ -18,8 +18,8 @@ export default {};
   --secondary-three: #7C2051;
   --secondary-four: #F4A991;
   --secondary-six: #8b8d8e;
-  --heading-font: "Benton Sans";
-  --text-font: "Helevetica Neue";
+  --heading-font: "Libre Franklin", sans-serif;
+  --text-font: "Lato", sans-serif;
   --subheading-size: 1.2rem;
   --gradient-three: #7C2051, #F4A991;
   --gradient-two: #307B87, #5CD2C2;
@@ -38,6 +38,7 @@ export default {};
 body {
   margin: 0px;
   height: 100vh;
+  font-family: var(--text-font);
 }
 
 a, .fake-link {

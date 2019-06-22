@@ -9,7 +9,7 @@
           <img id='sub-img' :src="userCard.subPic" alt="Profile picture">
           <span>{{userCard.name}}</span>
         </div>
-        <span v-on:click='showMap(userCard.location)'>
+        <span v-on:click='showMap(userCard)'>
           {{userCard.location}}
         </span>
       </div>
@@ -19,24 +19,17 @@
 
 <script>
 export default {
-  data(){
-    return{
-      startPoint: 0,
-      showNext: true,
-      showBack: false,
-    }
-  },
   computed:{
     mapActive(){
-      return this.$store.state.appConfig.mapObject.shown
+      return this.$store.state.appConfig.mapObject
     },
     resultsArray(){
       return this.$store.state.appConfig.resultsArray
     },
   },
   methods:{
-    showMap(location){
-      this.$store.commit('showMap', location)
+    showMap(payload){
+      this.$store.commit('showMap', payload)
     }
   }
 }

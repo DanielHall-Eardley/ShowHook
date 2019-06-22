@@ -4,7 +4,7 @@
     <Filters></Filters>
     <div class="flex-container">
     <Card></Card>
-    <SearchMap v-if='mapObject.shown'></SearchMap>
+    <SearchMap v-if='mapObject'></SearchMap>
     </div>
   </div>
 </template>

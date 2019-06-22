@@ -20,6 +20,9 @@
           </component>
         <img src="menu.img" alt="">
       </div>
+      <button v-on:click='hideMap()' v-if='getMapObject' type="button" name="button">
+        Hide Map
+      </button>
     </div>
   </div>
 </template>
@@ -143,6 +146,9 @@ export default {
       }else if(!i && this.getFilters.type === 'ALL' || !this.getFilters.type){
         return `Filter By ${menu.name} & ${menu.altName}`
       }
+    },
+    hideMap(){
+      this.$store.commit('hideMap')
     }
   },
   computed:{
@@ -151,6 +157,9 @@ export default {
     },
     getFilterMenu(){
       return this.$store.state.appConfig.filterMenu
+    },
+    getMapObject(){
+      return this.$store.state.appConfig.mapObject
     }
   }
 }
@@ -171,11 +180,13 @@ export default {
 
   .filters-container{
     display: flex;
+    position: relative;
     padding-top: var(--spacing);
     span{
       margin-right: var(--spacing);
     }
   }
+
   .menu-container{
     position: relative;
   }

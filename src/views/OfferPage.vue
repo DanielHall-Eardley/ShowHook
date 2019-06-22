@@ -18,7 +18,9 @@
         </div>
         <div class='offer details-general'>
           <span>GENERAL</span>
-          <img :src="toggleOfferDetails('general')" alt="icon">
+          <img :src="toggleImage('general')"
+          v-on:click='toggleOfferDetails()'
+          alt="icon">
         </div>
         <div class='offer details-schedule'>
           <span>SCHEDULE</span>
@@ -26,7 +28,7 @@
         </div>
         <div class='offer details-other'>
           <span>OTHER</span>
-          <img :src="toggleOfferDetails('other')" alt="icon">
+          <img :src="toggleImage('other')" alt="icon">
         </div>
       </div>
       <div class="img-submit">

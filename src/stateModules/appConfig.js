@@ -36,15 +36,25 @@ const appConfig = {
       },
     ],
     searchQuery:{},
-    mapObject: {
-      shown: false
-    },
+    mapObject: null,
     resultsArray:[
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Ottawa',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'Toronto',
+      },
+      {
+        mainPic: 'https://via.placeholder.com/400',
+        subPic: 'https://via.placeholder.com/100',
+        name: 'Iron Man',
+        location: 'New York',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
@@ -56,67 +66,55 @@ const appConfig = {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Australia',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Los Angeles',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Montreal',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Paradise city 8',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Paradise city 9',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Paradise city 10',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Paradise city 11',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Paradise city 12',
       },
       {
         mainPic: 'https://via.placeholder.com/400',
         subPic: 'https://via.placeholder.com/100',
         name: 'Iron Man',
-        location: 'Paradise city',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city',
+        location: 'Paradise city 13',
       },
     ],
     steps:{
@@ -636,10 +634,16 @@ const appConfig = {
       state.filterMenu = payload
       console.log(state.filterMenu)
     },
-    showMap:(state, location) => {
-      state.mapObject.shown = true
-      state.mapObject.location = location
+    showMap:(state, payload) => {
+      state.mapObject = {
+        location: payload.location,
+        name: payload.name,
+        picture: payload.mainPic
+      }
       console.log(state.mapObject)
+    },
+    hideMap: state =>{
+      state.mapObject = null
     }
   },
   actions:{
