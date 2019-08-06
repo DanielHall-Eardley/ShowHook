@@ -1,0 +1,17 @@
+.default-input{
+  border: none;
+  outline: none;
+  text-decoration: none;
+  background-color: inherit;
+  border-bottom: solid .5px var(--alt-primary);
+  transition: all .5s;
+  width: 100%;
+  &:active, &:focus{
+    border-bottom: solid .5px var(--primary);
+    padding-bottom: 8px;
+    transform: scale(1.05)
+  }
+  &:not(:last-child){
+    margin-bottom: var(--spacing);
+  }
+}

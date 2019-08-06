@@ -1,12 +1,14 @@
 <template>
-  <div id="shows" v-bind:style="showPos">
+  <div class="shows" v-bind:style="showPos">
     <h2>Shows</h2>
-    <button v-on:click="backToTheFuture('future')">Upcoming</button>
-    <button v-on:click="backToTheFuture('past')">Past</button>
-    <div v-for="show in filteredArray">
+    <div v-for="show in shows">
       <span class="show-date">{{show.date}}</span>
       <span class="show-address"><b>{{show.venueName}}</b><br>
       {{show.venueAddress}}</span>
+      <router-link class='show-details'
+        :to="{ name: 'show-details', params: {showId: show.id}}">
+        Show Details
+      </router-link>
       <button class="show-button"
       v-on:click="addTickets($event)">{{getTicketState(show)}}</button>
     </div>
@@ -16,27 +18,15 @@
 <script>
 export default {
   props: {
-    shows: Object,
+    shows: Array,
     showPos: Object
   },
-  data(){
-    return{
-      filteredArray: this.shows.upcoming,
-    }
-  },
   methods:{
-    backToTheFuture(time){
-      if(time === "future"){
-        this.filteredArray = this.shows.upcoming
-      }else if(time === "past"){
-        this.filteredArray = this.shows.past
-      }
-    },
     getTicketState(show){
-      if(show.ticketsOnSale === true && show.ticketCount > show.ticketsPurchased){
+      if(show.ticketsOnSale && show.ticketCount > show.ticketsPurchased){
         return "Buy Tickets"
       }else if(show.ticketsOnSale === false){
-        return( "Upcoming")
+        return "Upcoming"
       }else if(show.ticketCount === show.ticketsPurchased){
         return "Sold Out"
       }else if(new Date(show.date) < new Date()){
@@ -53,14 +43,15 @@ export default {
 <style lang="scss">
 @import "@/globalStyles/mixins.scss";
 
-#shows {
+.shows{
   margin: var(--spacing);
   border-bottom: solid 0.5px var(--primary);
   button{
     margin-right: var(--spacing);
     @include button();
+    font-size: 1rem;
   }
-  div {
+  div{
     display: flex;
     align-items: center;
     padding: 5px 0px;
@@ -68,15 +59,20 @@ export default {
   h2{
     margin: 5px;
   }
+  .show-date{
+    flex: 1
+  }
+  .show-address{
+    flex: 2;
+  }
+  .show-button{
+    flex: 0.5;
+  }
+  .show-details{
+    @include show-button;
+    margin-right: var(--spacing);
+  }
 }
 
-.show-date{
-  flex: 1
-}
-.show-address{
-  flex: 2;
-}
-.show-button{
-  flex: 0.5;
-}
+
 </style>

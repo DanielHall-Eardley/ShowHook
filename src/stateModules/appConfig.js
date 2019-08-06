@@ -6,7 +6,10 @@ const appConfig = {
     },
     navMenu: [
       {name: "search", url: "/search"},
-      {name: "home", url: "/"}
+      {name: "home", url: "/"},
+      {name: "home", url: "/"},
+      {name: "home", url: "/"},
+      {name: "home", url: "/"},
     ],
     filterMenu:[
       {

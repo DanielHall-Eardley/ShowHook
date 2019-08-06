@@ -9,7 +9,10 @@ import BandProfile from './views/BandProfile.vue'
 import EditDetails from './views/EditDetails.vue'
 import PageTemplate from './views/PageTemplate.vue'
 import SearchPage from './views/SearchPage.vue'
-import OfferPage from './views/OfferPage.vue'
+import AboutHowTo from './views/AboutHowTo.vue'
+import ShowDetails from './views/ShowDetails.vue'
+import PageNotFound from './views/PageNotFound.vue'
+import Conversation from './views/Conversation.vue'
 
 
 Vue.use(Router)
@@ -28,8 +31,8 @@ export default new Router({
       component: Help
     },
     {
-    path: '/profile/:id',
-    component: Profile
+      path: '/profile/:id',
+      component: Profile
     },
     {
       path: '/home/:search',
@@ -54,9 +57,24 @@ export default new Router({
       component: SearchPage,
     },
     {
-      path: "/offer/:id",
-      name: "offer",
-      component: OfferPage,
+      path: "/information",
+      name: "info",
+      component: AboutHowTo,
+    },
+    {
+      path: "/show-details",
+      name: "show-details",
+      component: ShowDetails,
+    },
+    {
+      path: "/page-not-found",
+      name: "page-not-found",
+      component: PageNotFound,
+    },
+    {
+      path: "/conversation/:id",
+      name: "conversation",
+      component: Conversation,
     }
   ]
 })

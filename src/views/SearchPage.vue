@@ -11,7 +11,7 @@
 
 <script>
 import Filters from '@/components/search/Filters.vue'
-import SearchMap from '@/components/search/SearchMap.vue'
+import SearchMap from '@/components/SearchMap.vue'
 import Card from '@/components/search/Card.vue'
 import SearchHeader from '@/components/search/SearchHeader.vue'
 

@@ -4,6 +4,7 @@
     <span>{{info.location.content}}</span>
     <span>{{showGenres}}</span>
     <span>{{countReviews}}</span>
+    <router-link class='booking-link' :to="{ name: '', params: {} }"></router-link>
   </div>
 </template>
 
@@ -22,7 +23,6 @@
         }
       },
       showGenres(){
-        console.log(this.info)
         let genres = ""
         for(let i in this.info.genres){
           genres +=  i + " "

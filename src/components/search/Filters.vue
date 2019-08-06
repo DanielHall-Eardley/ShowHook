@@ -20,7 +20,11 @@
           </component>
         <img src="menu.img" alt="">
       </div>
-      <button v-on:click='hideMap()' v-if='getMapObject' type="button" name="button">
+      <button v-on:click='hideMap()'
+        v-if='getMapObject'
+        type="button"
+        name="button"
+        class='hide-map'>
         Hide Map
       </button>
     </div>
@@ -184,6 +188,10 @@ export default {
     padding-top: var(--spacing);
     span{
       margin-right: var(--spacing);
+    }
+    .hide-map{
+      position: absolute;
+      right: 0;
     }
   }
 

@@ -7,7 +7,7 @@
     <header>
       <AppName></AppName>
       <nav>
-        <router-link to="howitworks">How it works</router-link>
+        <router-link to="/information">How it works</router-link>
         <span class="fake-link" v-on:click="toggleLogin('login')">Login</span>
         <span class="fake-link" v-on:click="toggleLogin('signUp')">Sign Up</span>
       </nav>
@@ -53,7 +53,7 @@ export default {
     };
   },
   mounted(){
-    if(Object.keys(this.$route.params).length > 0){
+    if(Object.keys(this.$route.params.length) > 0){
       this.toggleLogin(this.$route.params.action)
     }
   },

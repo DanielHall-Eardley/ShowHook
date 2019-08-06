@@ -1,11 +1,9 @@
 <template lang="html">
-  <div id="map-container">
-    <button>Hide Map</button>
-  </div>
+  <div id="map-container"></div>
 </template>
 
 <script>
-import gmapsInit from './../../gmaps.js'
+import gmapsInit from './../gmaps.js'
 
 export default {
   async mounted(){
@@ -115,7 +113,6 @@ export default {
   #map-container{
     background: pink;
     flex: 1;
-    width: 50%;
     height: 100%;
   }
 

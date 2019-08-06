@@ -25,6 +25,13 @@
   }
 }
 
+@mixin ticket-button{
+  background-color: var(--primary);
+  color: white;
+  border-radius: 8px;
+  outline: none;
+}
+
 @mixin alt-button(){
   padding: 10px 20px;
   border-radius: 20px;
@@ -47,4 +54,8 @@
   position: absolute;
   width: $width;
   z-index: 1;
+}
+
+@mixin show-button(){
+
 }

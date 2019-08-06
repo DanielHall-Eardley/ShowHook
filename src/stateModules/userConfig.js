@@ -2,8 +2,18 @@ import key from "@/../keys.js"
 
 const userConfig = {
   state: {
+    offer:{
+      uniqueId: 123,
+      sender: 'Joe Blue',
+      receiver: 'Bob Hope',
+      date: '2019 08 05',
+      paymentType: "split",
+      payment: 200,
+      status: false 
+    },
     user: {
       id: '1',
+      ageRestriction: '18+',
       userType: "act",
       name: {content:"Motley Crue", verified: true},
       email: {content:"350chevy8@gmail.com", verified: true},
@@ -17,7 +27,6 @@ const userConfig = {
       members: ["userId1", "userId2"],
       video:{title: "Music video", videoId: "xWIlizw7M1M"},
       featuredTrack: "285823350",
-      offers:[],
       pictures: [
         "https://via.placeholder.com/500",
         "https://via.placeholder.com/300",
@@ -51,49 +60,60 @@ const userConfig = {
         ]
         },
       featureIcons: [
-        {feature: "I\'m a feature", src: "https://via.placeholder.com/200"},
-        {feature: "I\'m a feature", src: "https://via.placeholder.com/200"},
-        {feature: "I\'m a feature", src: "https://via.placeholder.com/200"},
-        {feature: "I\'m a feature", src: "https://via.placeholder.com/200"},
+        {text: "I\'m a feature", src: "https://via.placeholder.com/200"},
+        {text: "I\'m a feature", src: "https://via.placeholder.com/200"},
+        {text: "I\'m a feature", src: "https://via.placeholder.com/200"},
+        {text: "I\'m a feature", src: "https://via.placeholder.com/200"},
       ],
-      shows: {
-        upcoming: [{
-            id: "unique id",
+      shows: [
+          {
+            id: "1",
             date: "2019, 4, 16",
             venueAddress: "in the sun",
             venueName: "A cool place",
             ticketsOnSale: true,
             ticketCount: 10000,
             ticketsPurchased: 5000,
+            ageRestriction: 16,
+            banner: 'https://via.placeholder.com/1000'
           },
           {
-            id: "unique id",
-            date: "2019, 4, 5",
-            venueAddress: "in the sun",
+            id: "2",
+            date: "2019, 10, 13",
+            venueAddress: "Toronto",
             venueName: "A cool place",
             ticketsOnSale: true,
             ticketCount: 10000,
             ticketsPurchased: 5000,
+            ageRestriction: 19,
+            text: "Well I don't like your unemployed genes in my grandchildren, Jerry.",
+            banner: 'https://via.placeholder.com/1000',
+            actName: 'ACDC',
+            price: 500
           },
-        ],
-        past: [{
+          {
+            id: "3",
             date: "2018, 11, 17",
             venueAddress: "in the sun",
             venueName: "A cool place",
             ticketsOnSale: false,
             ticketCount: 10000,
             ticketsPurchased: 5000,
+            ageRestriction: 21,
+            banner: 'https://via.placeholder.com/1000'
           },
           {
+            id: "4",
             date: "2018, 11, 17",
             venueAddress: "in the sun",
             venueName: "A cool place",
             ticketsOnSale: false,
             ticketCount: 10000,
             ticketsPurchased: 10000,
+            ageRestriction: 6,
+            banner: 'https://via.placeholder.com/1000'
           },
         ],
-      },
       reviews:[
         {
           id: "show unique id",
@@ -165,7 +185,8 @@ const userConfig = {
       id: 2,
       name: "person making offer",
       location: 'Toronto'
-    }
+    },
+    newShowData: {}
   },
   mutations: {
     addOffer: (state, payload) => {
@@ -235,6 +256,18 @@ const userConfig = {
     },
     submitRules: (state, rules) =>{
       state.rawUserData.rules = rules
+    },
+    updateShow: (state, payload) =>{
+      let arr = state.user.shows
+      let shows = arr.map(show => {
+        if(show.id === payload.id){
+          return Object.assign(show, {[payload.name]: payload.value})
+        }else{
+          return show
+        }
+      })
+      console.log(shows)
+      state.user.shows = shows
     }
   },
   actions: {
@@ -256,7 +289,7 @@ const userConfig = {
     },
     getVideo: (context) => {
       context.commit("getVideo")
-    }
+    },
   }
 
 }

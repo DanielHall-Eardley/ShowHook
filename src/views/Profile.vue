@@ -1,9 +1,6 @@
 <template>
   <div id="profile">
-    <Menu v-bind:menuLinks="getMenuLinks"
-    v-bind:menuPos="menuPos"></Menu>
-
-    <div id="divider-user"></div>
+    <Menu v-bind:menuPos="menuPos"></Menu>
 
     <ProfilePic v-bind:profilePic="getUserInfo.pic"
     v-bind:picturePos="picturePos"></ProfilePic>
@@ -24,7 +21,7 @@
 
 <script>
 import AboutUser from "@/components/profile/AboutUser";
-import Menu from "@/components/profile/Menu";
+import Menu from "@/components/Menu";
 import ProfilePic from "@/components/profile/ProfilePic";
 import Reviews from "@/components/profile/Reviews";
 import Shows from "@/components/profile/Shows";
@@ -46,31 +43,28 @@ export default {
         gridColumn: "1/5"
       },
       picturePos:{
-        gridRow: "3/4",
+        gridRow: "2/3",
         gridColumn: "1/2"
       },
       aboutPos:{
-        gridRow: "3/4",
+        gridRow: "2/3",
         gridColumn: "2/5"
       },
       showPos:{
-        gridRow: "4/5",
+        gridRow: "3/4",
         gridColumn: "2/5"
       },
       reviewPos:{
-        gridRow: "5/6",
+        gridRow: "4/5",
         gridColumn: "2/5"
       },
       infoPos:{
-        gridRow: "4/5",
+        gridRow: "3/4",
         gridColumn: "1/2"
       }
     };
   },
   computed: {
-    getMenuLinks() {
-      return this.$store.state.appConfig.navMenu;
-    },
     getUserInfo() {
       return this.$store.state.userConfig.user;
     },
@@ -87,12 +81,7 @@ export default {
 #profile {
   display: grid;
   grid-template-columns: repeat(4, 25%);
-  grid-template-rows: 12vh var(--divider-height) 30vh minmax(30vh, auto) minmax(30vh, auto);
+  grid-template-rows: min-content minmax(30vh, auto) minmax(30vh, auto);
   z-index: 0;
-}
-#divider-user {
-  grid-row: 2/3;
-  grid-column: 1/5;
-  background: linear-gradient(to left, var(--gradient-one));
 }
 </style>

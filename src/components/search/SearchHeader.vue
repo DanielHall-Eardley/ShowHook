@@ -39,10 +39,7 @@ export default {
   .search-header{
     display: flex;
     h1{
-      color: var(--primary);
-      font-family: var(--heading-font);
       flex: 1;
-      margin: 0px;
     }
     input{
       flex: 1;

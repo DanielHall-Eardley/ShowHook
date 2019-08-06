@@ -1,7 +1,6 @@
 <template>
   <div id="band-venue-profile">
-    <Menu v-bind:menuLinks="getMenu"></Menu>
-    <div id="divider-band-venue"></div>
+    <Menu></Menu>
     <div id="banner-profile" >
       <Banner v-bind:banner="getDetails.banner"></Banner>
     </div>
@@ -24,23 +23,15 @@
     <AboutUser v-bind:about="getDetails">
       <ProfileSummary></ProfileSummary>
     </AboutUser>
-    <BookShow
-    v-if="true"
-    v-bind:price="getDetails.price"
-    v-bind:type="getDetails.userType"
-    v-bind:shows="getDetails.shows.upcoming"
-    v-bind:id="getDetails.id">
-    </BookShow>
   </div>
 </template>
 
 <script>
-  import Menu from './Menu.vue'
+  import Menu from '@/components/Menu.vue'
   import Banner from '@/components/Banner.vue'
   import AboutUser from './AboutUser.vue'
   import Title from './Title.vue'
   import FeatureIcons from './FeatureIcons.vue'
-  import BookShow from './BookShow.vue'
   import Reviews from './Reviews.vue'
   import ProfileSummary from './ProfileSummary.vue'
 
@@ -51,7 +42,6 @@
       AboutUser,
       Title,
       FeatureIcons,
-      BookShow,
       ProfileSummary,
       Reviews
     },

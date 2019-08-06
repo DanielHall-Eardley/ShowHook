@@ -2,7 +2,7 @@
   <div class="features-container" v-bind:style="featurePos">
     <figure v-for="feature in features">
       <img v-bind:src="feature.src" alt="icon">
-      <figcaption>{{feature.feature}}</figcaption>
+      <figcaption>{{feature.text}}</figcaption>
     </figure>
   </div>
 </template>
@@ -32,6 +32,7 @@
       figcaption{
         text-align: center;
         margin-bottom: 2px;
+        font-size: 1rem;
       }
     }
   }
