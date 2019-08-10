@@ -7,14 +7,51 @@ const userConfig = {
       sender: 'Joe Blue',
       receiver: 'Bob Hope',
       date: '2019 08 05',
-      paymentType: "split",
+      paymentType: 'guarantee',
       payment: 200,
-      status: false 
+      status: false,
+      actPercentage: 50,
+      venuePercentage: 50,
+      backline: "What are you supplying?",
+      merchSeller: "artist",
+      accomodationProvider: "artist",
+      schedule: [
+        {
+          task: "Load In",
+          start: "Not Selected",
+          end: "Not Selected",
+        },
+        {
+          task: "Sound Check",
+          start: "Not Selected",
+          end: "Not Selected",
+        },
+        {
+          task: "Doors Open",
+          start: "Not Selected",
+          end: "Not Selected",
+        },
+        {
+          task: "Opener Set Time",
+          start: "Not Selected",
+          end: "Not Selected",
+        },
+        {
+          task: "Artist Set Time",
+          start: "Not Selected",
+          end: "Not Selected",
+        },
+        {
+          task: "Load Out",
+          start: "Not Selected",
+          end: "Not Selected",
+        },
+      ]
     },
     user: {
       id: '1',
       ageRestriction: '18+',
-      userType: "act",
+      userType: "venue",
       name: {content:"Motley Crue", verified: true},
       email: {content:"350chevy8@gmail.com", verified: true},
       phone: {content:236890346, verified: true},
@@ -268,6 +305,24 @@ const userConfig = {
       })
       console.log(shows)
       state.user.shows = shows
+    },
+
+    updateOffer: (state, payload) => {
+      state.offer[payload.name] = payload.value
+    },
+
+    updateSchedule: (state, payload) => {
+      state.offer.schedule.map(el => {
+        if(el.task === payload.currentTask){
+          el[payload.time.name] = payload.time.value
+        }
+        return el
+      })
+    },
+
+    toggleArtistVenue: (state, payload) => {
+      state.offer[payload.name] = payload.type
+      console.log(state.offer[payload.name] )
     }
   },
   actions: {

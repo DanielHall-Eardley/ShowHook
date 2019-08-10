@@ -1,7 +1,9 @@
 <template lang="html">
   <div class="show-details">
     <Menu></Menu>
-    <Banner :show='getShowDetails' :toggleEdit='toggle'></Banner>
+    <div class="show-details-banner">
+      <Banner :show='getShowDetails' :toggleEdit='toggle'></Banner>
+    </div>
     <div class="grid-container">
       <div>
         <ShowText :show='getShowDetails' :toggleEdit='toggle'></ShowText>
@@ -73,14 +75,20 @@ export default {
 
 <style lang="scss" scoped>
   .show-details{
+
     .edit{
       display: flex;
       height: 2rem;
+
       img{
         height: 100%;
         object-fit: cover;
         margin-right: var(--spacing);
       }
+    }
+
+    &-banner{
+      height: 55vh;
     }
     .grid-container{
       padding: var(--spacing);

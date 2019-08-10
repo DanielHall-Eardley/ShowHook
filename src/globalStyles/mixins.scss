@@ -1,3 +1,5 @@
+@import '/variables.scss';
+
 @mixin clearfix(){
   &:after{
     content:"";
@@ -7,21 +9,21 @@
 }
 
 @mixin button(){
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
   background: var(--primary);
   border: solid 0.5px var(--primary);
   color: white;
   outline: none;
-  transition: all 0.3s linear;
+  transition: all 0.3s;
+  box-shadow: 0 1rem 3rem rgba(black, .4);
   &:hover{
-    color: var(--primary);
-    border: solid 0.5px var(--primary);
-    background: white;
+    background-color: darken($primary, 10%);
+    transform: translateY(-.2rem);
   }
-  &:active{
-    border: solid 0.5px var(--secondary-four);
-    background: var(--secondary-four)
+  &:active, &:focus{
+    transform: translateY(0);
+    box-shadow: 0 .4rem 1rem rgba(black, .4);
   }
 }
 

@@ -1,41 +1,71 @@
 <template lang="html">
   <section class="offer">
-    <form action="" class="offer-form">
-      <span class="offer-sender">Offer from:{{offer.sender}}</span>
-      <span class="offer-receiver">To: {{offer.receiver}}</span>
-      <span class="offer-date">{{offer.date}}</span>
-      <span class="offer-payment">{{offer.payment}}</span>
-      <button class="offer-payment-type">
-        <input type="text" id="guarantee" name="payment" ty>
-        <label for="guarantee" class="input-label-g">Guarantee</label>
-        <input type="text" id="split" name="payment">
-        <label for="split" class="input-label-s">
-          Split <span class="percentage">%</span>
-        </label>
+    <form action="" class="offer-summary">
+      <span class="offer-sender"><b>Offer from: </b>{{offer.sender}}</span>
+      <span class="offer-receiver"><b>To: </b>{{offer.receiver}}</span>
+      <span class="offer-date"><b>On: </b>{{offer.date}}</span>
+      <span class="offer-payment"><b>For: </b>${{offer.payment}}</span>
+      <span class="offer-status">
+        <b>Status: </b>{{!offer.status ? 'Pending' : 'Accepted'}}
+      </span>
+      <!--<button class="offer-submit">Submit Offer</button>!-->
+      <button type="button" class="offer-details" v-on:click="toggleDetails()">
+        View Details
       </button>
-      <span class="offer-status"></span>
-      <button class="offer-submit"></button>
+      <General v-show='showDetails'></General>
+      <Schedule v-show='showDetails'></Schedule>
+      <Other v-show='showDetails'></Other>
     </form>
   </section>
 </template>
 
 <script>
+import General from "@/components/offers/General.vue"
+import Schedule from "@/components/offers/Schedule.vue"
+import Other from "@/components/offers/Other.vue"
+
 export default {
   computed:{
     offer(){
       return this.$store.state.userConfig.offer
+    }
+  },
+  components:{
+    General,
+    Schedule,
+    Other
+  },
+  data(){
+    return{
+      showDetails: false
+    }
+  },
+  methods:{
+    toggleDetails(){
+      this.showDetails = !this.showDetails
     }
   }
 }
 </script>
 
 <style lang="scss">
-
+@import '../../globalStyles/mixins.scss';
 
 .offer{
+  width: 100%;
+  font-size: 1.6rem;
 
-  &-form{
+  &-summary{
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(6, [col-start] 1fr [col-end]);
+    grid-gap: var(--spacing);
+    justify-items: center;
 
+    background-color: var(--light-pink);
+    color: var(--alt-primary);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
   }
 
   &-sender{
@@ -54,12 +84,8 @@ export default {
 
   }
 
-  &-payment-type{
-    
-  }
-
-  &-submit{
-
+  &-details{
+    @include button;
   }
 }
 </style>

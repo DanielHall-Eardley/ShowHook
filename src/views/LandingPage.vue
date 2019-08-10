@@ -135,3 +135,6 @@ export default {
   flex: 3;
 }
 </style>
+
+/*Notes from Jozef
+*/

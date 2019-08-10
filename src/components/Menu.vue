@@ -119,6 +119,7 @@ export default {
     transform: translateX(0%);
   }
 }
-
-
 </style>
+
+/*Notes from Jozef
+*/

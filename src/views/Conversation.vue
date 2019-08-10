@@ -19,3 +19,6 @@ export default {
 
 <style lang="scss">
 </style>
+
+/*Notes from Jozef
+*/

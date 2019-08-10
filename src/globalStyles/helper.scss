@@ -1,7 +1,8 @@
+@import '/variables.scss';
+
 .default-input{
   border: none;
   outline: none;
-  text-decoration: none;
   background-color: inherit;
   border-bottom: solid .5px var(--alt-primary);
   transition: all .5s;
@@ -9,9 +10,31 @@
   &:active, &:focus{
     border-bottom: solid .5px var(--primary);
     padding-bottom: 8px;
-    transform: scale(1.05)
+    transform: scale(1.05);
   }
   &:not(:last-child){
     margin-bottom: var(--spacing);
+  }
+}
+
+.edit-input{
+  border: none;
+  outline: none;
+  text-decoration: none;
+  background-color: $secondary-six;
+  transition: all .3s;
+  font-size: 1.6rem;
+  padding: .5rem 1rem;
+  border-radius: var(--border-radius);
+  color: var(--alt-primary);
+  width: 100%;
+
+  &:active, &:focus{
+    background-color: lighten($secondary-six, 30%);
+
+  }
+
+  &::-webkit-input-placeholder{
+    color: var(--alt-primary);
   }
 }

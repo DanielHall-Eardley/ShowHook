@@ -13,6 +13,7 @@
   --secondary-three: #7C2051;
   --secondary-four: #F4A991;
   --secondary-six: #8b8d8e;
+  --light-pink: #f0edef;
   --heading-font: "Libre Franklin", sans-serif;
   --text-font: "Libre Baskerville", sans-serif;
   --subheading-size: 1.2rem;
@@ -23,7 +24,7 @@
   --alt-spacing: 1rem;
   --border-radius: 1rem;
   --text-color: white;
-  --divider-height: 1vh;
+  --box-shadow-default: 0 1rem 3rem rgba(black, .4);
 }
 
 #app {

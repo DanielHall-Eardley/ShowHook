@@ -1,6 +1,6 @@
 <template>
-  <div v-bind:class="!toggleEdit ? 'banner' : 'banner banner-highlight'">
-    <img v-bind:src="backgroundImage" alt="banner" class='banner-img'>
+  <div v-bind:class="!toggleEdit ? 'banner' : 'banner banner-highlight'"
+    v-bind:style="{backgroundImage: backgroundImage}">
     <slot></slot>
     <button v-if='toggleEdit'>Upload a photo</button>
     <AddressAge v-if='show' :show='show' :toggleEdit='toggleEdit'></AddressAge>
@@ -26,9 +26,9 @@ export default {
   },
   mounted(){
     if(this.show){
-      this.backgroundImage = this.show.banner
+      this.backgroundImage = `url(${this.show.banner})`
     }else{
-      this.backgroundImage = this.banner
+      this.backgroundImage = `url(${this.banner})`
     }
   }
 };
@@ -40,6 +40,9 @@ export default {
     min-height: 30vh;
     height: 100%;
     box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+    position: relative;
 
     button{
       position: absolute;
