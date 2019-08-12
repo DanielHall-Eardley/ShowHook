@@ -112,8 +112,10 @@ export default {
   border-radius: var(--border-radius);
   padding: var(--spacing);
   box-shadow: var(--box-shadow-default);
+  margin-bottom: var(--spacing);
+  margin-left: var(--spacing);
 
-  grid-column: col-start 3 / span 2;
+  grid-column: offer-start / offer-end;
   justify-self: stretch;
   align-self: start;
   display: grid;
@@ -122,7 +124,7 @@ export default {
   &-select-times{
     display: grid;
     grid-row-gap: var(--alt-spacing);
-    margin-bottom: var(--alt-spacing); 
+    margin-bottom: var(--alt-spacing);
   }
 
   &-show-times{

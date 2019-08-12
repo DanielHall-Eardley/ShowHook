@@ -14,7 +14,16 @@ const userConfig = {
       venuePercentage: 50,
       backline: "What are you supplying?",
       merchSeller: "artist",
+      merchPercentageArtist: 40,
+      merchPercentageVenue: 60,
       accomodationProvider: "artist",
+      venueAccRoom: 2,
+      venueAccAddress: "somewhere over the rainbow",
+      travelProvider: "artist",
+      travelExpenses: 100,
+      venueGuestList: 5,
+      artistGuestList: 5,
+      conditionText: "Add a condition, upload a rider, a stage plot",
       schedule: [
         {
           task: "Load In",

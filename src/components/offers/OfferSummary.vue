@@ -8,41 +8,18 @@
       <span class="offer-status">
         <b>Status: </b>{{!offer.status ? 'Pending' : 'Accepted'}}
       </span>
-      <!--<button class="offer-submit">Submit Offer</button>!-->
-      <button type="button" class="offer-details" v-on:click="toggleDetails()">
-        View Details
-      </button>
-      <General v-show='showDetails'></General>
-      <Schedule v-show='showDetails'></Schedule>
-      <Other v-show='showDetails'></Other>
+      <button class="offer-submit">Submit Offer</button>
     </form>
   </section>
 </template>
 
 <script>
-import General from "@/components/offers/General.vue"
-import Schedule from "@/components/offers/Schedule.vue"
-import Other from "@/components/offers/Other.vue"
+
 
 export default {
   computed:{
     offer(){
       return this.$store.state.userConfig.offer
-    }
-  },
-  components:{
-    General,
-    Schedule,
-    Other
-  },
-  data(){
-    return{
-      showDetails: false
-    }
-  },
-  methods:{
-    toggleDetails(){
-      this.showDetails = !this.showDetails
     }
   }
 }
@@ -58,7 +35,7 @@ export default {
   &-summary{
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(6, [col-start] 1fr [col-end]);
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
     grid-gap: var(--spacing);
     justify-items: center;
 
@@ -84,7 +61,7 @@ export default {
 
   }
 
-  &-details{
+  &-submit{
     @include button;
   }
 }

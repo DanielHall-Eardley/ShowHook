@@ -68,3 +68,7 @@ export default {
     border-bottom: solid 5px var(--alt-primary);
   }
 </style>
+
+/*Notes from Jozef
+
+*/

@@ -24,7 +24,10 @@
     </div>
 
     <div class="backline" v-if="currentSelection === 'backline'">
-      <textarea class="backline-textarea" :placeholder="offer.backline"></textarea>
+      <textarea :placeholder="offer.backline"
+        name="backline"
+        v-on:input="updateOffer($event)">
+      </textarea>
     </div>
 
     <div class="merchandise" v-if="currentSelection === 'merch'">
@@ -35,14 +38,14 @@
         <button class="toggle-artist"
           name="merchSeller"
           type="button"
-          :class="toggle === 'artist' ? 'highlight-offer' : null"
+          :class="offer.merchSeller === 'artist' ? 'highlight-offer' : null"
           @click="toggleArtistVenue($event, 'artist')">
           Artist
         </button>
         <button class="toggle-venue"
           name="merchSeller"
           type="button"
-          :class="toggle === 'venue' ? 'highlight-offer' : null"
+          :class="offer.merchSeller === 'venue' ? 'highlight-offer' : null"
           @click="toggleArtistVenue($event, 'venue')">
           Venue
         </button>
@@ -50,65 +53,113 @@
       <label for="" class="merchandise-percentage-label">
         What percentage of the sales does the {{offer.merchSeller}} keep?
       </label>
-      <input type="text" placeholder="%" class="edit-input merchandise-percentage-input">
+      <input type="number"
+        :placeholder="updateMerch"
+        :value="updateMerch"
+        class="edit-input merchandise-percentage-input"
+        v-on:input="updateMerchDetails($event)">
     </div>
 
     <div class="accomodation" v-if="currentSelection === 'accomodation'">
       <div class="toggle">
-        <label for="" class="toggle-label">
+        <label class="toggle-label">
           Who is responsible for accomodation?
         </label>
         <button class="toggle-artist"
           name="accomodationProvider"
           type="button"
-          :class="toggle === 'artist' ? 'highlight-offer' : null"
+          :class="offer.accomodationProvider === 'artist' ? 'highlight-offer' : null"
           @click="toggleArtistVenue($event, 'artist')">
           Artist
         </button>
         <button class="toggle-venue"
           name="accomodationProvider"
           type="button"
-          :class="toggle === 'venue' ? 'highlight-offer' : null"
+          :class="offer.accomodationProvider === 'venue' ? 'highlight-offer' : null"
           @click="toggleArtistVenue($event, 'venue')">
           Venue
         </button>
       </div>
-      <div class="accomodation-details">
+      <div class="accomodation-details" v-if="offer.accomodationProvider === 'venue'">
         <label class="accomodation-details-rooms">Number of rooms</label>
-        <input type="number" class="edit-input accomodation-details-rooms-input">
+        <input type="number"
+        class="edit-input accomodation-details-rooms-input"
+          v-on:input="updateDetails($event)"
+          :placeholder="offer.venueAccRoom"
+          :value="offer.venueAccRoom"
+          name="rooms">
         <label class="accomodation-details-address">Address</label>
-        <input type="text" class="edit-input accomodation-details-address-input">
+        <input type="text"
+          class="edit-input accomodation-details-address-input"
+          v-on:input="updateDetails($event)"
+          :placeholder="offer.venueAccAddress"
+          :value="offer.venueAccAddress"
+          name="address">
       </div>
     </div>
 
     <div class="travel" v-if="currentSelection === 'travel'">
       <div class="toggle">
-        <label for="" class="toggle-label">
+        <label class="toggle-label">
           Who is responsible for travel expenses?
         </label>
-        <button class="toggle-artist">Artist</button>
-        <button class="toggle-venue">Venue</button>
+        <button class="toggle-artist"
+          name="travelProvider"
+          type="button"
+          :class="offer.travelProvider === 'artist' ? 'highlight-offer' : null"
+          @click="toggleArtistVenue($event, 'artist')">
+          Artist
+        </button>
+        <button class="toggle-venue"
+          name="travelProvider"
+          type="button"
+          :class="offer.travelProvider === 'venue' ? 'highlight-offer' : null"
+          @click="toggleArtistVenue($event, 'venue')">
+          Venue
+        </button>
       </div>
-      <div class="travel-expenses">
+      <div class="travel-expenses" v-if="offer.travelProvider === 'venue'">
         <label class="travel-expenses-label">
-          How much will cover of the travel expenses?
+          How much will you cover of the travel expenses?
         </label>
-        <input type="text" class="travel-expenses-input">
+        <input type="number"
+          class="edit-input travel-expenses-input"
+          name="travel"
+          v-on:input="updateDetails($event)"
+          :placeholder="offer.travelExpenses"
+          :value="offer.travelExpenses">
       </div>
     </div>
 
     <div class="guest-list" v-if="currentSelection === 'guest'">
-      <label class="guest-list-artist-label"></label>
-      <input type="text" class="guest-list-artist-input">
-      <label class="guest-list-venue-label"></label>
-      <input type="text" class="guest-list-venue-input">
+      <label class="guest-list-artist-label">
+        Number of guests for artist
+      </label>
+      <input type="number"
+        class="edit-input guest-list-artist-input"
+        :placeholder="offer.artistGuestList"
+        :value="offer.artistGuestList"
+        name="artistGuestList"
+        v-on:input="updateOffer($event)">
+      <label class="guest-list-venue-label">
+        Number of guest for venue
+      </label>
+      <input type="number"
+        class="edit-input guest-list-venue-input"
+        :placeholder="offer.venueGuestList"
+        :value="offer.venueGuestList"
+        name="venueGuestList"
+        v-on:input="updateOffer($event)">
     </div>
 
     <div class="condition" v-if="currentSelection === 'condition'">
-      <input type="text" class="condition-input">
-      <ul class="condition-list">
-        <li></li>
-      </ul>
+      <textarea type="text"
+        :placeholder="offer.conditionText"
+        :value="offer.conditionText"
+        name="conditionText"
+        v-on:input="updateOffer($event)">
+      </textarea>
+      <button class="condition-upload">Upload Files</button>
     </div>
   </section>
 </template>
@@ -118,7 +169,6 @@ export default {
   data(){
     return{
       currentSelection: "backline",
-      toggle: "artist"
     }
   },
   methods:{
@@ -126,17 +176,49 @@ export default {
       this.currentSelection = task
     },
     toggleArtistVenue(e, type){
-      this.toggle = type
-
       this.$store.commit("toggleArtistVenue", {
         name: e.target.name,
         type: type
+      })
+    },
+    updateOffer(e){
+      this.$store.commit("updateOffer", e.target)
+    },
+    updateMerchDetails(e){
+      let name;
+      if(this.offer.merchSeller === "artist"){
+        name = "merchPercentageArtist"
+      }else{
+        name = "merchPercentageVenue"
+      }
+      this.$store.commit("updateOffer", {
+        name: name,
+        value: e.target.value
+      })
+    },
+    updateDetails(e){
+      let name;
+      if(this.offer.accomodationProvider === "venue" && e.target.name === "rooms"){
+        name = "venueAccRoom"
+      }else if (this.offer.accomodationProvider === "venue" && e.target.name === "address"){
+        name = "venueAccAddress"
+      }else if (this.travelProvider === "venue" && e.target.name === "travel"){
+        name = "travelExpenses"
+      }
+      this.$store.commit("updateOffer", {
+        name: name,
+        value: e.target.value
       })
     }
   },
   computed:{
     offer(){
       return this.$store.state.userConfig.offer
+    },
+    updateMerch(){
+      return this.offer.merchSeller === 'venue' ?
+      this.offer.merchPercentageVenue :
+      this.offer.merchPercentageArtist
     }
   },
 }
@@ -149,8 +231,10 @@ export default {
   background-color: white;
   padding: var(--spacing);
   border-radius: var(--border-radius);
-  grid-column: col-start 5 /span 2;
+  grid-column: offer-start / offer-end;
   align-self: start;
+  margin-bottom: var(--spacing);
+  margin-left: var(--spacing);
 
   .toggle{
 
@@ -183,33 +267,46 @@ export default {
 
   .select{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     grid-gap: var(--alt-spacing);
     margin: var(--alt-spacing) 0;
 
     button{
-      @include button;
+      padding: 1rem 0;
+      border-radius: 1rem;
+      border: solid 0.5px var(--primary);
+      background-color: white;
+      color: var(--alt-primary);
+      outline: none;
+      transition: all 0.3s;
+      box-shadow: 0 1rem 3rem rgba(black, .2);
+      &:hover{
+        background-color: var(--primary);
+        border: solid 0.5px var(--primary);
+      }
+      &:active, &:focus{
+        background-color: var(--primary);
+        border: solid 0.5px var(--primary);
+      }
     }
   }
 
-  .backline{
-    &-textarea{
-      width: 100%;
-      height: 20rem;
-      outline: none;
-      border: none;
-      background-color: var(--secondary-six);
-      font-size: 2rem;
-      border-radius: var(--border-radius);
-      padding: var(--alt-spacing);
+  textarea{
+    width: 100%;
+    height: 20rem;
+    outline: none;
+    border: none;
+    background-color: var(--secondary-six);
+    font-size: 2rem;
+    border-radius: var(--border-radius);
+    padding: var(--alt-spacing);
 
-      &::placeholder{
-        color: black;
-      }
+    &::placeholder{
+      color: black;
+    }
 
-      &:focus{
-        background-color: lighten($alt-primary, 50%);
-      }
+    &:focus{
+      background-color: lighten($alt-primary, 50%);
     }
   }
 
@@ -217,78 +314,41 @@ export default {
     display: grid;
     grid-row-gap: var(--alt-spacing);
 
-    &-percentage-label{
-
-    }
-
     &-percentage-input{
-
+      width: 15rem;
     }
   }
 
   .accomodation{
-
     &-details{
-
-      &-rooms{
-
-      }
+      display: grid;
+      grid-row-gap: var(--alt-spacing);
+      margin-top: var(--alt-spacing);
 
       &-rooms-input{
-
-      }
-
-      &-address{
-
-      }
-
-      &-address-input{
-
+        width: 10rem;
       }
     }
   }
 
   .travel{
-
     &-expenses{
-
-      &-label{
-
-      }
+      display: grid;
+      grid-row-gap: var(--alt-spacing);
+      margin-top: var(--alt-spacing);
 
       &-input{
-
+        width: 10rem;
       }
     }
   }
 
-  .geust-list{
+  .guest-list{
+    display: grid;
+    grid-row-gap: var(--alt-spacing);
 
-    &-artist-label{
-
-    }
-
-    &-artist-input{
-
-    }
-
-    &-venue-label{
-
-    }
-
-    &-venue-input{
-
-    }
-  }
-
-  .condition{
-
-    &-input{
-
-    }
-
-    &-list{
-
+    &-artist-input, &-venue-input{
+      width: 10rem;
     }
   }
 
