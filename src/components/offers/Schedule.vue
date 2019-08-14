@@ -3,14 +3,14 @@
     <h2 class="subheading">Schedule</h2>
     <div class="schedule-select-times">
       <label for="task" class="schedule-task-label">Select a task</label>
-      <select class="schedule-select-task"
+      <select class="edit-input schedule-select-task"
         v-on:click="selectTask($event)"
         id="task">
         <option v-for="item in offer.schedule">{{item.task}}</option>
       </select>
 
       <label for="start" class="schedule-start-label">Select a start time</label>
-      <select class="schedule-select-start"
+      <select class="edit-input schedule-select-start"
         v-on:click="selectTime($event)"
         id="start"
         name="start">
@@ -18,7 +18,7 @@
       </select>
 
       <label for="end" class="schedule-end-label">Select an end time</label>
-      <select class="schedule-select-end"
+      <select class="edit-input schedule-select-end"
         v-on:click="selectTime($event)"
         id="end"
         name="end">
@@ -140,15 +140,6 @@ export default {
   }
 
   &-select-task, &-select-start, &-select-end{
-    outline: none;
-    border: none;
-    padding: .5rem 1rem;
-    background-color: var(--secondary-six);
-    border-radius: var(--border-radius);
-
-    &:focus, &:active{
-      background-color: lighten($secondary-six, 30%);
-    }
 
     option{
       outline: none;
