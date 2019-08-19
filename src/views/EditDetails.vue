@@ -1,17 +1,17 @@
 <template lang="html">
   <div class="edit-profile">
-    <div class="edit-header">
-      <EditProgress></EditProgress>
+    <nav class="edit-profile-header">
       <AppName></AppName>
-    </div>
-    <InputDetails
-      v-bind:currentPage="currentPage"
-      v-bind:currentStep="getStep">
-    </InputDetails>
-    <EditFooter v-bind:currentStep="getStep"
-      v-bind:currentPage="currentPage"
-      v-on:switchPage='switchPage($event)'>
-    </EditFooter>
+      <button @click="saveAndExit">
+        Save and Exit
+      </button>
+    </nav>
+    <section class="edit-profile-box">
+      <EditProgress></EditProgress>
+      <InputDetails></InputDetails>
+      <InputInfo></InputInfo>
+      <EditFooter></EditFooter>
+    </section>
   </div>
 </template>
 
@@ -20,6 +20,7 @@ import AppName from "@/components/AppName.vue"
 import EditProgress from "@/components/edit/EditProgress.vue"
 import EditFooter from "@/components/edit/EditFooter.vue"
 import InputDetails from "@/components/edit/InputDetails.vue"
+import InputInfo from "@/components/edit/InputInfo.vue"
 
 export default {
   data(){
@@ -32,6 +33,7 @@ export default {
     EditProgress,
     EditFooter,
     InputDetails,
+    InputInfo
   },
   computed:{
     getStep(){
@@ -50,25 +52,57 @@ export default {
   methods:{
     switchPage(num){
       this.currentPage = num
+    },
+    saveAndExit(){
+      this.$router.push('/')
+      //submit details to server
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-  .edit-profile{
-    height: 100%;
+<style lang="scss">
+@import "@/globalStyles/mixins.scss";
+
+.edit-profile{
+
+  &-header{
+    height: 10vh;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    padding: 0 var(--spacing);
+    border-bottom: solid 1px var(--light-grey);
+
+    button{
+      @include alt-button;
+      margin-left: auto;
+    }
   }
 
-  .edit-header{
+  &-box{
     display: grid;
-    grid-template-columns: 2fr 0.5fr;
-    border-bottom: solid 5px var(--alt-primary);
+    grid-template-rows: 10vh 70vh 10vh;
+    grid-template-columns: 2fr 1fr;
   }
+}
 </style>
 
 /*Notes from Jozef
 
+*/
+
+/*New create profile implementation
+Three different sign up types
+Each sign up type has an array with the steps in order
+Each step has an array of ordered pages that must be completed before moving to next step
+Only sign type array has been full iterated over is the process completed
+
+Use the multiple pointers trick
+need to be able inc and dec
+
+create two pointers step and page
+start both at 0
+if page is greater inc step
+if page is greater than page array length and step is also greater than its array return
+if page is less than page array length inc page
 */

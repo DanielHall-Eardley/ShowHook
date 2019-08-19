@@ -1,35 +1,47 @@
 <template lang="html">
   <section class="schedule">
-    <h2 class="subheading">Schedule</h2>
-    <div class="schedule-select-times">
-      <label for="task" class="schedule-task-label">Select a task</label>
-      <select class="edit-input schedule-select-task"
-        v-on:click="selectTask($event)"
-        id="task">
-        <option v-for="item in offer.schedule">{{item.task}}</option>
-      </select>
 
-      <label for="start" class="schedule-start-label">Select a start time</label>
-      <select class="edit-input schedule-select-start"
-        v-on:click="selectTime($event)"
-        id="start"
-        name="start">
-        <option v-for="time in timesArray">{{time}}</option>
-      </select>
+    <h2 class="subheading">
+      <span>Schedule</span>
+      <svg v-if="!showSection" @click="toggleExpand">
+        <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
+      </svg>
+      <svg v-else @click="toggleExpand">
+        <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
+      </svg>
+    </h2>
 
-      <label for="end" class="schedule-end-label">Select an end time</label>
-      <select class="edit-input schedule-select-end"
-        v-on:click="selectTime($event)"
-        id="end"
-        name="end">
-        <option v-for="time in timesArray">{{time}}</option>
-      </select>
-    </div>
-    <div class="schedule-show-times">
-      <div v-for="item in offer.schedule" class="schedule-list">
-        <span class="schedule-task">{{item.task}}</span>
-        <span class="schedule-start"><b>Start: </b>{{item.start}}</span>
-        <span class="schedule-end"><b>End: </b>{{item.end}}</span>
+    <div class="expand-container" v-show="showSection">
+      <div class="schedule-select-times">
+        <label for="task" class="schedule-task-label">Select a task</label>
+        <select class="edit-input schedule-select-task"
+          v-on:click="selectTask($event)"
+          id="task">
+          <option v-for="item in offer.schedule">{{item.task}}</option>
+        </select>
+
+        <label for="start" class="schedule-start-label">Select a start time</label>
+        <select class="edit-input schedule-select-start"
+          v-on:click="selectTime($event)"
+          id="start"
+          name="start">
+          <option v-for="time in timesArray">{{time}}</option>
+        </select>
+
+        <label for="end" class="schedule-end-label">Select an end time</label>
+        <select class="edit-input schedule-select-end"
+          v-on:click="selectTime($event)"
+          id="end"
+          name="end">
+          <option v-for="time in timesArray">{{time}}</option>
+        </select>
+      </div>
+      <div class="schedule-show-times">
+        <div v-for="item in offer.schedule" class="schedule-list">
+          <span class="schedule-task">{{item.task}}</span>
+          <span class="schedule-start"><b>Start: </b>{{item.start}}</span>
+          <span class="schedule-end"><b>End: </b>{{item.end}}</span>
+        </div>
       </div>
     </div>
   </section>
@@ -88,6 +100,7 @@ export default {
         "3:00 am",
       ],
       task: "Load In",
+      showSection: false,
     }
   },
   methods:{
@@ -99,6 +112,9 @@ export default {
         currentTask: this.task,
         time: event.target
       })
+    },
+    toggleExpand(){
+      this.showSection = !this.showSection
     }
   }
 }
@@ -109,15 +125,8 @@ export default {
 
 .schedule{
   background-color: white;
-  border-radius: var(--border-radius);
   padding: var(--spacing);
-  box-shadow: var(--box-shadow-default);
-  margin-bottom: var(--spacing);
-  margin-left: var(--spacing);
 
-  grid-column: offer-start / offer-end;
-  justify-self: stretch;
-  align-self: start;
   display: grid;
   grid-row-gap: var(--alt-spacing);
 

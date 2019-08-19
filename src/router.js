@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import LandingPage from './views/LandingPage.vue'
+import Login from './views/Login.vue'
 import Help from './views/Help.vue'
 import Profile from './views/Profile.vue'
 import Home from './views/Home.vue'
@@ -25,6 +26,11 @@ export default new Router({
       path: '/',
       component: LandingPage,
       name: 'landing'
+    },
+    {
+      path: '/login',
+      component: Login,
+      name: 'login'
     },
     {
       path: '/help',

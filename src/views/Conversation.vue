@@ -2,10 +2,15 @@
   <div class="offer-page">
     <Menu></Menu>
     <OfferSummary></OfferSummary>
-    <section class="conversation">
-      <General></General>
-      <Schedule></Schedule>
-      <Other></Other>
+    <section class="offer-page-conversation">
+      <div class="offer-page-details">
+        <General></General>
+        <Schedule></Schedule>
+        <Other></Other>
+      </div>
+      <div class="offer-page-messages">
+        <Messages></Messages>
+      </div>
     </section>
   </div>
 </template>
@@ -16,6 +21,7 @@ import OfferSummary from '@/components/offers/OfferSummary.vue'
 import General from "@/components/offers/General.vue"
 import Schedule from "@/components/offers/Schedule.vue"
 import Other from "@/components/offers/Other.vue"
+import Messages from "@/components/offers/Messages.vue"
 
 export default {
   components:{
@@ -23,7 +29,8 @@ export default {
     OfferSummary,
     General,
     Schedule,
-    Other
+    Other,
+    Messages
   }
 }
 </script>
@@ -32,8 +39,7 @@ export default {
 .offer{
 }
 
-.conversation{
-  background-color: var(--light-pink);
+.offer-page-conversation{
   font-size: 1.6rem;
   display: grid;
   grid-template-columns: [offer-start] 1fr [offer-end message-start] 2fr [message-end];

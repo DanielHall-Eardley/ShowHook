@@ -1,62 +1,77 @@
 <template lang="html">
   <section class="general">
-    <h2 class="subheading">Payment Type</h2>
+    <h2 class="subheading">
+      <span>Payment Type</span>
+      <svg v-if="!showSection" @click="toggleExpand">
+        <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
+      </svg>
+      <svg v-else @click="toggleExpand">
+        <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
+      </svg>
+    </h2>
 
-    <div class="general-payment-type">
-      <input type="radio"
-        id="guarantee"
-        name="paymentType"
-        value="guarantee"
-        checked
-        v-on:input="updateOffer($event)">
-      <label for="guarantee" class="input-label left">Guarantee</label>
-      <input type="radio"
-        id="split"
-        name="paymentType"
-        value="split"
-        v-on:input="updateOffer($event)">
-      <label for="split" class="input-label right">
-        Split <span class="percentage">%</span>
-      </label>
-    </div>
+    <div class="expand-container" v-show="showSection">
+      <div class="general-payment-type">
+        <input type="radio"
+          id="guarantee"
+          name="paymentType"
+          value="guarantee"
+          checked
+          v-on:input="updateOffer($event)">
+        <label for="guarantee" class="input-label left">Guarantee</label>
+        <input type="radio"
+          id="split"
+          name="paymentType"
+          value="split"
+          v-on:input="updateOffer($event)">
+        <label for="split" class="input-label right">
+          Split <span class="percentage">%</span>
+        </label>
+      </div>
 
-    <div class="general-payment" v-if="offer.paymentType === 'guarantee'">
-      <label for="general-payment-input" class="general-payment-label">
-        Fixed Price
-      </label>
-      <input type="text"
-        class='edit-input general-payment-input'
-        id="general-payment-input"
-        name="payment"
-        :placeholder="'$' + offer.payment"
-        v-on:input="updateOffer($event)">
-    </div>
+      <div class="general-payment" v-if="offer.paymentType === 'guarantee'">
+        <label for="general-payment-input" class="general-payment-label">
+          Fixed Price
+        </label>
+        <input type="text"
+          class='edit-input general-payment-input'
+          id="general-payment-input"
+          name="payment"
+          :placeholder="'$' + offer.payment"
+          v-on:input="updateOffer($event)">
+      </div>
 
-    <div class="general-percentage" v-else>
-      <label for="act" class="general-percentage-label">
-        Act %
-      </label>
-      <input type="text"
+      <div class="general-percentage" v-else>
+        <label for="act" class="general-percentage-label">
+          Act %
+        </label>
+        <input type="text"
+          class='edit-input general-percentage-input'
+          id="act"
+          name="actPercentage"
+          :placeholder="offer.actPercentage + '%'"
+          v-on:input="updateOffer($event)">
+        <label for="venue" class="general-percentage-label">
+          Venue %
+        </label>
+        <input type="text"
         class='edit-input general-percentage-input'
-        id="act"
-        name="actPercentage"
-        :placeholder="offer.actPercentage + '%'"
+        id="venue"
+        name="venuePercentage"
+        :placeholder="offer.venuePercentage + '%'"
         v-on:input="updateOffer($event)">
-      <label for="venue" class="general-percentage-label">
-        Venue %
-      </label>
-      <input type="text"
-      class='edit-input general-percentage-input'
-      id="venue"
-      name="venuePercentage"
-      :placeholder="offer.venuePercentage + '%'"
-      v-on:input="updateOffer($event)">
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 export default {
+  data(){
+    return{
+      showSection: false,
+    }
+  },
   computed:{
     offer(){
       return this.$store.state.userConfig.offer
@@ -65,6 +80,9 @@ export default {
   methods:{
     updateOffer(e){
       this.$store.commit("updateOffer", e.target)
+    },
+    toggleExpand(){
+      this.showSection = !this.showSection
     }
   }
 }
@@ -79,19 +97,20 @@ export default {
   color: var(--primary);
   font-weight: 100;
   padding-bottom: var(--spacing);
+  display: flex;
+
+  svg{
+    height: 3.5rem;
+    width: 3.5rem;
+    fill: var(--primary);
+    margin-left: auto;
+  }
 }
 
 .general{
   background-color: white;
-  border-radius: var(--border-radius);
   padding: var(--spacing);
-  box-shadow: var(--box-shadow-default);
-  margin-bottom: var(--spacing);
-  margin-left: var(--spacing);
 
-  grid-column: offer-start / offer-end;
-  justify-self: stretch;
-  align-self: start;
   display: grid;
   grid-row-gap: var(--alt-spacing);
 

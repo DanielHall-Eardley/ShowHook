@@ -31,6 +31,7 @@ export default {
 .offer{
   width: 100%;
   font-size: 1.6rem;
+  border-bottom: var(--light-border);
 
   &-summary{
     display: grid;
@@ -39,7 +40,6 @@ export default {
     grid-gap: var(--spacing);
     justify-items: center;
 
-    background-color: var(--light-pink);
     color: var(--alt-primary);
     border-radius: var(--border-radius);
     padding: var(--spacing);

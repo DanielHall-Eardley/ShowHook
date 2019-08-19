@@ -57,10 +57,32 @@ const userConfig = {
         },
       ]
     },
+    messageArray:[
+      {
+        messageType: "sender",
+        pic: "https://via.placeholder.com/100",
+        text: "Nice to wheat you! God? God's turning people into insect monsters Beth. I'm the one beating them to death. Thank me. Nice to wheat you! God? God's turning people into insect monsters Beth. I'm the one beating them to death. Thank me.",
+      },
+      {
+        messageType: "receiver",
+        pic: "https://via.placeholder.com/100",
+        text: "Nice to wheat you! God? God's turning people into insect monsters Beth. I'm the one beating them to death. Thank me.",
+      },
+      {
+        messageType: "receiver",
+        pic: "https://via.placeholder.com/100",
+        text: "Nice to wheat you! God? God's turning people into insect monsters Beth. I'm the one beating them to death. Thank me.",
+      },
+      {
+        messageType: "sender",
+        pic: "https://via.placeholder.com/100",
+        text: "Nice to wheat you! God? God's turning people into insect monsters Beth. I'm the one beating them to death. Thank me.",
+      }
+    ],
     user: {
       id: '1',
       ageRestriction: '18+',
-      userType: "venue",
+      userType: "act",
       name: {content:"Motley Crue", verified: true},
       email: {content:"350chevy8@gmail.com", verified: true},
       phone: {content:236890346, verified: true},

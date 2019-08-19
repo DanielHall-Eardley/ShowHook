@@ -1,89 +1,36 @@
 <template lang="html">
   <div class="edit-footer">
-    <img src="https://via.placeholder.com/30" alt="Back icon">
-    <button id="back"
-      v-show='showBack()'
-      v-on:click="switchPage($event)">
+    <svg>
+      <use xlink:href="@/assets/sprite.svg#icon-chevron-thin-left"></use>
+    </svg>
+    <button class="edit-footer-back" v-on:click="switchPage('dec')">
       Back
     </button>
-    <button>
-      {{!getSteps[getSteps.length - 1].completed ?
-      "Save & Exit" : "Finish"}}
-    </button>
-    <button id="next"
-      v-show="currentStep < getSteps.length"
-      v-on:click="switchPage($event)">
+    <button class="edit-footer-next" v-on:click="switchPage('inc')">
       Next
     </button>
-    <img src="https://via.placeholder.com/30" alt="Next ">
   </div>
 </template>
 
 <script>
 export default {
-  data(){
-    return{
-      type: this.$store.state.userConfig.user.userType
+  computed:{
+    getComponent(){
+      let obj = this.$store.state.appConfig
+      let userType = this.$store.state.userConfig.user.userType
+      return {
+        page: obj.profileCreation[userType][obj.profileCreationStep].pages[obj.profileCreationPage],
+        stepName: obj.profileCreation[userType][obj.profileCreationStep].stepName,
+        userType,
+      }
     }
   },
-  props:{
-    currentStep: Number,
-    currentPage: Number
-  },
-  computed:{
-    getSteps(){
-      return this.$store.state.appConfig.steps[this.type]
-    },
-  },
   methods:{
-    switchPage(e){
-      let newPage = this.currentPage
-      let pagesCount = this.getSteps[this.currentStep].pages.length
-      let stepsCount = this.getSteps.length
-
-        if(e.target.id === "next"){
-          newPage++
-        }else if(e.target.id === "back"){
-          newPage--
-        }
-
-        if(pagesCount === newPage && stepsCount - 1 === this.currentStep){
-          console.log('finished')
-          return
-        }
-
-        if(newPage === pagesCount){
-          this.$store.dispatch("changeStep",
-          {
-            type: this.type,
-            step: this.currentStep,
-            change: 'inc'
-          })
-          this.$emit('switchPage', 0)
-          console.log('inc')
-          return
-        }
-
-        if(newPage < 0 && this.currentStep > 0){
-          this.$store.dispatch('changeStep',
-          {
-            type: this.type,
-            step: this.currentStep,
-            change: 'dec'
-          })
-          pagesCount = this.getSteps[this.currentStep - 1].pages.length
-          this.$emit('switchPage', pagesCount - 1)
-          console.log('dec')
-          return
-        }
-      this.$emit('switchPage', newPage)
-    },
-    showBack(){
-      if(this.currentStep === 0 && this.currentPage < 1){
-        return false
-      }else{
-        return true
-      }
+    switchPage(direction){
+      this.$store.dispatch("changeStepOrPage", {
+        direction,
+        userType: this.getComponent.userType
+      })
     }
   }
 }
@@ -92,39 +39,27 @@ export default {
 <style lang="scss" scoped>
 @import '@/globalStyles/mixins.scss';
 
-  .edit-footer{
-    display: grid;
-    grid-template-columns: 0.4fr 1fr 5fr 1fr 0.4fr;
-    padding: var(--alt-spacing);
-    margin-top: var(--alt-spacing);
-    border-top: solid 1px var(--alt-primary);
-    img{
-      justify-self: right;
-      grid-column: 1/2;
-      align-self: center;
-    }
-    img:last-of-type{
-      justify-self: left;
-      grid-column: 5/6;
-    }
+.edit-footer{
+  grid-column: 1 / span 1;
+  grid-row: 3 / span 1;
+  border-top: var(--light-border);
+  display: flex;
+  align-items: center;
+  padding-right: var(--spacing);
+  padding-left: var(--alt-spacing);
+  svg{
+    height: 3rem;
+    width: 3rem;
+    fill: var(--secondary-six);
   }
 
-  button{
-    @include button();
-    width: 20%;
-    justify-self: center;
-    grid-column: 3/4;
+  &-next{
+    @include button;
+    margin-left: auto;
+  }
+
+  &-back{
+    @include alt-button;
+  }
 }
-
-  #back{
-    justify-self: left;
-    width: 50%;
-    grid-column: 2/3;
-  }
-
-  #next{
-    justify-self: right;
-    width: 50%;
-    grid-column: 4/5;
-  }
 </style>

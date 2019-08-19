@@ -1,105 +1,49 @@
 <template lang="html">
   <div class="input-details">
-    <div>
-      <h2>{{getPage.title}}</h2>
-      <keep-alive>
-        <component v-bind:is="dynComp"
-          v-bind:page="getPage">
-        </component>
-      </keep-alive>
-    </div>
-    <div class="info">
-      <div>
-        <img src="https://via.placeholder.com/50" alt="information icon">
-        <p v-html='formatText(getPage.information)'></p>
-      </div>
-    </div>
+    <h1>{{getComponent.stepName}}</h1>
+    <keep-alive>
+      <div>{{getComponent.page}}</div>
+      <component :is="getComponent.page"></component>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-import InputComp from "@/components/edit/InputComp.vue"
 import GenreComp from '@/components/edit/GenreComp.vue'
 import RulesComp from '@/components/edit/RulesComp.vue'
 import LocalLawsTaxes from '@/components/edit/LocalLawsTaxes.vue'
 import ExampleMatches from '@/components/edit/ExampleMatches.vue'
+import EditAddress from '@/components/edit/EditAddress.vue'
 
 export default {
   components:{
-    InputComp,
     GenreComp,
     RulesComp,
     LocalLawsTaxes,
-    ExampleMatches
-  },
-  data(){
-    return{
-      type: this.$store.state.userConfig.user.userType,
-    }
-  },
-  props:{
-    currentStep: Number,
-    currentPage: Number
+    ExampleMatches,
+    EditAddress
   },
   computed:{
-    getPage(){
-      return this.$store.state.appConfig.steps[this.type][this.currentStep].pages[this.currentPage]
-    },
-    dynComp(){
-      let type = this.getPage.inputType
-      if(type === "genre"){
-        return "GenreComp"
-      }
-
-      if(type === 'input'){
-        return 'InputComp'
-      }
-
-      if(type === 'rules'){
-        return 'RulesComp'
-      }
-
-      if(type === 'example'){
-        return 'ExampleMatches'
-      }
-
-      if(type === 'laws'){
-        return 'LocalLawsTaxes'
+    getComponent(){
+      let obj = this.$store.state.appConfig
+      let userType = this.$store.state.userConfig.user.userType
+      return {
+        page: obj.profileCreation[userType][obj.profileCreationStep].pages[obj.profileCreationPage],
+        stepName: obj.profileCreation[userType][obj.profileCreationStep].stepName
       }
     }
   },
-  methods:{
-    formatText(str){
-      let formattedString = ''
-      for(let l of str){
-        if(l === '*'){
-          formattedString += "<br/>"
-        }else{
-        formattedString += l
-        }
-      }
-      return formattedString
-    }
-  }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .input-details{
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    div{
-      padding: var(--spacing);
-    }
-  }
-  .info{
-    background: var(--alt-primary);
+    grid-column: 1 / span 1;
+    grid-row: 2 / span 1;
     padding: var(--spacing);
-    div{
-      background: white;
-      padding: var(--spacing);
-      border-radius: var(--border-radius);
+
+    h1, div{
+      font-size: 3rem;
     }
   }
 </style>

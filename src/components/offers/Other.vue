@@ -1,165 +1,176 @@
 <template lang="html">
   <section class="other">
 
-    <h2 class="subheading">Other</h2>
-    <div class="select">
-      <button class="select-backline" @click="changeSelection('backline')" type="button">
-        Backline
-      </button>
-      <button class="select-merchandise" @click="changeSelection('merch')" type="button">
-        Merchandise
-      </button>
-      <button class="select-accomodation" @click="changeSelection('accomodation')" type="button">
-        Accomodation
-      </button>
-      <button class="select-travel" @click="changeSelection('travel')" type="button">
-        Travel
-      </button>
-      <button class="select-guest-list" @click="changeSelection('guest')" type="button">
-      Guest List
-      </button>
-      <button class="select-condition" @click="changeSelection('condition')" type="button">
-        Conditions
-      </button>
-    </div>
+    <h2 class="subheading">
+      <span>Other</span>
+      <svg v-if="!showSection" @click="toggleExpand">
+        <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
+      </svg>
+      <svg v-else @click="toggleExpand">
+        <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
+      </svg>
+    </h2>
 
-    <div class="backline" v-if="currentSelection === 'backline'">
-      <textarea :placeholder="offer.backline"
-        name="backline"
-        v-on:input="updateOffer($event)">
-      </textarea>
-    </div>
-
-    <div class="merchandise" v-if="currentSelection === 'merch'">
-      <div class="toggle">
-        <label for="" class="toggle-label">
-          Who is responsible for selling the merch?
-        </label>
-        <button class="toggle-artist"
-          name="merchSeller"
-          type="button"
-          :class="offer.merchSeller === 'artist' ? 'highlight-offer' : null"
-          @click="toggleArtistVenue($event, 'artist')">
-          Artist
+    <div class="expand-container" v-show="showSection">
+      <div class="select">
+        <button class="select-backline" @click="changeSelection('backline')" type="button">
+          Backline
         </button>
-        <button class="toggle-venue"
-          name="merchSeller"
-          type="button"
-          :class="offer.merchSeller === 'venue' ? 'highlight-offer' : null"
-          @click="toggleArtistVenue($event, 'venue')">
-          Venue
+        <button class="select-merchandise" @click="changeSelection('merch')" type="button">
+          Merchandise
+        </button>
+        <button class="select-accomodation" @click="changeSelection('accomodation')" type="button">
+          Accomodation
+        </button>
+        <button class="select-travel" @click="changeSelection('travel')" type="button">
+          Travel
+        </button>
+        <button class="select-guest-list" @click="changeSelection('guest')" type="button">
+        Guest List
+        </button>
+        <button class="select-condition" @click="changeSelection('condition')" type="button">
+          Conditions
         </button>
       </div>
-      <label for="" class="merchandise-percentage-label">
-        What percentage of the sales does the {{offer.merchSeller}} keep?
-      </label>
-      <input type="number"
-        :placeholder="updateMerch"
-        :value="updateMerch"
-        class="edit-input merchandise-percentage-input"
-        v-on:input="updateMerchDetails($event)">
-    </div>
 
-    <div class="accomodation" v-if="currentSelection === 'accomodation'">
-      <div class="toggle">
-        <label class="toggle-label">
-          Who is responsible for accomodation?
-        </label>
-        <button class="toggle-artist"
-          name="accomodationProvider"
-          type="button"
-          :class="offer.accomodationProvider === 'artist' ? 'highlight-offer' : null"
-          @click="toggleArtistVenue($event, 'artist')">
-          Artist
-        </button>
-        <button class="toggle-venue"
-          name="accomodationProvider"
-          type="button"
-          :class="offer.accomodationProvider === 'venue' ? 'highlight-offer' : null"
-          @click="toggleArtistVenue($event, 'venue')">
-          Venue
-        </button>
+      <div class="backline" v-if="currentSelection === 'backline'">
+        <textarea :placeholder="offer.backline"
+          name="backline"
+          v-on:input="updateOffer($event)">
+        </textarea>
       </div>
-      <div class="accomodation-details" v-if="offer.accomodationProvider === 'venue'">
-        <label class="accomodation-details-rooms">Number of rooms</label>
-        <input type="number"
-        class="edit-input accomodation-details-rooms-input"
-          v-on:input="updateDetails($event)"
-          :placeholder="offer.venueAccRoom"
-          :value="offer.venueAccRoom"
-          name="rooms">
-        <label class="accomodation-details-address">Address</label>
-        <input type="text"
-          class="edit-input accomodation-details-address-input"
-          v-on:input="updateDetails($event)"
-          :placeholder="offer.venueAccAddress"
-          :value="offer.venueAccAddress"
-          name="address">
-      </div>
-    </div>
 
-    <div class="travel" v-if="currentSelection === 'travel'">
-      <div class="toggle">
-        <label class="toggle-label">
-          Who is responsible for travel expenses?
-        </label>
-        <button class="toggle-artist"
-          name="travelProvider"
-          type="button"
-          :class="offer.travelProvider === 'artist' ? 'highlight-offer' : null"
-          @click="toggleArtistVenue($event, 'artist')">
-          Artist
-        </button>
-        <button class="toggle-venue"
-          name="travelProvider"
-          type="button"
-          :class="offer.travelProvider === 'venue' ? 'highlight-offer' : null"
-          @click="toggleArtistVenue($event, 'venue')">
-          Venue
-        </button>
-      </div>
-      <div class="travel-expenses" v-if="offer.travelProvider === 'venue'">
-        <label class="travel-expenses-label">
-          How much will you cover of the travel expenses?
+      <div class="merchandise" v-if="currentSelection === 'merch'">
+        <div class="toggle">
+          <label for="" class="toggle-label">
+            Who is responsible for selling the merch?
+          </label>
+          <button class="toggle-artist"
+            name="merchSeller"
+            type="button"
+            :class="offer.merchSeller === 'artist' ? 'highlight-offer' : null"
+            @click="toggleArtistVenue($event, 'artist')">
+            Artist
+          </button>
+          <button class="toggle-venue"
+            name="merchSeller"
+            type="button"
+            :class="offer.merchSeller === 'venue' ? 'highlight-offer' : null"
+            @click="toggleArtistVenue($event, 'venue')">
+            Venue
+          </button>
+        </div>
+        <label for="" class="merchandise-percentage-label">
+          What percentage of the sales does the {{offer.merchSeller}} keep?
         </label>
         <input type="number"
-          class="edit-input travel-expenses-input"
-          name="travel"
-          v-on:input="updateDetails($event)"
-          :placeholder="offer.travelExpenses"
-          :value="offer.travelExpenses">
+          :placeholder="updateMerch"
+          :value="updateMerch"
+          class="edit-input merchandise-percentage-input"
+          v-on:input="updateMerchDetails($event)">
       </div>
-    </div>
 
-    <div class="guest-list" v-if="currentSelection === 'guest'">
-      <label class="guest-list-artist-label">
-        Number of guests for artist
-      </label>
-      <input type="number"
-        class="edit-input guest-list-artist-input"
-        :placeholder="offer.artistGuestList"
-        :value="offer.artistGuestList"
-        name="artistGuestList"
-        v-on:input="updateOffer($event)">
-      <label class="guest-list-venue-label">
-        Number of guest for venue
-      </label>
-      <input type="number"
-        class="edit-input guest-list-venue-input"
-        :placeholder="offer.venueGuestList"
-        :value="offer.venueGuestList"
-        name="venueGuestList"
-        v-on:input="updateOffer($event)">
-    </div>
+      <div class="accomodation" v-if="currentSelection === 'accomodation'">
+        <div class="toggle">
+          <label class="toggle-label">
+            Who is responsible for accomodation?
+          </label>
+          <button class="toggle-artist"
+            name="accomodationProvider"
+            type="button"
+            :class="offer.accomodationProvider === 'artist' ? 'highlight-offer' : null"
+            @click="toggleArtistVenue($event, 'artist')">
+            Artist
+          </button>
+          <button class="toggle-venue"
+            name="accomodationProvider"
+            type="button"
+            :class="offer.accomodationProvider === 'venue' ? 'highlight-offer' : null"
+            @click="toggleArtistVenue($event, 'venue')">
+            Venue
+          </button>
+        </div>
+        <div class="accomodation-details" v-if="offer.accomodationProvider === 'venue'">
+          <label class="accomodation-details-rooms">Number of rooms</label>
+          <input type="number"
+          class="edit-input accomodation-details-rooms-input"
+            v-on:input="updateDetails($event)"
+            :placeholder="offer.venueAccRoom"
+            :value="offer.venueAccRoom"
+            name="rooms">
+          <label class="accomodation-details-address">Address</label>
+          <input type="text"
+            class="edit-input accomodation-details-address-input"
+            v-on:input="updateDetails($event)"
+            :placeholder="offer.venueAccAddress"
+            :value="offer.venueAccAddress"
+            name="address">
+        </div>
+      </div>
 
-    <div class="condition" v-if="currentSelection === 'condition'">
-      <textarea type="text"
-        :placeholder="offer.conditionText"
-        :value="offer.conditionText"
-        name="conditionText"
-        v-on:input="updateOffer($event)">
-      </textarea>
-      <button class="condition-upload">Upload Files</button>
+      <div class="travel" v-if="currentSelection === 'travel'">
+        <div class="toggle">
+          <label class="toggle-label">
+            Who is responsible for travel expenses?
+          </label>
+          <button class="toggle-artist"
+            name="travelProvider"
+            type="button"
+            :class="offer.travelProvider === 'artist' ? 'highlight-offer' : null"
+            @click="toggleArtistVenue($event, 'artist')">
+            Artist
+          </button>
+          <button class="toggle-venue"
+            name="travelProvider"
+            type="button"
+            :class="offer.travelProvider === 'venue' ? 'highlight-offer' : null"
+            @click="toggleArtistVenue($event, 'venue')">
+            Venue
+          </button>
+        </div>
+        <div class="travel-expenses" v-if="offer.travelProvider === 'venue'">
+          <label class="travel-expenses-label">
+            How much will you cover of the travel expenses?
+          </label>
+          <input type="number"
+            class="edit-input travel-expenses-input"
+            name="travel"
+            v-on:input="updateDetails($event)"
+            :placeholder="offer.travelExpenses"
+            :value="offer.travelExpenses">
+        </div>
+      </div>
+
+      <div class="guest-list" v-if="currentSelection === 'guest'">
+        <label class="guest-list-artist-label">
+          Number of guests for artist
+        </label>
+        <input type="number"
+          class="edit-input guest-list-artist-input"
+          :placeholder="offer.artistGuestList"
+          :value="offer.artistGuestList"
+          name="artistGuestList"
+          v-on:input="updateOffer($event)">
+        <label class="guest-list-venue-label">
+          Number of guest for venue
+        </label>
+        <input type="number"
+          class="edit-input guest-list-venue-input"
+          :placeholder="offer.venueGuestList"
+          :value="offer.venueGuestList"
+          name="venueGuestList"
+          v-on:input="updateOffer($event)">
+      </div>
+
+      <div class="condition" v-if="currentSelection === 'condition'">
+        <textarea type="text"
+          :placeholder="offer.conditionText"
+          :value="offer.conditionText"
+          name="conditionText"
+          v-on:input="updateOffer($event)">
+        </textarea>
+        <button class="condition-upload">Upload Files</button>
+      </div>
     </div>
   </section>
 </template>
@@ -169,6 +180,7 @@ export default {
   data(){
     return{
       currentSelection: "backline",
+      showSection: false,
     }
   },
   methods:{
@@ -209,6 +221,9 @@ export default {
         name: name,
         value: e.target.value
       })
+    },
+    toggleExpand(){
+      this.showSection = !this.showSection
     }
   },
   computed:{
@@ -230,11 +245,6 @@ export default {
 .other{
   background-color: white;
   padding: var(--spacing);
-  border-radius: var(--border-radius);
-  grid-column: offer-start / offer-end;
-  align-self: start;
-  margin-bottom: var(--spacing);
-  margin-left: var(--spacing);
 
   .toggle{
 

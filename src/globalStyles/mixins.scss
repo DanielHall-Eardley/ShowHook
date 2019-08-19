@@ -36,9 +36,10 @@
 
 @mixin alt-button(){
   padding: 10px 20px;
-  border-radius: 20px;
-  border: solid 2px var(--secondary-five);
+  border-radius: var(--border-radius);
+  border: solid 1px var(--secondary-six);
   outline: none;
+  background: none;
 }
 
 @mixin cancel-button(){

@@ -14,6 +14,7 @@
   --secondary-four: #F4A991;
   --secondary-six: #8b8d8e;
   --light-pink: #f0edef;
+  --light-grey: #dbdbdb;
   --heading-font: "Libre Franklin", sans-serif;
   --text-font: "Libre Baskerville", sans-serif;
   --subheading-size: 1.2rem;
@@ -25,6 +26,7 @@
   --border-radius: 1rem;
   --text-color: white;
   --box-shadow-default: 0 1rem 3rem rgba(black, .4);
+  --light-border: solid .5px var(--light-grey);
 }
 
 #app {
