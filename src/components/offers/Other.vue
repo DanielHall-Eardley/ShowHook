@@ -246,6 +246,11 @@ export default {
   background-color: white;
   padding: var(--spacing);
 
+  input{
+    height: 3.5rem;
+    font-size: 1.6rem;
+  }
+  
   .toggle{
 
     &-label{

@@ -1,26 +1,36 @@
 <template lang="html">
   <div class="search-container">
-    <SearchHeader></SearchHeader>
-    <Filters></Filters>
-    <div class="flex-container">
-    <Card></Card>
-    <SearchMap v-if='mapObject'></SearchMap>
+    <Menu></Menu>
+    <Filters :userType="userType" :page="page"></Filters>
+    <List :array="results"></List>
+    <p class="error" v-if="error">{{error[0]}}</p>
+    <div class="page-controls" v-if="results.length > 0">
+      <button class="primary-button" @click="incPage">
+        Next
+      </button>
+      <button class="primary-button" @click="decPage">
+        Back
+      </button>
     </div>
-  </div>
+   </div>
 </template>
 
 <script>
-import Filters from '@/components/search/Filters.vue'
-import SearchMap from '@/components/SearchMap.vue'
-import Card from '@/components/search/Card.vue'
-import SearchHeader from '@/components/search/SearchHeader.vue'
+import Filters from '@/components/search/filters/Filters.vue'
+import List from '@/components/search/List.vue'
+import Menu from '@/components/shared/Menu.vue'
 
 export default {
   components:{
     Filters,
-    SearchMap,
-    SearchHeader,
-    Card
+    Map,
+    List,
+    Menu
+  },
+  data() {
+    return { 
+      page: 0
+    }
   },
   methods:{
     //figure out how to make this function work
@@ -36,25 +46,41 @@ export default {
         }
       })
       this.$store.commit('updateFilterMenu', newArray)
-    }
+    },
+    incPage() {
+      if (this.page < this.resultsCount) {
+        page++
+      }
+    },
+    decPage() {
+      if (this.page > 0) {
+        page--
+      }
+    },
   },
   computed:{
-    mapObject(){
-      return this.$store.state.appConfig.mapObject
+    userType() {
+      return this.$store.state.userConfig.baseUser.userType
+    },
+    error() {
+      return this.$store.state.appConfig.searchError
+    },
+    results() {
+      return this.$store.state.appConfig.searchResults
     }
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+  @import "@/globalStyles/helper";
   .search-container{
-    padding: var(--spacing);
-    height: 100%;
-    box-sizing: border-box;
+
+    .page-controls {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing);
+    }
   }
-  .flex-container{
-    display: flex;
-    height: 80%;
-    width: 100%;
-  }
+
 </style>

@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import AppName from '../components/AppName.vue'
-import Banner from '../components/Banner.vue'
-import FeatureIcons from '../components/profile/FeatureIcons.vue'
+import AppName from '../components/shared/AppName.vue'
+import Banner from '../components/shared/Banner.vue'
+import FeatureIcons from '../components/profile/profile-venue/FeatureIcons.vue'
 import Information from '../components/about-how-to/Information.vue'
 import GetStarted from '../components/about-how-to/GetStarted.vue'
 
@@ -118,7 +118,7 @@ export default {
       transform: translateX(-50%);
       text-align: center;
       button{
-        @include button;
+        ;
         margin-top: var(--spacing);
       }
     }

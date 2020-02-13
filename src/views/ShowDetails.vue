@@ -7,7 +7,7 @@
     <div class="grid-container">
       <div>
         <ShowText :show='getShowDetails' :toggleEdit='toggle'></ShowText>
-        <SearchMap :toggleEdit='toggle'></SearchMap>
+        <Map :toggleEdit='toggle'></Map>
       </div>
       <div>
         <CountDown :toggleEdit='toggle' :show='getShowDetails'></CountDown>
@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import Menu from '@/components/Menu.vue'
-import Banner from '@/components/Banner.vue'
-import SearchMap from '@/components/SearchMap.vue'
+import Menu from '@/components/shared/Menu.vue'
+import Banner from "@/components/shared/Banner.vue"
+import Map from '@/components/shared/Map.vue'
 import AddressAge from '@/components/shows/AddressAge.vue'
 import ShowText from '@/components/shows/ShowText.vue'
 import CountDown from '@/components/shows/CountDown.vue'
@@ -34,7 +34,7 @@ export default {
   components:{
     Menu,
     Banner,
-    SearchMap,
+    Map,
     AddressAge,
     ShowText,
     CountDown,

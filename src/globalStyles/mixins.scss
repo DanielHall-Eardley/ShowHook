@@ -8,47 +8,6 @@
   }
 }
 
-@mixin button(){
-  padding: 1rem 2rem;
-  border-radius: 1rem;
-  background: var(--primary);
-  border: solid 0.5px var(--primary);
-  color: white;
-  outline: none;
-  transition: all 0.3s;
-  box-shadow: 0 1rem 3rem rgba(black, .4);
-  &:hover{
-    background-color: darken($primary, 10%);
-    transform: translateY(-.2rem);
-  }
-  &:active, &:focus{
-    transform: translateY(0);
-    box-shadow: 0 .4rem 1rem rgba(black, .4);
-  }
-}
-
-@mixin ticket-button{
-  background-color: var(--primary);
-  color: white;
-  border-radius: 8px;
-  outline: none;
-}
-
-@mixin alt-button(){
-  padding: 10px 20px;
-  border-radius: var(--border-radius);
-  border: solid 1px var(--secondary-six);
-  outline: none;
-  background: none;
-}
-
-@mixin cancel-button(){
-  background: none;
-  outline: none;
-  border: none;
-  color: var(--secondary-six);
-}
-
 @mixin drop-down($width){
   border: solid 0.4px black;
   padding: var(--spacing);
@@ -59,6 +18,3 @@
   z-index: 1;
 }
 
-@mixin show-button(){
-
-}

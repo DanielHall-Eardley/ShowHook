@@ -1,306 +1,193 @@
+import actions from "../app-state/actions"
+import mutations from "../app-state/mutations"
+import getters from "../app-state/getters"
+
 const appConfig = {
   state:{
     mainBanner: {
       description: "placeholder image",
       src: "https://via.placeholder.com/1500"
     },
-    loginState: false,
-    navMenu: [
-      {name: "search", url: "/search"},
-      {name: "home", url: "/"},
-      {name: "home", url: "/"},
-      {name: "home", url: "/"},
-      {name: "home", url: "/"},
+    musicGenres: [
+      "Pop",
+      "Rock",
+      "Metal",
+      "Dance",
+      "Country",
+      "Hip",
+      "Alternative",
+      "R&B",
+      "Solo Artists",
+      "Soul",
+      "Reggae",
+      "Punk",
+      "Latin",
+      "Electronic",
+      "Classical"
     ],
-    filterMenu:[
-      {
-        name: 'Artist',
-        altName: 'Venue',
-        active: false,
-        img: 'https://via.placeholder.com/100',
-        module: 'SelectType'
+    searchQuery: {
+      keyword: null,
+      location: null,
+      priceType: null,
+      genreFilters: [],
+      actFilters: [],
+      venueFilters: [], 
+      priceRange: {
+        min: null,
+        max: null
       },
-      {
-        name: 'Price Range',
-        active: false,
-        img: 'https://via.placeholder.com/100',
-        module: 'SelectPriceRange'
-      },
-      {
-        name: 'Split (%)',
-        active: false,
-        img: 'https://via.placeholder.com/100',
-        module: 'SelectSplit'
-      },
-      {
-        name: 'More Filters',
-        active: false,
-        img: 'https://via.placeholder.com/100',
-        module: 'SelectMoreFilters'
-      },
-    ],
-    searchQuery:{},
-    mapObject: null,
-    resultsArray:[
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Ottawa',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Toronto',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'New York',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Australia',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Los Angeles',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Montreal',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city 8',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city 9',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city 10',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city 11',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city 12',
-      },
-      {
-        mainPic: 'https://via.placeholder.com/400',
-        subPic: 'https://via.placeholder.com/100',
-        name: 'Iron Man',
-        location: 'Paradise city 13',
-      },
-    ],
+      dateRange: {
+        start: null,
+        end: null
+      }
+    },
+    searchResults: [],
+    searchError: null,
+    selectedUserType: null,
     profileCreationStep: 0,
     profileCreationPage: 0,
-    profileCreation:{
-      act: [
-        {
-          stepName: 'Step 1',
-          pages:[
-            "EditAddress" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-        {
-          stepName: 'Step 2',
-          pages:[
-            "component 1" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-        {
-          stepName: 'Step 3',
-          pages:[
-            "component 1" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-      ],
-      showgoer:[
-        {
-          stepName: 'Step 1',
-          pages:[
-            "component 1" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-        {
-          stepName: 'Step 2',
-          pages:[
-            "component 1" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-        {
-          stepName: 'Step 3',
-          pages:[
-            "component 1" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-      ],
-      venue:[
-        {
-          stepName: 'Step 1',
-          pages:[
-            "AddressMap" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-        {
-          stepName: 'Step 2',
-          pages:[
-            "component 1" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-        {
-          stepName: 'Step 3',
-          pages:[
-            "component 1" ,
-            "component 2" ,
-            "component 3" ,
-            "component 4" ,
-            "component 5" ,
-            "component 6" ,
-            "component 7" ,
-          ]
-        },
-      ],
-    }
-  },
-  mutations:{
-    changeStepOrPage: (state, payload) => {
-
-      let {
-        profileCreation,
-        profileCreationPage,
-        profileCreationStep,
-      } = state
-
-      let userType = payload.userType
-      let stepsLength = profileCreation[userType].length -1
-      let pagesLength = profileCreation[userType][profileCreationStep].pages.length - 1
-
-      if(payload.direction === "inc"){
-        if(profileCreationPage >= pagesLength && profileCreationStep >= stepsLength){
-          return
-        }else if(profileCreationPage >= pagesLength){
-          state.profileCreationStep++
-          state.profileCreationPage = 0
-        }else if(profileCreationPage <= pagesLength){
-          state.profileCreationPage++
-        }
-      }else if(payload.direction === "dec"){
-        if(profileCreationPage <= 0 && profileCreationStep <= 0){
-          return
-        }else if(profileCreationPage <= 0){
-          state.profileCreationStep--
-          state.profileCreationPage = pagesLength
-        }else if(profileCreationPage >= 0){
-          state.profileCreationPage--
-        }
+    actProfileCreation: [
+      {
+        stepName: 'Basic Info',
+        pages:[
+          {
+            name: "Address",
+            info: `Only your general location will be shared.`,
+            error: null
+          },
+          {
+            name: "Genres",
+            info: `This will help you match with likeminded venues and musicians.`,
+            error: null
+          },
+          {
+            name: "Bio",
+            info: "Provide a short summary of your musical journey",
+            error: null
+          },
+        ]
+      },
+      {
+        stepName: 'Uploads and Links',
+        pages:[
+          {
+            name: "Photos",
+            info: `Upload some photos that of your act in action. It's best to compress your images before uploading as this will ensure that there is no delay when they being veiwed on your profile. Hover over a previewed image to check its size, ideally it should be 2MB or smaller.`,
+            error: null
+          },
+          {
+            name: "Links",
+            info: "Add links to Youtube, SoundCloud and News Stories. Showcasing your content is a great way entice new people to attend your shows.",
+            error: null            
+          }
+        ]
+      },
+      {
+        stepName: 'Pricing and Preferences',
+        pages:[
+          {
+            name: "Fees",
+            info: "Specify your nightly base rate and how you want to split the ticket sales",
+            error: null
+          },
+          {
+            name: "Requirements",
+            info: "Add a list requirements and preferences for the venue to fulfill",
+            error: null
+          },
+          {
+            name: "LegalAgreement",
+            info: "It is your reponsibility to follow the rules and regulation of your city. You must check the box to confirm that you will comply with local laws",
+            error: null
+          }
+        ]  
       }
-    },
-    addToSearchQuery: (state, payload) =>{
-      state.searchQuery = Object.assign(
-        state.searchQuery,
-        payload
-      )
-      console.log(state.searchQuery)
-    },
-    updateFilterMenu: (state, payload) => {
-      state.filterMenu = payload
-      console.log(state.filterMenu)
-    },
-    showMap:(state, payload) => {
-      state.mapObject = {
-        location: payload.location,
-        name: payload.name,
-        picture: payload.mainPic
-      }
-      console.log(state.mapObject)
-    },
-    hideMap: state =>{
-      state.mapObject = null
-    }
-  },
-  actions:{
-    changeStepOrPage: (context, payload) => {
-      context.commit('changeStepOrPage', payload)
-    },
+    ],
+    venueProfileCreation:[
+      {
+        stepName: 'Start with the basics',
+        pages:[
+          {
+            name: "Address",
+            info: `Your information will only be shared with confirmed bookings.`,
+            error: null
+          },
+          {
+            name: "Genres",
+            info: `This will help you match with likeminded venues and musicians.`,
+            error: null
+          },
+          {
+            name: "Details",
+            info: `Bar 
+              Bands are booking a venue with all the permits and proper equipment. 
 
-  }
+              Shared Space 
+              Bands are using a community space, permits and equipement are subject to the space.
+
+              Private Space 
+              Bands are using someone's house, it can be a room, a garage; you probably don’t have the permits and will need to apply for them.
+
+              Number of Guests
+              Divide the square footage of your space by five(the approximate number of feet each guest needs in personal space).That number equal many people can fit comfortably in your home.
+              
+              Bathrooms
+              Specify if your guests will have exclusive use of bathrooms and the number of bathrooms available.`,
+              error: null   
+          },
+          {
+            name: "Amenities",
+            info: `Providing the essentials helps artists feel at home in your place. Some venues provide meals, or just coffee and tea.None of these things are required, but sometimes they add a nice touch to help guests feel welcome.`,
+            error: null
+          }
+        ]
+      },
+      {
+        stepName: 'Set the stage',
+        pages:[
+          {
+            name: "Photos",
+            info: `Upload some photos that show off your venue. It's best to compress your images before uploading as this will ensure that there is no delay when they being veiwed on your profile. Hover over a previewed image to check its size, ideally it should be 2MB or smaller.`,
+            error: null
+          },
+          {
+            name: "Description",
+            info: `Provide a listing title, a brief description of your venue and what kind of act it is best suited for.`,
+            error: null
+          }
+        ]
+      },
+      {
+        stepName: 'Get ready for the show!',
+        pages:[
+          {
+            name: "Preferences",
+            info: "Choose your level of experience and hosting frequency",
+            error: null
+          },
+          {
+            name: "Pricing",
+            info: `Choose between setting a flat rental fee or a lower rental fee and a percentage of ticket sales.
+            
+            Choose if you want add additional fees, try to strike a balance between covering costs and being competitive with other venues`,
+            error: null
+          },
+          {
+            name: "Rules",
+            info: "Set the rules for your venue",
+            error: null
+          },
+          {
+            name: "LegalAgreement",
+            info: "It is your reponsibility to follow the rules and regulation of your city. You must check the box to confirm that you will comply with local laws",
+            error: null
+          },
+        ]
+      },
+    ],
+  },
+  getters,
+  mutations,
+  actions
 }
 export default appConfig

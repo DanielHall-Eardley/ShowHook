@@ -5,8 +5,8 @@
     <ProfilePic v-bind:profilePic="getUserInfo.pic"
     v-bind:picturePos="picturePos"></ProfilePic>
 
-    <AboutUser v-bind:about="getUserInfo"
-    v-bind:aboutPos="aboutPos"></AboutUser>
+    <About v-bind:about="getUserInfo"
+    v-bind:aboutPos="aboutPos"></About>
 
     <VerifiedInfo v-bind:infoPos="infoPos"
     v-bind:contactInfo="getVerifiedInfo"></VerifiedInfo>
@@ -20,16 +20,16 @@
 </template>
 
 <script>
-import AboutUser from "@/components/profile/AboutUser";
-import Menu from "@/components/Menu";
-import ProfilePic from "@/components/profile/ProfilePic";
-import Reviews from "@/components/profile/Reviews";
-import Shows from "@/components/profile/Shows";
-import VerifiedInfo from "@/components/profile/VerifiedInfo";
+import About from "@/components/profile/shared/About";
+import Menu from "@/components/shared/Menu";
+import ProfilePic from "@/components/profile/shared/ProfilePic";
+import Reviews from "@/components/profile/shared/Reviews";
+import Shows from "@/components/profile/shared/Shows";
+import VerifiedInfo from "@/components/profile/shared/VerifiedInfo";
 
 export default {
   components: {
-    AboutUser,
+    About,
     Menu,
     ProfilePic,
     Reviews,

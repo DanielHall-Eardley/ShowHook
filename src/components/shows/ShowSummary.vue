@@ -66,7 +66,7 @@ export default {
       margin-bottom: var(--spacing);
     }
     button{
-      @include ticket-button
+      
     }
   }
   .edit-summary{

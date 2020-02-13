@@ -118,12 +118,12 @@ export default {
 
       &-link{
         grid-row: 3 / 4;
-        @include button;
+        ;
       }
 
       &-change{
         grid-row: 3 / 4;
-        @include alt-button;
+        ;
       }
 
       &-text{

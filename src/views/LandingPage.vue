@@ -7,7 +7,7 @@
 
 <script>
 import SearchLink from "@/components/landing/SearchLink.vue";
-import Menu from "@/components/Menu.vue";
+import Menu from "@/components/shared/Menu.vue";
 
 export default {
   components: {

@@ -63,7 +63,7 @@ export default {
         button{
           margin: 0px auto;
           display: block;
-          @include button
+          
         }
       }
     }

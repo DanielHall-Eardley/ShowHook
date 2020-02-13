@@ -17,7 +17,7 @@
   --light-grey: #dbdbdb;
   --heading-font: "Libre Franklin", sans-serif;
   --text-font: "Libre Baskerville", sans-serif;
-  --subheading-size: 1.2rem;
+  --subheading-size: 1.8rem;
   --gradient-three: #7C2051, #F4A991;
   --gradient-two: #307B87, #5CD2C2;
   --gradient-one: #32FBFC, #3214F2;
@@ -47,5 +47,21 @@ body {
   margin: 0;
   height: 100vh;
   font-family: var(--text-font);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+//shared styles
+.section-heading{
+  margin-bottom: var(--alt-spacing);
+  font-size: 2.5rem;
+  font-weight: 200;
 }
 </style>

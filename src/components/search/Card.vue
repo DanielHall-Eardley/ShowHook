@@ -1,38 +1,21 @@
 <template lang="html">
-  <div class="card-container" :class='{mapActive: mapActive}'>
-    <div class="card" v-for='userCard in resultsArray'>
-      <div class='main-img-container'>
-        <img id='main-img' :src="userCard.mainPic" alt="Main picture">
-      </div>
-      <div class='sub-img-container'>
-        <div class='img-container'>
-          <img id='sub-img' :src="userCard.subPic" alt="Profile picture">
-          <span>{{userCard.name}}</span>
-        </div>
-        <span v-on:click='showMap(userCard)'>
-          {{userCard.location}}
-        </span>
-      </div>
+  <div class="card">
+    <h4>
+      <span>{{data.title}}</span>
+      <span>{{data.price}}</span>
+    </h4>
+    <img :src="data.bannerPhoto" alt="Banner Photo">
+    <div>
+      <span>{{data.address.description}}</span>
+      <router-link :to="{}">View Profile</router-link>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  computed:{
-    mapActive(){
-      return this.$store.state.appConfig.mapObject
-    },
-    resultsArray(){
-      return this.$store.state.appConfig.resultsArray
-    },
-  },
-  methods:{
-    showMap(payload){
-      this.$store.commit('showMap', payload)
-    }
+  export default {
+    props: ["data"],
   }
-}
 </script>
 
 <style lang="scss" scoped>

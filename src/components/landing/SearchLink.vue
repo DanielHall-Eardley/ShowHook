@@ -11,7 +11,7 @@
       <svg>
         <use xlink:href="@/assets/sprite.svg#icon-magnifying-glass"></use>
       </svg>
-      <router-link v-bind:to="'/home/:'+ searchQuery">Search</router-link>
+      <router-link v-bind:to="'/search?keyword='+ searchQuery">Search</router-link>
     </div>
   </section>
 </template>
@@ -100,7 +100,7 @@ export default {
         justify-self: end;
         align-self: center;
         margin-right: var(--alt-spacing);
-        @include button;
+        ;
       }
     }
   }

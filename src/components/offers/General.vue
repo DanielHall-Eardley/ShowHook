@@ -114,6 +114,11 @@ export default {
   display: grid;
   grid-row-gap: var(--alt-spacing);
 
+  input{
+    height: 3.5rem;
+    font-size: 1.6rem;
+  }
+
   &-payment-type{
     #guarantee, #split{
       display: none;

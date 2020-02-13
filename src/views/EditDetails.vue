@@ -2,7 +2,7 @@
   <div class="edit-profile">
     <nav class="edit-profile-header">
       <AppName></AppName>
-      <button @click="saveAndExit">
+      <button @click="saveAndExit" class="alt-button">
         Save and Exit
       </button>
     </nav>
@@ -16,17 +16,16 @@
 </template>
 
 <script>
-import AppName from "@/components/AppName.vue"
-import EditProgress from "@/components/edit/EditProgress.vue"
-import EditFooter from "@/components/edit/EditFooter.vue"
-import InputDetails from "@/components/edit/InputDetails.vue"
-import InputInfo from "@/components/edit/InputInfo.vue"
+import AppName from "@/components/shared/AppName.vue"
+import EditProgress from "@/components/edit/page-template/EditProgress.vue"
+import EditFooter from "@/components/edit/page-template/EditFooter.vue"
+import InputDetails from "@/components/edit/page-template/InputDetails.vue"
+import InputInfo from "@/components/edit/page-template/InputInfo.vue"
 
 export default {
-  data(){
-    return{
-      currentPage: 0,
-    }
+  created(){
+    this.$store.commit("selectUserType", localStorage.getItem("baseUserType"))
+    this.$store.dispatch("autoLogin", this.$route.fullPath)
   },
   components:{
     AppName,
@@ -35,24 +34,7 @@ export default {
     InputDetails,
     InputInfo
   },
-  computed:{
-    getStep(){
-    let type = this.$store.state.userConfig.user.userType
-    let steps = this.$store.state.appConfig.steps[type]
-    let i = 0
-    while(steps[i].completed){
-      i++
-    }
-      if(i === steps.length -1){
-        //return some action
-      }
-      return i
-    }
-  },
   methods:{
-    switchPage(num){
-      this.currentPage = num
-    },
     saveAndExit(){
       this.$router.push('/')
       //submit details to server
@@ -62,10 +44,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/globalStyles/mixins.scss";
+@import "@/globalStyles/helper.scss";
 
 .edit-profile{
-
+  overflow: hidden;
   &-header{
     height: 10vh;
     display: flex;
@@ -74,14 +56,13 @@ export default {
     border-bottom: solid 1px var(--light-grey);
 
     button{
-      @include alt-button;
       margin-left: auto;
     }
   }
 
   &-box{
     display: grid;
-    grid-template-rows: 10vh 70vh 10vh;
+    grid-template-rows: 15vh 65vh 10vh;
     grid-template-columns: 2fr 1fr;
   }
 }
