@@ -1,0 +1,204 @@
+import loginSignupFn from "../helper/loginSignupFn"
+import postDataFn from "../helper/postDataFn"
+import router from "../router"
+import getDataFn from "../helper/getDataFn";
+
+export default {
+  signUp: async ({ commit }, payload) => {
+    loginSignupFn(commit, payload, "signup");
+  },
+  login: async ({ commit }, payload) => {
+    await loginSignupFn(commit, payload, "login", payload.redirect);
+
+    setTimeout(() => {
+      commit("logout")
+    }, localStorage.getItem("expirationTime"))
+  },
+  autoLogin: ({ commit }, payload) => {
+    const expiresIn = localStorage.getItem("expiresIn")
+
+    return new Promise((resolve, reject) => {
+      if (new Date() > new Date(expiresIn) || !expiresIn) {
+        commit("logout")
+        router.push({
+          name: "admin",
+          query: {
+            type: "login",
+            redirect: payload
+          }
+        })
+        reject("Please log in")
+      }
+      commit("autoLogin")
+      resolve("Autologin sucessful")
+    })
+  },
+  createBlog: async (context, payload) => {
+    context.commit("clearAdminErrors")
+    const userId = context.rootState.userConfig.baseUser.userId
+
+    if (!userId) {
+      context.dispatch("autoLogin", payload.path)
+    }
+
+    const body = JSON.stringify({
+      title: payload.title,
+      content: payload.content,
+      imgUrl: payload.imgUrl,
+    })
+
+    const headers = {
+      "Authorization": "Bearer " + context.rootState.userConfig.token,
+      "Content-Type": "application/json"
+    }
+
+    const responseData = await postDataFn("admin/blog/" + userId, body, headers)
+
+    if (responseData.messages) {
+      return context.commit("updateAdminErrors", responseData)
+    }
+
+    context.commit("updateBlogs", responseData)
+  },
+  getBlogs: async (context, payload) => {
+    context.commit("clearAdminErrors")
+
+    const responseData = await getDataFn(`blogs/${payload.id}?page=${payload.page}&userType=${payload.userType}`)
+    console.log(responseData)
+    if (responseData.messages) {
+      return context.commit("updateAdminErrors", responseData)
+    }
+
+    context.commit("updateBlogs", responseData)
+  },
+  getBlogDetails: async (context, payload) => {
+    context.commit("clearAdminErrors")
+
+    const responseData = await getDataFn(`blog/${payload.blogId}?&userType=${payload.userType}&profileId=${payload.profileId}`)
+    console.log(responseData)
+    if (responseData.messages) {
+      return context.commit("updateAdminErrors", responseData)
+    }
+
+    context.commit("updateSelectedBlog", responseData)
+  },
+  createBooking: async (context, payload) => {
+    context.commit("clearAdminErrors")
+    if (!context.rootState.userConfig.baseUser.userId) {
+      context.dispatch("autoLogin", payload.path)
+    }
+
+    const offer = JSON.stringify({
+      ...payload,
+      offerorId: context.rootState.userConfig.baseUser.userId
+    })
+
+    const headers = {
+      "Authorization": "Bearer " + context.rootState.userConfig.token,
+      "Content-Type": "application/json"
+    }
+    
+    const responseData = await postDataFn("admin/create-offer", offer, headers)
+    if (responseData.messages) {
+      return context.commit("updateAdminErrors", responseData)
+    }
+    console.log(responseData)
+    router.push({
+      name: "conversation",
+      params: {
+        id: responseData.offerId
+      }
+    })
+  },
+  updateVenue: async (context, payload) => {
+    context.commit("clearAdminErrors")
+    const userId = context.rootState.userConfig.baseUser.userId
+
+    if (userId) {
+      context.dispatch("autoLogin", payload)
+    }
+
+    const { 
+      genres,
+      title,
+      description,
+      pricing,
+      amenities,
+      rules,
+      photos
+    } = context.rootState.userConfig.venueData
+
+    const photoFileArray = photos.filter(el => typeof el === "object")
+
+    const venueData = JSON.stringify({
+      genres,
+      title,
+      description,
+      pricing,
+      amenities,
+      rules,
+    })
+
+    const formData = new FormData()
+    formData.append("venueData", venueData)
+    
+    photoFileArray.forEach(photo => {
+      formData.append("photoFiles", photo)
+    })    
+
+    const headers = {
+      "Authorization": "Bearer " + context.rootState.userConfig.token,
+    }
+
+    const responseData = await postDataFn("admin/update-venue/" + userId, formData, headers, "PUT")
+    if (responseData.messages) {
+      return context.commit("updateAdminErrors", responseData)
+    }
+    
+    //router.go()
+  },
+  updateAct: async (context, payload) => {
+    context.commit("clearAdminErrors")
+    const userId = context.rootState.userConfig.baseUser.userId
+
+    if (userId) {
+      context.dispatch("autoLogin", payload)
+    }
+
+    const {
+      genres,
+      title,
+      description,
+      souncloudLink,
+      youtubeLink,
+      photos
+    } = context.rootState.userConfig.actData
+
+    const photoFileArray = photos.filter(el => typeof el !== "object")
+
+    const actData = JSON.stringify({
+      genres,
+      title,
+      description,
+      souncloudLink,
+      youtubeLink,  
+    })
+
+    const formData = new FormData()
+    formData.append("actData", actData)
+    photoFileArray.forEach(photo => {
+      formData.append("photoFiles", photo)
+    })
+
+    const headers = {
+      "Authorization": "Bearer " + context.rootState.userConfig.token,
+    }
+
+    const responseData = await postDataFn("admin/update-act/" + userId, formData, headers, "PUT")
+    if (responseData.messages) {
+      return context.commit("updateAdminErrors", responseData)
+    }
+
+    router.go()
+  },
+}
