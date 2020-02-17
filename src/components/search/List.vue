@@ -19,6 +19,12 @@
   }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+  .list {
+    display: grid;
+    grid-auto-rows: 22rem;
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    padding: var(--alt-spacing) var(--spacing);
+    grid-gap: var(--alt-spacing);
+  }
 </style>

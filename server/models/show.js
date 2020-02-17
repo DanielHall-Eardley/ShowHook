@@ -5,6 +5,11 @@ const ShowSchema = Schema({
     type: String,
     required: true
   },
+  selfType: {
+    type: String,
+    required: true,
+    default: "show"
+  },
   address: {
     type: Object,
     required: true

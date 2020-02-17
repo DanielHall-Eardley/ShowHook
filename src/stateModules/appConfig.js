@@ -79,6 +79,11 @@ const appConfig = {
             name: "Links",
             info: "Add links to Youtube, SoundCloud and News Stories. Showcasing your content is a great way entice new people to attend your shows.",
             error: null            
+          },
+          {
+            name: "Type",
+            info: "What type of act are you?",
+            error: null
           }
         ]
       },
@@ -86,7 +91,7 @@ const appConfig = {
         stepName: 'Pricing and Preferences',
         pages:[
           {
-            name: "Fees",
+            name: "Pricing",
             info: "Specify your nightly base rate and how you want to split the ticket sales",
             error: null
           },

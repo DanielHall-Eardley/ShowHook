@@ -58,7 +58,7 @@
 
 <script>
   import editMixin from "@/mixins/editMixin"
-  import Pricing from "@/components/edit/edit-venue/Pricing"
+  import Pricing from "@/components/edit/shared/Pricing"
   import Rules from "@/components/edit/edit-venue/Rules"
 
   export default {

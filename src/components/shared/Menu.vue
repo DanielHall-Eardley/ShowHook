@@ -40,7 +40,7 @@
       <img 
         src="https://via.placeholder.com/100" 
         alt="Profile pic"
-        @click="loadProfile"
+        @click="routeLink"
       >
     </div>
   </nav>
@@ -71,7 +71,7 @@
         this.$store.commit("logout")
       },
       routeLink(){
-        if (this.user.userData === "undefined") {
+        if (this.user.userData === "undefined" || !this.user.userData) {
           return this.$router.push({name: "edit"})
         }
 

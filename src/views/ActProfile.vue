@@ -46,13 +46,23 @@
       <Reviews :reviews="actData.reviews"></Reviews>
       <div class="save-changes-container" v-if="editable">
         <button 
+          class="alt-button" 
+          @click="deleteProfile('full')">
+          Delete full profile
+        </button>
+        <button 
+          class="alt-button" 
+          @click="deleteProfile('partial')">
+          Delete listing
+        </button>
+        <button 
           class="primary-button" 
           @click="updateAct">
           Save changes
         </button>
       </div>
       <BookShow
-        :price="actData.fees.fee"
+        :price="actData.price"
         :shows="actData.shows"
         :profileId="actData._id">
       </BookShow>
@@ -139,6 +149,17 @@ export default {
     },
     updateAct() {
       this.$store.dispatch("updateAct", this.$route.fullPath)
+    },
+    deleteProfile(deleteType) {
+      if (deleteType === "full") {
+        alert("Are you sure? Your listing and base profile will be deleted")
+      }
+
+      this.$store.dispatch("deleteProfile", {
+        id: this.$route.params.id,
+        fullPath: this.$route.fullPath,
+        deleteType
+      })
     }
   },
   computed:{

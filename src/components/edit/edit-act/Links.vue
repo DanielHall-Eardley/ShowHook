@@ -17,13 +17,6 @@
       name="soundcloud"
       v-on:input="addLinks($event)"
     >
-    <input 
-      type="text"
-      class="edit-input"
-      placeholder="Paste Blog url here"
-      name="blog"
-      v-on:input="addLinks($event)"
-    >
   </section>
 </template>
 

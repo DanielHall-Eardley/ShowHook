@@ -8,6 +8,11 @@ const Venue = Schema({
     ref: "BaseUser",
     required: true
   },
+  selfType: {
+    type: String,
+    required: true,
+    default: "venue"
+  },
   address: {
     type: Object,
     required: true

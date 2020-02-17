@@ -39,6 +39,10 @@
   }
 }
 
+.select:focus {
+  border-radius: 0;
+}
+
 .default-link{
   &, &:link, &:visited{
     font-size: 1.5rem;
@@ -146,6 +150,10 @@
   padding: var(--spacing);
   justify-content: flex-end;
   border-top: var(--light-border);
+
+  button:not(:last-child) {
+    margin-right: var(--spacing);
+  }
 }
 
 .checked-filters {

@@ -9,6 +9,11 @@ const ActSchema = Schema({
     required: true,
     ref: "BaseUser"
   },
+  selfType: {
+    type: String,
+    required: true,
+    default: "act"
+  },
   address: {
     type: Object,
     required: true
@@ -33,7 +38,7 @@ const ActSchema = Schema({
     type: String,
     required: true
   },
-  actType: {
+  type: {
     type: String,
     required: true
   },

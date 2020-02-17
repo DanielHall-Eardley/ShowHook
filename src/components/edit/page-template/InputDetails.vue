@@ -15,12 +15,12 @@ import Amenities from "../edit-venue/Amenities"
 import Photos from "../shared/Photos"
 import Description from "../edit-venue/Description"
 import Preferences from "../edit-venue/Preferences"
-import Pricing from "../edit-venue/Pricing"
+import Pricing from "@/components/edit/shared/Pricing"
 import Rules from "../edit-venue/Rules"
 import Bio from "../edit-act/Bio"
 import Links from "../edit-act/Links"
 import Requirements from "../edit-act/Requirements"
-import Fees from "../edit-act/Fees"
+import Type from "../edit-act/Type"
 
 export default {
   components:{
@@ -36,8 +36,8 @@ export default {
     Rules,
     Links,
     Bio,
-    Fees,
-    Requirements
+    Requirements,
+    Type
   },
   computed:{
     getComponent(){

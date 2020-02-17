@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login-signup">
     <div class="error-container" v-if="getErrors">
       <p 
         class="error" 
@@ -8,13 +8,10 @@
         {{error}}
       </p>
     </div>
-    <form @submit.prevent="sendUserDetails()" class="login-form">
+    <form @submit.prevent="sendUserDetails()" class="login-signup-form">
       <h1>
         {{loginType === 'signUp' ? 'Get Started' : 'Login'}}
-      </h1>
-      <h3 v-show="loginType === 'signUp'? true : false">
-        Register in 20 seconds
-      </h3>
+      </h1> 
       <input 
         :class="{invalid: $v.name.$error}"
         @blur="$v.name.$touch()"
@@ -63,24 +60,28 @@
       <p class="invalid-label" v-if="$v.userType.$error">
         Please select a user type
       </p>  
-      <button :disabled="$v.$error" class="primary-button">
-        {{loginType === 'signUp' ? 'Register' : 'Login'}}
-      </button>
-      <router-link to="/" class="alt-button">
-        Back
-      </router-link>
-      <p>
-        {{loginType === "signUp" ? "Already a member?" : "Not a member?"}}
-      </p>
-      <a v-if="loginType === 'signUp'"
-        v-on:click="toggleLogin('login')"
-        class="login-form-link">
-        Log in here
-      </a>
-      <a v-else v-on:click="toggleLogin('signUp')"
-        class="login-form-link">
-        Sign up here
-      </a>
+      <div class="button-container">
+        <button :disabled="$v.$error" class="primary-button">
+          {{loginType === 'signUp' ? 'Register' : 'Login'}}
+        </button>
+        <button @click="navBack" class="alt-button">
+          Back
+        </button>
+      </div>
+      <div class="toggle-container">
+        <span>
+          {{loginType === "signUp" ? "Already a member?" : "Not a member?"}}
+        </span>
+        <a v-if="loginType === 'signUp'"
+          v-on:click="toggleLogin('login')"
+          class="default-link">
+          Log in here
+        </a>
+        <a v-else v-on:click="toggleLogin('signUp')"
+          class="default-link">
+          Sign up here
+        </a>
+      </div>
     </form>
   </div>
 </template>
@@ -126,6 +127,9 @@ export default {
     },
     toggleLogin(switchType){
       this.$router.push({path: "admin", query: {type: switchType}})
+    },
+    navBack() {
+      this.$router.push("/")
     }
   },
   updated() {
@@ -162,11 +166,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/globalStyles/mixins.scss";
 @import '@/globalStyles/helper.scss';
 
-.login {
+.login-signup {
   width: 100vw;
   height: 100vh;
 
@@ -181,11 +185,10 @@ export default {
   &-form {
     display: grid;
     grid-row-gap: var(--alt-spacing);
-    justify-items: center;
 
-    width: 35%;
+    width: 40rem;
     border-radius: var(--border-radius);
-    border: solid .5px var(--primary);
+    border: var(--light-border);
     padding: var(--spacing);
     margin: var(--spacing) auto;
 
@@ -209,6 +212,19 @@ export default {
 
     input, select{
       height: 4rem;
+    }
+
+    span {
+      font-size: 1.6rem;
+    }
+  }
+
+  .button-container {
+    display: flex;
+
+    button:first-child {
+      flex: 1;
+      margin-right: var(--alt-spacing);
     }
   }
 }

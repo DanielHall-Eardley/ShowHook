@@ -45,6 +45,16 @@
       </Map>
       <div class="save-changes-container" v-if="editable">
         <button 
+          class="alt-button" 
+          @click="deleteProfile('full')">
+          Delete full profile
+        </button>
+        <button 
+          class="alt-button" 
+          @click="deleteProfile('partial')">
+          Delete listing
+        </button>
+        <button 
           class="primary-button" 
           @click="updateVenue">
           Save changes
@@ -61,6 +71,9 @@
     </p>
   </section>
 </template>
+
+
+
 
 <script>
 import Title from "@/components/profile/shared/Title"
@@ -137,6 +150,17 @@ export default {
     },
     updateVenue() {
       this.$store.dispatch("updateVenue", this.$route.fullPath)
+    },
+    deleteProfile(deleteType) {
+      if (deleteType === "full") {
+        alert("Are you sure? Your listing and base profile will be deleted")
+      }
+
+      this.$store.dispatch("deleteProfile", {
+        id: this.$route.params.id,
+        fullPath: this.$route.fullPath,
+        deleteType
+      })
     }
   },
   computed: {

@@ -14,17 +14,11 @@ export default {
     Menu,
     SearchLink,
   },
-  data() {
-    return {
-
-    };
+  created() {
+    if(localStorage.getItem("token")) {
+      this.$store.dispatch("autoLogin")
+    }
   },
-  computed: {
-
-  },
-  methods: {
-
-  }
 };
 </script>
 

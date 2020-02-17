@@ -1,8 +1,12 @@
 <template>
   <section class="pricing">
     <h3 v-if="!editable" class="section-heading">Pricing</h3>
-    <select class="edit-input">
-      <option selected disabled>Select Price Type</option>
+    <select 
+      class="edit-input" 
+      v-model="priceType"
+      v-on:change="updatePricing($event)"
+      name="priceType">
+      <option disabled>Select Price Type</option>
       <option>Open</option>
       <option>Split</option>
       <option>Fixed</option>
@@ -11,7 +15,9 @@
       type="number" 
       class="edit-input"
       v-model="price"
-      placeholder="Base price - per show"
+      placeholder="Set your base price"
+      v-on:change="updatePricing($event)"
+      name="price"
     >
   </section>
 </template>
@@ -21,17 +27,19 @@
     props: ["editable"],
     data() {
       return {
-        priceType: "Open",
-        price: null,
+        priceType: "Select Price Type",
+        price: 0,
       }
     },
-    updated() {
-      const pricingData = {
-        type: this.priceType,
-        price: this.price,
-      }
+    methods: {
+      updatePricing(e) {
+        const key = e.target.name
 
-      this.$store.commit("addVenuePricing", pricingData)
+        this.$store.commit("addPricing", {
+          key,
+          value: this[key]
+        })
+      }
     }
   }
 </script>

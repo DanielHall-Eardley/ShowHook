@@ -5,11 +5,11 @@
     <List :array="results"></List>
     <p class="error" v-if="error">{{error[0]}}</p>
     <div class="page-controls" v-if="results.length > 0">
-      <button class="primary-button" @click="incPage">
-        Next
-      </button>
       <button class="primary-button" @click="decPage">
         Back
+      </button>
+      <button class="primary-button" @click="incPage">
+        Next
       </button>
     </div>
    </div>
@@ -48,13 +48,13 @@ export default {
       this.$store.commit('updateFilterMenu', newArray)
     },
     incPage() {
-      if (this.page < this.resultsCount) {
-        page++
+      if (this.page < this.results.length) {
+        this.page++
       }
     },
     decPage() {
       if (this.page > 0) {
-        page--
+        this.page--
       }
     },
   },
@@ -77,10 +77,11 @@ export default {
   .search-container{
 
     .page-controls {
+      bottom: 0;
+      position: sticky;
       display: flex;
       justify-content: space-between;
-      padding: var(--spacing);
+      padding: 0 var(--spacing);
     }
   }
-
 </style>

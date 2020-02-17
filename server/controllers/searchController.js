@@ -10,7 +10,7 @@ exports.basicSearch = async (req, res, next) => {
     const {keyword, location, page} = req.body
 
     const filters = {}
-    const selectedFields = "title address _id "
+    const selectedFields = "title address _id type selfType"
     const paginate = {
       skip: page * 4, 
       limit: 4
@@ -24,14 +24,16 @@ exports.basicSearch = async (req, res, next) => {
       filters["address.description"] = new RegExp(location, "i")
     }
 
-    const venueResults = await Venue.find(filters, selectedFields + "pricing bannerPhoto", paginate)
+    const venueResults = Venue.find(filters, selectedFields + "price bannerPhoto", paginate)
 
-    const actResults = await Act.find(filters, selectedFields + "fee bannerPhoto", paginate)
+    const actResults = Act.find(filters, selectedFields + "price bannerPhoto", paginate)
 
-    const showResults = await Show.find(filters, selectedFields + "ticketPrice photoUrl", paginate)
+    const showResults = Show.find(filters, selectedFields + "ticketPrice photoUrl", paginate)
 
-    const results = [...actResults, ...venueResults, ...showResults]
+    const resultArrays = await Promise.all([actResults, venueResults, showResults])
 
+    const results = [...resultArrays[0], ...resultArrays[1], ...resultArrays[2],]
+    
     if(!results || !results.length) {
       errorHandler(404, ["No results found for this search"])
     }
@@ -59,8 +61,8 @@ exports.searchVenue = async (req, res, next) => {
     const filters = {}
     const selectedFields = "title address _id "
     const paginate = {
-      skip: page * 4,
-      limit: 4
+      skip: page * 12,
+      limit: 12
     }
 
     if (keyword) {
@@ -112,8 +114,8 @@ exports.searchAct = async (req, res, next) => {
     const filters = {}
     const selectedFields = "title address _id "
     const paginate = {
-      skip: page * 4,
-      limit: 4
+      skip: page * 12,
+      limit: 12
     }    
 
     if (keyword) {
@@ -169,8 +171,8 @@ exports.searchShowgoer = async (req, res, next) => {
     const filters = {}
     const selectedFields = "title address _id "
     const paginate = {
-      skip: page * 4,
-      limit: 4
+      skip: page * 12,
+      limit: 12
     }
 
     if (keyword) {

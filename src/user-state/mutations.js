@@ -100,20 +100,16 @@ export default {
     state.actData.fees[payload.name] = payload.value
     console.log (state.actData)
   },
+  addActType: (state, payload) => {
+    state.actData.type = payload
+    console.log(state.actData)
+  },
   addVenuePreferences: (state, payload) => {
     state.venueData[payload.name] = payload.value
   },
-  addVenuePricing: (state, payload) => {
-    const keys = Object.keys(payload)
-    const pricingObj = {}
-
-    keys.forEach(key => {
-      if (payload[key]) {
-        pricingObj[key] = payload[key]
-      }
-    })
-
-    state.venueData.pricing = pricingObj
+  addPricing: (state, payload) => {
+    const type = state.baseUser.userType.toLowerCase() + "Data"
+    state[type][payload.key] = payload.value
   },
   addVenueRules: (state, payload) => {
     let updatedArray = state.venueData.rules

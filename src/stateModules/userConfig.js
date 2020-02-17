@@ -75,6 +75,7 @@ const userConfig = {
       frequency: null,
       price: null,
       priceType: "Open",
+      type: null,
       rules: [],
       legalAgreement: false,
       reviews: [
@@ -104,7 +105,7 @@ const userConfig = {
       preferences: [],
       youtubeLink: "",
       soundcloudLink: "",
-      actType: null,
+      type: null,
       priceType: "Open",
       blogs: [],
       photos: [],

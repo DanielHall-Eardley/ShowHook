@@ -33,6 +33,15 @@ export default {
       resolve("Autologin sucessful")
     })
   },
+  deleteProfile: (context, payload) => {
+    const token = context.rootState.userConfig.baseUser.token
+
+    if (!token) {
+      context.dispatch("autoLogin", payload.fullPath)
+    }
+    alert(deleteFn("admin/delete-profile/" + payload.id + "/?deleteType=" + payload.deleteType, token))
+    router.push("/")
+  },
   createBlog: async (context, payload) => {
     context.commit("clearAdminErrors")
     const userId = context.rootState.userConfig.baseUser.userId
@@ -155,7 +164,7 @@ export default {
       return context.commit("updateAdminErrors", responseData)
     }
     
-    //router.go()
+    router.go()
   },
   updateAct: async (context, payload) => {
     context.commit("clearAdminErrors")

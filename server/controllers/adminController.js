@@ -31,7 +31,7 @@ exports.signUp = async (req, res, next) => {
 			name: req.body.name,
 			email: req.body.email,
 			password: hashedPassword,
-			userType: req.body.userType
+			userType: req.body.userType,
 		})
 
 		const savedUser = await user.save()
@@ -134,9 +134,9 @@ exports.createVenue = async (req, res, next) => {
 			overallRating,
 			bannerPhoto,
 			price,
-			priceType
+			priceType,
 		} = req.body.venueData
-
+		console.log(type)
 		const venue = new Venue({
 			userId: req.body.userId,
 			address: address,
@@ -155,7 +155,7 @@ exports.createVenue = async (req, res, next) => {
 			bannerPhoto: bannerPhoto,
 			shows: [],
 			priceType: priceType,
-			price: price
+			price: price,
 		})
 
 		const savedVenue = await venue.save()
@@ -378,7 +378,8 @@ exports.createAct = async (req, res, next) => {
 			reviews,
 			overallRating,
 			bannerPhoto,
-			blogs
+			blogs,
+			type
 		} = req.body.actData
 
 		const act = new Act({
@@ -399,7 +400,8 @@ exports.createAct = async (req, res, next) => {
 			overallRating: overallRating,
 			bannerPhoto: bannerPhoto,
 			shows: [],
-			blogs: blogs
+			blogs: blogs,
+			type: type
 		})
 
 		const savedAct = await act.save()
@@ -436,7 +438,7 @@ exports.getEditAct = async (req, res, next) => {
 			.populate({ path: "userId", select: ["name", "_id", "userType"] })
 
 		if (!act) {
-			errorHandler(404, ["Venue not found"])
+			errorHandler(404, ["Act not found"])
 		}
 
 		let data = act
@@ -548,6 +550,53 @@ exports.createBlog = async (req, res, next) => {
 exports.getOfferSummary = async (req, res, next) => {
 	try {
 
+	} catch (error) {
+		if (!error.status) {
+			error.status = 500;
+		}
+		next(error);
+	}
+}
+
+exports.deleteProfile = async (req, res, next) => {
+	try {
+		const deleteType = req.query.deleteType || "full"
+		const id = req.params.id
+
+		const baseProfile = await BaseUser.findOne({userData: id})
+
+		if (!baseProfile) {
+			errorHandler(500, ["Unable to retrieve your profile"])
+		}
+
+		let listingProfile;
+
+		if (baseProfile.userType.toLowerCase() === "venue") {
+			listingProfile = await Venue.findById(id)
+		}
+
+		if (baseProfile.userType.toLowerCase() === "act") {
+			listingProfile = await Act.findById(id)
+		}
+
+		if (!listingProfile) {
+			errorHandler(500, ["Unable to retrieve your listing"])
+		}
+		
+		const deleteListing = await listingProfile.remove()
+		if (deleteType === "partial") {
+			baseProfile.userData = undefined
+			baseProfile.save()
+		}
+		
+		if (deleteType === "full") {
+			const deleteProfile = await baseProfile.remove()
+		}
+
+		res.status(200).json({
+			listing: deleteListing,
+			profile: deleteProfile
+		})
 	} catch (error) {
 		if (!error.status) {
 			error.status = 500;

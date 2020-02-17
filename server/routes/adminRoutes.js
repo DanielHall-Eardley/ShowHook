@@ -119,4 +119,5 @@ router.post(
 
 router.get("/offer-summary/:id", isAuth, adminController.getOfferSummary)
 
+router.delete("delete-profile/:id", isAuth, adminController.deleteProfile)
 module.exports = router
