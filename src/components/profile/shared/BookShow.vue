@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="book-show">
+  <div class="book-show" v-if="editable === false">
     <div class="price">
       <span>${{price}}</span> 
       per night
@@ -9,7 +9,7 @@
         :shows="shows"
         :showCalender="showCalender"
         :price="price"
-        :offerReceiverId="profileId"
+        :receiverId="profileId"
         v-on:hideCalender="showCalender = false">
       </MakeOffer>
       <button @click="showCalender = true" class="primary-button">
@@ -32,7 +32,7 @@ export default {
   components:{
     MakeOffer
   },
-  props: ["price", "profileId"],
+  props: ["price", "profileId", "editable"],
   data(){
     return{
       toggleOfferForm: false,
@@ -51,11 +51,7 @@ export default {
       const user = this.$store.state.userConfig.baseUser
 
       if (!baseUser.userId) {
-        this.$router.push({
-          name: "admin",
-          query: {type: "login"},
-          params: {redirect: "conversation/" + this.venueId}
-        })
+        this.$store.dispatch("autoLogin", this.$route.fullPath)
       }
       return user
     }

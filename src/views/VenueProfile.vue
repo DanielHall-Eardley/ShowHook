@@ -14,7 +14,7 @@
         :editable="editable">
       </Title>
       <FeatureIcons 
-        :feature="venueData.venueDetails"
+        :feature="venueData"
         :editable="editable">
       </FeatureIcons>
       <About
@@ -29,7 +29,6 @@
       <VenueDetails 
         :amenitiesArray="venueData.amenities"
         :rulesArray="venueData.rules"
-        :pricingObject="venueData.pricing"
         :editable="editable"
         :suitableArray="venueData.suitableActTypes">
       </VenueDetails>
@@ -61,7 +60,8 @@
         </button>
       </div>
       <BookShow
-        :price="venueData.pricing.base"
+        :editable="editable"
+        :price="venueData.price"
         :shows="venueData.shows"
         :profileId="venueData._id">
       </BookShow>

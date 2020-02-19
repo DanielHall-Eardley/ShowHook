@@ -16,14 +16,6 @@
       </div>
     </div>
     <div class="details-category-container">
-      <h4>Pricing:</h4>
-      <div>
-        <span v-for="(price, key) in pricingObject" :key="key">
-          {{key}}: {{price}}
-        </span>
-      </div>
-    </div>
-    <div class="details-category-container">
       <h4>Rules:</h4>
       <div>
         <span v-for="rule in rulesArray">
@@ -70,7 +62,6 @@
     props: [
       "amenitiesArray", 
       "rulesArray", 
-      "pricingObject", 
       "editable",
       "suitableArray"
     ],

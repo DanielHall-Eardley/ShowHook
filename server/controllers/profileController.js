@@ -48,7 +48,7 @@ exports.getAct = async (req, res, next) => {
     let data = act
 
     if (act.reviews.length > 0) {
-      venue.overallRating = calculateRating(act.reviews)
+      act.overallRating = calculateRating(act.reviews)
       const updatedAct = await act.save()
       data = updatedAct
     }

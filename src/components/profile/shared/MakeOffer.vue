@@ -10,10 +10,10 @@
             <use xlink:href="@/assets/sprite.svg#icon-chevron-thin-left"></use>
           </svg>
           <div class="month">
-            <h4>{{getMonth.month}}, {{year}}</h4>
+            <h4>{{dateArray[selectedMonth].month}}, {{year}}</h4>
             <DateButton
-              v-for="n in getMonth.days"
-              :disable="checkDate(n, getMonth.takenDays)"
+              v-for="n in dateArray[selectedMonth].days"
+              :disable="checkDate(n, dateArray[selectedMonth].takenDays)"
               :key="n"
               :day="n"
               v-on:selectDay="selectedDay = $event"
@@ -41,7 +41,7 @@
         >
         <button 
           class="submit-offer-btn" 
-          @click="createBooking(getMonth.month)"
+          @click="createBooking(dateArray[selectedMonth].month)"
           :disabled="!selectedDay">
           Book
         </button>
@@ -57,11 +57,11 @@
     components: {
       DateButton
     },
-    props: ["shows", "showCalender", "price", "offerReceiverId"],
+    props: ["shows", "showCalender", "price", "receiverId"],
     data(){
       return{
         priceInput: 0,
-        offerType: "Act", //this.$store.state.userConfig.baseUser.userType
+        offerType: this.$store.state.userConfig.baseUser.userType,
         dateArray: [],
         year: "",
         selectedDay: null,
@@ -73,9 +73,10 @@
       //create a calender
       const startDate = new Date()
       const startMonth = parseInt(startDate.getMonth())
+      let months = startMonth + 3
       const startYear = startDate.getFullYear()
       const startDay = parseInt(startDate.toString().split(" ")[2])
-      const dateArray = []
+      const array = []
       const takenDates = {}
       
       /*this function takes the array of shows
@@ -98,16 +99,20 @@
       /*this loop creates a month object which contains the month name,
       calculates the amount of days in that month and adds an
       array of taken days if one exists for the given month*/
-      for (let i = startMonth; i < startMonth + 6; i++) {
+      for (let i = startMonth; i < months; i++) {
+        //allow for an overlap into a new year
+        if (i > 11) {
+          months = months - i
+          i = 0
+        }
+
         const month = new Date().setMonth(i)
         const monthName = new Date(month).toString().split(" ")[1] 
-        let takenDays = null
-
+        let takenDays = []
         //add array of booked dates
         if (takenDates[monthName]) {
           takenDays = [...takenDates[monthName]]
         }
-
         /*if month is first of calender, add days passed
         to array of booked dates - to be disabled*/
         if (startMonth === i) {
@@ -125,14 +130,11 @@
           days: new Date(startYear, i, 0).getDate(),
           takenDays,
         }
-        
-        dateArray.push(monthObj)
+        array.push(monthObj)
       }
-
       //update state
       this.year = startYear
-      this.dateArray = dateArray
-
+      this.dateArray = array
     },
     methods:{
       createBooking(month){
@@ -140,22 +142,15 @@
         const date = new Date(this.selectedDay + month + this.year)
         this.selectedDay = null
         this.error = null
-
-        if (this.offerType.toLowerCase() === "venue") {
-          if (!this.priceInput) {
-            return this.error = "You must include an offer of payment to book this act"
-          }
-          price = this.priceInput
-        }
   
-        if (this.offerType.toLowerCase() === "act") {
-          price = this.price
+        if (this.priceInput) {
+          price = this.priceInput
         }
 
         this.$store.dispatch("createBooking", {
           date,
           price,
-          offerReceiverId: this.offerReceiverId,
+          receiverId: this.receiverId,
           path: this.$route.fullPath
         })
 
@@ -172,7 +167,7 @@
         }
       },
       checkDate(n, takenDays) {
-        if (!takenDays) {
+        if (!takenDays.length) {
           return false
         }
 
@@ -186,11 +181,6 @@
       },
       hideCalender() {
         this.$emit("hideCalender")
-      }
-    },
-    computed: {
-      getMonth() {
-        return this.dateArray[this.selectedMonth]
       }
     }
   }

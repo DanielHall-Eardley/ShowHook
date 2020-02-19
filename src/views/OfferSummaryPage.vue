@@ -1,29 +1,62 @@
  <template lang="html">
   <section class="offer-summary">
     <Menu></Menu>
-    <div class="offer-summary-select-box">
-      <select class="offer-summary-select" v-model="selected">
-        <option value="All"  class="offer-summary-select-option">
-          All messages
-        </option>
-        <option value="Pending" class="offer-summary-select-option">
-          Pending
-        </option>
-        <option value="Accepted" class="offer-summary-select-option">
-          Accepted
-        </option>
-        <option value="Expired" class="offer-summary-select-option">
-          Expired
-        </option>
-        <option value="Rejected" class="offer-summary-select-option">
-          Rejected
-        </option>
-      </select>
+    <div class="offer-summary-received">
+      <header>
+        <h3>Received</h3>
+        <select class="offer-summary-select" v-model="receivedFilter">
+          <option value="All"  class="offer-summary-select-option">
+            All 
+          </option>
+          <option value="Pending" class="offer-summary-select-option">
+            Pending
+          </option>
+          <option value="Accepted" class="offer-summary-select-option">
+            Accepted
+          </option>
+          <option value="Expired" class="offer-summary-select-option">
+            Expired
+          </option>
+          <option value="Rejected" class="offer-summary-select-option">
+            Rejected
+          </option>
+        </select>
+      </header>
+      <OfferSummary 
+        v-for="summary in receivedArray"
+        :summary="summary"
+        :key="summary._id"
+        type="offeror">
+      </OfferSummary>
     </div>
-    <OfferSummary 
-      v-for="summary in summaryArray"
-      :summary="summary">
-    </OfferSummary>
+    <div class="offer-summary-offered">
+      <header>
+        <h3>Offered</h3>
+        <select class="offer-summary-select" v-model="offeredFilter">
+          <option value="All"  class="offer-summary-select-option">
+            All 
+          </option>
+          <option value="Pending" class="offer-summary-select-option">
+            Pending
+          </option>
+          <option value="Accepted" class="offer-summary-select-option">
+            Accepted
+          </option>
+          <option value="Expired" class="offer-summary-select-option">
+            Expired
+          </option>
+          <option value="Rejected" class="offer-summary-select-option">
+            Rejected
+          </option>
+        </select>
+      </header>
+      <OfferSummary 
+        v-for="summary in offeredArray"
+        :summary="summary"
+        :key="summary._id"
+        type="receiver">
+      </OfferSummary>
+    </div>
   </section>
 </template>
 
@@ -39,19 +72,22 @@
       const id = this.$route.params.id
 
       const token = this.$store.state.userConfig.token
-      const responseData = await getAdminDataFn("admin/offer-summary/" + id, token)
+      const responseData = await getAdminDataFn("offers-summary/" + id, token)
       
       if (responseData.messages) {
-        return this.error = responseData.messages
+        return this.receivedError = responseData.messages
       }
 
-      this.$store.commit("loadOfferData", {
+      this.$store.commit("loadOfferSummary", {
         data: responseData.offers,
       })
     },
     data(){
       return{
-        selected: "All"
+        receivedFilter: "All",
+        offeredFilter: "All",
+        receivedError: null,
+        offeredError: null
       }
     },
     components:{
@@ -59,15 +95,30 @@
       OfferSummary
     },
     computed:{
-      summaryArray(){
-        const array = this.$store.state.userConfig.offerSummary
-
-        if(this.selected.toLowerCase() === "all"){
+      receivedArray(){
+        const array = this.$store.state.userConfig.offerSummary.received
+        console.log(array)
+        if (this.receivedFilter.toLowerCase() === "all") {
           return array
         }
 
         const filteredArray = array.filter(el => {
-          if(el.status.toLowerCase() === this.selected.toLowerCase()){
+          if(el.status.toLowerCase() === this.receivedFilter.toLowerCase()){
+            return el
+          }
+        })
+
+        return filteredArray
+      },
+      offeredArray(){
+        const array = this.$store.state.userConfig.offerSummary.offered
+        console.log(array)
+        if (this.offeredFilter.toLowerCase() === "all") {
+          return array
+        }
+
+        const filteredArray = array.filter(el => {
+          if(el.status.toLowerCase() === this.offeredFilter.toLowerCase()){
             return el
           }
         })

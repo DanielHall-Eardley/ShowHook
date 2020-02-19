@@ -10,7 +10,6 @@ const Venue = Schema({
   },
   selfType: {
     type: String,
-    required: true,
     default: "venue"
   },
   address: {
@@ -18,10 +17,6 @@ const Venue = Schema({
     required: true
   },
   genres: Array,
-  venueDetails: {
-    type: Object,
-    required: true
-  },
   amenities: Array,
   suitableActTypes: Array,
   title: {
@@ -67,12 +62,19 @@ const Venue = Schema({
   bannerPhoto: {
     type: String,
   },
+  capacity: {
+    type: Number,
+    require: true
+  },
+  type: {
+    type: String,
+    required: true
+  },
+  bathrooms: Number,
+  bathroomType: String,
   shows: [
     Schema.Types.ObjectId
   ],
-  offers: [
-    Schema.Types.ObjectId
-  ]
 },
 {
   timestamps: true

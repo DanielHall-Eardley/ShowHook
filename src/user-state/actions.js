@@ -93,6 +93,7 @@ export default {
   },
   createBooking: async (context, payload) => {
     context.commit("clearAdminErrors")
+
     if (!context.rootState.userConfig.baseUser.userId) {
       context.dispatch("autoLogin", payload.path)
     }
@@ -108,14 +109,15 @@ export default {
     }
     
     const responseData = await postDataFn("admin/create-offer", offer, headers)
+    
     if (responseData.messages) {
       return context.commit("updateAdminErrors", responseData)
     }
-    console.log(responseData)
+
     router.push({
-      name: "conversation",
+      name: "offer",
       params: {
-        id: responseData.offerId
+        id: responseData.response
       }
     })
   },

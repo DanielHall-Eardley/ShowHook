@@ -60,12 +60,14 @@ const userConfig = {
         }
       ]
     },
-    offerSummary: [],
+    offerSummary: {},
     baseUser: {},
     venueData: {
       address: null,
       genres: [],
-      details: {},
+      capacity: null,
+      bathrooms: null,
+      bathroomType: null,
       amenities: [],
       photos: [],
       suitableActTypes: [],

@@ -8,7 +8,7 @@ exports.getOffer = async (req, res, next) => {
     const offerId = req.params.id.split(" ")[0]
     const userId = req.params.id.split(" ")[1]
 
-    const offer = await Offer.findById(offerId)
+    const offer = await Offer.find({_id: offerId})
 
     if (!offer) {
       errorHandler(404, ["Your offer could not be found"])
@@ -19,6 +19,31 @@ exports.getOffer = async (req, res, next) => {
     }
 
     res.status(200).json({ offer: offer })
+  } catch (error) {
+    if (!error.status) {
+      error.status = 500
+    }
+    next(error)
+  }
+}
+
+exports.getOffersSummary = async (req, res, next) => {
+  try {
+    const id = req.params.id
+
+    const receivedOffersPromise = Offer.find({receiverId: id}) 
+
+    const offersPromise = Offer.find({offerorId: id})
+
+    const result = await Promise.all([receivedOffersPromise, offersPromise])
+
+    const offers = {received: result[0], offered: result[1]}
+
+    if (!offers.offered || !offers.received) {
+      errorHandler(404, ["No offers found"])
+    }
+
+    res.status(200).json({ offers: offers })
   } catch (error) {
     if (!error.status) {
       error.status = 500

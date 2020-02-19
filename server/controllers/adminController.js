@@ -121,7 +121,10 @@ exports.createVenue = async (req, res, next) => {
 
 		const {
 			address,
-			details,
+			type,
+			capacity,
+			bathrooms,
+			bathroomType,
 			amenities,
 			suitableActTypes,
 			title,
@@ -136,11 +139,10 @@ exports.createVenue = async (req, res, next) => {
 			price,
 			priceType,
 		} = req.body.venueData
-		console.log(type)
+		
 		const venue = new Venue({
 			userId: req.body.userId,
 			address: address,
-			venueDetails: details,
 			amenities: amenities,
 			suitableActTypes: suitableActTypes,
 			title: title,
@@ -156,6 +158,10 @@ exports.createVenue = async (req, res, next) => {
 			shows: [],
 			priceType: priceType,
 			price: price,
+			capacity: capacity,
+			bathrooms: bathrooms,
+			type: type,
+			bathroomType: bathroomType,
 		})
 
 		const savedVenue = await venue.save()
@@ -263,67 +269,68 @@ exports.editVenue = async (req, res, next) => {
 exports.createOffer = async (req, res, next) => {
 	try {
 		checkForValidationErr(req)
+
+		const populate = {
+			populate: {
+				path: "userData",
+				select: ["title", "overallRating", "price"]
+			}
+		}
 		
-		const offeror = await BaseUser.findById(req.body.offerorId)
+		const offerorPromise = BaseUser.findById(req.body.offerorId, "name userType", populate)
+		const receiverPromise = BaseUser.findOne({userData: req.body.receiverId}, "name userType", populate)
+
+		const result = await Promise.all([offerorPromise, receiverPromise])
+
+		const [receiver, offeror] = result
 		
-		if (!offeror) {
-			errorHandler(404, ["Your profile could not be found"])
+		if (!offeror.userData || !receiver.userData) {
+			errorHandler(404, ["The was a problem retrieving the profiles"])
 		} 
 
+		if (offeror._id === receiver._id) {
+			errorHandler(401, ["You cannot book any act or venues that are associated with your profile"])
+		}
+
 		const checkForDuplicateOffer = await Offer.findOne({ 
-			offerorId: req.body.offerorId,
+			offerorId: offeror._id,
+			receiverId: receiver._id,
 			bookingDate: req.body.date
 		})
 
 		if (checkForDuplicateOffer) {
 			errorHandler(401, ["You have already created a booking for this date"])
 		}
-		
-		if (offeror.userData && offeror.userData.toString() === req.body.offerReceiverId) {
-			errorHandler(401, ["You cannot book any act or venues that are associated with your profile"])
-		}
 
-		let receiver;
-		let price = req.body.price
-		if (offeror.userType === "Act") {
-			receiver = await Venue.findById(req.body.offerReceiverId)
-				.populate({ path: "userId", select: ["name"]})
+		let price = receiver.userData.price
 
-			if (!receiver) {
-				errorHandler(404, ["The place or act you are trying to book could not be found"])
-			}
-			
-			price = receiver.pricing.base
-		}else {
-			receiver = await Act.findById(req.body.offerReceiverId)
-				.populate({ path: "userId", select: ["name"]})
-
-			if (!receiver) {
-				errorHandler(404, ["The place or act you are trying to book could not be found"])
-			}
+		if (parseInt(req.body.price)) {
+			price = req.body.price
 		}
 		
 		const offer = new Offer({
 			offerorId: offeror._id,
-			receiverId: receiver.userId._id,
-			offerorContact: offeror.name,
-			receiverContact: receiver.userId.name,
-			receiver: receiver.title,
-			offeror: "Title of act or venue populated from offerors userData",
+			offerorName: offeror.name,
+			offerorType: offeror.userType,
+			offerorTitle: offeror.userData.title,
+			offerorRating: offeror.userData.overallRating,
+			receiverId: receiver._id,
+			receiverName: receiver.name,
+			receiverType: receiver.userType,
+			receiverTitle: receiver.userData.title,
+			receiverRating: receiver.userData.overallRating,
 			bookingDate: req.body.date,
 			price: price,
 			status: "Pending"
 		})
 
 		const savedOffer = await offer.save()
+
 		if (!savedOffer) {
 			errorHandler(500, ["There was a problem creating your offer"])
 		}
 
-		receiver.offers.push(savedOffer._id)
-		receiver.save()
-
-		res.status(200).json({offerId: savedOffer._id})
+		res.status(200).json({response: savedOffer._id})
 	} catch (error) {
 		if (!error.status) {
 			error.status = 500;

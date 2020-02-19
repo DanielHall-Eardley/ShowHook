@@ -5,7 +5,7 @@
     </h3>
     <div class="venue-details-form">
       <select class="edit-input" v-model="venueType">
-        <option disabled value="">Choose your venue type</option>
+        <option selected disabled>Choose your venue type</option>
         <option>Bar</option>
         <option>Shared Space</option>
         <option>Private Space</option>
@@ -59,7 +59,7 @@
 export default {
   data() {
     return {
-      venueType: "",
+      venueType: "Choose Your Venue Type",
       guestLimit: null,
       numberOfBathrooms: null,
       bathroomType: null
@@ -70,10 +70,10 @@ export default {
   },
   methods: {
     addVenueDetails() {
-      let venueDetails = {
-        venueType: this.venueType,
-        guestLimit: this.guestLimit,
-        numberOfBathrooms: this.numberOfBathrooms,
+      const venueDetails = {
+        type: this.venueType,
+        capacity: this.guestLimit,
+        bathrooms: this.numberOfBathrooms,
         bathroomType: this.bathroomType
       }
 
@@ -92,8 +92,6 @@ export default {
     }
 
     select, input {
-      width: 50%;
-      height: 4rem; 
       font-size: 1.8rem;
     }
 

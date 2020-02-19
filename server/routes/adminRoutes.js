@@ -30,24 +30,13 @@ router.post(
   isAuth, 
   [
     body("venueData.address", "Address cannot be empty").custom(checkForFalse),
-    body("venueData.details", "All venue details must be added").custom((value, {req}) => {
-      const keyArray = Object.keys(value)
- 
-      for (let key of keyArray) {
-        if (value[key].length < 1 || !value[key]) {
-          return false
-        }
-      }
-
-      return true
-    }),
     body("venueData.title", "These venue details are required").custom(checkForFalse).trim(),
     body("venueData.description", "These venue details are required").custom(checkForFalse),
     body("venueData.frequency", "Your frequency preference and experience level are required").custom(checkForFalse),
     body("venueData.experience", "Your frequency preference and experience level are required").custom(checkForFalse),
     body("venueData.price", "A payment type and base rate must be selected").isLength({ min: 2 }),
-    body("venueData.details.venueType", "These venue details are required").custom(checkForFalse),
-    body("venueData.details.guestLimit", "These venue details are required").isInt(),
+    body("venueData.type", "These venue details are required").custom(checkForFalse),
+    body("venueData.capacity", "These venue details are required").isInt(),
     body("venueData.legalAgreement", "You must confirm that you accept the Terms of Service").custom(checkForFalse)
   ], 
   adminController.createVenue

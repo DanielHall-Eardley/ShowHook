@@ -10,7 +10,7 @@ exports.basicSearch = async (req, res, next) => {
     const {keyword, location, page} = req.body
 
     const filters = {}
-    const selectedFields = "title address _id type selfType"
+    const selectedFields = "title address _id type selfType "
     const paginate = {
       skip: page * 4, 
       limit: 4
@@ -59,7 +59,7 @@ exports.searchVenue = async (req, res, next) => {
     } = req.body
 
     const filters = {}
-    const selectedFields = "title address _id "
+    const selectedFields = "title address _id type selfType price bannerPhoto"
     const paginate = {
       skip: page * 12,
       limit: 12
@@ -74,17 +74,17 @@ exports.searchVenue = async (req, res, next) => {
     }
 
     if (priceRange.max) {
-      filters["fee"] = {
+      filters["price"] = {
         $gte: priceRange.min || 0,
         $lt: priceRange.max
       }
     }
 
     if (actFilters.length > 0) {
-      filters["actDetails.actType"] = { $in: actFilters }
+      filters["actDetails.type"] = { $in: actFilters }
     } 
 
-    const actResults = await Act.find(filters, selectedFields + "bannerPhoto fees", paginate)
+    const actResults = await Act.find(filters, selectedFields, paginate)
 
     if (!actResults || actResults.length < 1) {
       errorHandler(404, ["No results found for this search"])

@@ -61,7 +61,8 @@
           Save changes
         </button>
       </div>
-      <BookShow
+      <BookShow 
+        :editable="editable"
         :price="actData.price"
         :shows="actData.shows"
         :profileId="actData._id">

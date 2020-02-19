@@ -15,6 +15,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.address)
     fetch("http://localhost:3000/google-api/map", {
       method: "GET",
     })
@@ -22,7 +23,12 @@ export default {
       return res.json()
     })
     .then(resData => {
+      if (document.getElementById("map-api")){
+        return
+      }
+
       const script = document.createElement("script")
+      script.id = "map-api"
       script.innerHTML = resData.api
       document.body.append(script)
     })

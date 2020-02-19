@@ -4,6 +4,9 @@ export default {
   loadProfileData: (state, payload) => {
     state[payload.profileType] = payload.data
   },
+  loadOfferSummary: (state, payload) => {
+    state.offerSummary = payload.data
+  },
   updateBannerPhoto: (state, payload) => {
     state.venueData.bannerPhoto = payload
   },
@@ -45,7 +48,10 @@ export default {
     state.venueData.amenities = amenitiesArray
   },
   addVenueDetails: (state, payload) => {
-    state.venueData.details = payload
+    state.venueData.type = payload.type
+    state.venueData.bathrooms = payload.bathrooms
+    state.venueData.bathroomType = payload.bathroomType
+    state.venueData.capacity = payload.capacity
   },
   addAddress: (state, payload) => {
     const type = state.baseUser.userType.toLowerCase() + "Data"
@@ -276,8 +282,5 @@ export default {
     }
 
     state[type][key] = value
-  },
-  loadOfferConversation: (state, payload) => {
-    state.offer = payload.offer
   }
 }
