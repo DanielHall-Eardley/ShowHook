@@ -10,8 +10,9 @@ export default {
   updateBannerPhoto: (state, payload) => {
     state.venueData.bannerPhoto = payload
   },
-  addOffer: (state, payload) => {
-    state.user.offers = [...state.user.offers, payload];
+  loadOffer: (state, payload) => {
+    state.offer = {...state.offer, ...payload.offer}
+    state.showSetup = payload.show
   },
   getVideo: state => {
     fetch(
@@ -190,18 +191,6 @@ export default {
     state.actData.description = payload.bio
     state.actData.title = payload.title
   },
-  updateShow: (state, payload) => {
-    let arr = state.user.shows;
-    let shows = arr.map(show => {
-      if (show.id === payload.id) {
-        return Object.assign(show, { [payload.name]: payload.value });
-      } else {
-        return show;
-      }
-    });
-    console.log(shows);
-    state.user.shows = shows;
-  },
   updateOffer: (state, payload) => {
     state.offer[payload.name] = payload.value;
   },
@@ -244,6 +233,12 @@ export default {
   },
   clearAdminErrors: state => {
     state.adminErrors = null;
+  },
+  updateError: (state, payload) => {
+    state.error = payload.messages;
+  },
+  clearError: state => {
+    state.error = null;
   },
   logout: state => {
     console.log("logged out")

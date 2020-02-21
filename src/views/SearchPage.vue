@@ -2,8 +2,8 @@
   <div class="search-container">
     <Menu></Menu>
     <Filters :userType="userType" :page="page"></Filters>
+    <Error errorType="error"></Error>
     <List :array="results"></List>
-    <p class="error" v-if="error">{{error[0]}}</p>
     <div class="page-controls" v-if="results.length > 0">
       <button class="primary-button" @click="decPage">
         Back
@@ -19,13 +19,21 @@
 import Filters from '@/components/search/filters/Filters.vue'
 import List from '@/components/search/List.vue'
 import Menu from '@/components/shared/Menu.vue'
+import Error from '@/components/shared/Error.vue'
 
 export default {
+  async created () {
+    const token = localStorage.getItem("token") 
+    if (token) {
+      await this.$store.dispatch("autoLogin", this.$route.fullPath)
+    }
+  },
   components:{
     Filters,
     Map,
     List,
-    Menu
+    Menu,
+    Error
   },
   data() {
     return { 
@@ -63,7 +71,7 @@ export default {
       return this.$store.state.userConfig.baseUser.userType
     },
     error() {
-      return this.$store.state.appConfig.searchError
+      return this.$store.state.userConfig.error
     },
     results() {
       return this.$store.state.appConfig.searchResults

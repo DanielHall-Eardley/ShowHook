@@ -217,8 +217,9 @@
 
   .error {
     background-color: red;
+    display: block;
     color: white;
     text-align: center;
-    padding: var(--spacing);
-    font-size: 2rem;
+    padding: var(--alt-spacing);
+    font-size: 1.6rem;
   }

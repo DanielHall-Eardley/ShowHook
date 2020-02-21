@@ -116,10 +116,11 @@ export default {
   async created() {
     await this.$store.dispatch("autoLogin", this.$route.fullPath)
     const id = this.$route.params.id
+    const idType = this.$route.query.idType
 
-    if (this.$route.query.searchType === "userId") {
+    if (this.$route.name === "admin-act") {
       const token = this.$store.state.userConfig.token
-      const responseData = await getAdminDataFn("admin/act/" + id, token)
+      const responseData = await getAdminDataFn(`admin/act/${id}?idType=${idType}`, token)
       this.editable = true
       if (responseData.messages) {
         return this.error = responseData.messages
@@ -131,7 +132,7 @@ export default {
       })
     }
 
-    const responseData = await getDataFn("act/" + id)
+    const responseData = await getDataFn(`act/${id}?idType=${idType}`)
     if (responseData.messages) {
       return this.error = responseData.messages
     }

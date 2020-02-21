@@ -1,135 +1,69 @@
 <template lang="html">
-  <section class="messages">
-    <div class="messages-normal" v-for="message in messages">
-      <figure class="messages-normal-box">
-      <img :src="message.pic" alt="Profile picture" class="messages-normal-pic">
-      </figure>
-      <p class="messages-normal-text"
-        :class="message.messageType === 'receiver' ? 'receiver' : 'sender'">
-        {{message.text}}
-      </p>
-    </div>
-    <div class="messages-special">
-      <h3 class="messages-special-heading">
-        Confirmed {{offer.receiver}} arrives on {{offer.date}}
-      </h3>
-      <p class="messages-special-text">
-        Be sure to message {{offer.receiver}} with promotions with updates
-      </p>
-      <button class="messages-special-change">
-        Change or Cancel
-      </button>
-      <button class="messages-special-link">
-        Event Page
-      </button>
-    </div>
-    <div class="messages-special">
-      <h3 class="messages-special-heading">
-        (name) sent you Counter updateOffer
-      </h3>
-      <p class="messages-special-text">
-        You have 24 hours to review this new offer
-      </p>
-      <button class="messages-special-change">
-        Send Counter Offer
-      </button>
-      <button class="messages-special-link">
-        Accept
-      </button>
+  <section class="message-list">
+    <div 
+      class="message" 
+      v-for="message in array"
+      :class="{
+        'highlight-offeror': checkId(message.userId, 'offerorId'), 
+        'highlight-receiver': checkId(message.userId, 'receiverId')
+      }">
+      <h4>{{message.name}}</h4>
+      <p>{{message.content}}</p>
+      <span>{{formatDate(message.createdAt)}}</span> 
     </div>
   </section>
 </template>
 
 <script>
-export default {
-  computed: {
-    messages(){
-      return this.$store.state.userConfig.messageArray
-    },
-    offer(){
-      return this.$store.state.userConfig.offer
-    },
-  },
-  methods:{
+  export default {
+    props: ["array", "offerorId", "receiverId"],
+    methods: {
+      formatDate(date) {
+        const options = {
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: "numeric",
+            minute: "numeric"
+          }
+        
+        return new Date(date).toLocaleString("en-CA", options)
+      },
+      checkId(id, type) {
+        if (id === this[type]) {
+          return true
+        }
 
+        return false
+      },
+    }
   }
-}
 </script>
 
 <style lang="scss">
-@import "@/globalStyles/variables.scss";
-@import "@/globalStyles/mixins.scss";
+  @import "@/globalStyles/variables.scss";
 
-  .messages{
-    grid-column: message-start / message-end;
-    grid-row: 1 / -1;
-    background-color: white;
-    padding: var(--spacing) 10rem;;
+  .message-list {
+    padding: var(--spacing);
     border-left: var(--light-border);
 
-    &-normal{
-      display: flex;
-      margin-bottom: 5rem;
-      &-box{
-        height: 8rem;
-      }
-
-      &-pic{
-        height: 100%;
-        display: block;
-        object-fit: cover;
-        border-radius: 50%;
-      }
-
-      &-text{
-        width: 80%;
-        padding: var(--spacing);
-
-        border: solid .5px var(--secondary-one);
-        border-radius: var(--border-radius);
-      }
-
-      .sender{
-        margin-left: auto;
-        background-color: rgba($secondary-one, .3);
-      }
-
-      .receiver{
-        margin-right: auto;
-        order: -1;
-        border: solid .5px var(--secondary-four);
-        background-color: rgba($secondary-four, .3);
-      }
-    }
-
-    &-special{
-      border-radius: var(--border-radius);
-      border: solid .5px var(--primary);
-      padding: var(--spacing);
-      margin-bottom: 5rem;
-
+    .message {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-row-gap: var(--spacing);
-      grid-column-gap: var(--spacing);
-      &-heading{
-        grid-column: 1 / -1;
-      }
+      grid-row-gap: var(--alt-spacing);
+      padding: var(--alt-spacing);
+      border-radius: var(--border-radius);
 
-      &-link{
-        grid-row: 3 / 4;
-        ;
+      span {
+        justify-self: end;
       }
+    };
+  }
 
-      &-change{
-        grid-row: 3 / 4;
-        ;
-      }
+  .highlight-offeror {
+    background-color: lightblue;
+  }
 
-      &-text{
-        grid-column: 1 / -1;
-        grid-row: 2 / 3;
-      }
-    }
+  .highlight-receiver {
+    background-color: lightseagreen;
   }
 </style>

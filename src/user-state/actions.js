@@ -121,6 +121,60 @@ export default {
       }
     })
   },
+  updateOffer: async (context, payload) => {
+    context.commit("clearError")
+    const userId = context.rootState.userConfig.baseUser.userId
+
+    if (!userId) {
+      context.dispatch("autoLogin", payload.path)
+    }
+
+    const body = JSON.stringify({
+      status: payload.status,
+      offerId: payload.offerId,
+      userId: userId
+    })
+
+    const headers = {
+      "Authorization": "Bearer " + context.rootState.userConfig.token,
+      "Content-Type": "application/json"
+    }
+
+    const responseData = await postDataFn("update-offer-status", body, headers, "PUT")
+
+    if (responseData.messages) {
+      return context.commit("updateError", responseData)
+    }
+
+    context.commit("loadOffer", responseData)
+  },
+  deleteOffer: async (context, payload) => { 
+    context.commit("clearError")
+    const userId = context.rootState.userConfig.baseUser.userId
+
+    if (!userId) {
+      context.dispatch("autoLogin", payload.path)
+    }
+
+    const body = JSON.stringify({
+      offerId: payload.offerId,
+      userId: userId,
+    })
+
+    const headers = {
+      "Authorization": "Bearer " + context.rootState.userConfig.token,
+      "Content-Type": "application/json"
+    }
+
+    const responseData = await postDataFn("delete-offer", body, headers, "DELETE")
+
+    if (responseData.messages) {
+      return context.commit("updateError", responseData.messages)
+    }
+
+    alert(responseData.response)
+    router.push("/")
+  },
   updateVenue: async (context, payload) => {
     context.commit("clearAdminErrors")
     const userId = context.rootState.userConfig.baseUser.userId

@@ -23,6 +23,13 @@
   .select-day-btn {
     padding: .5rem 0;
     border: none;
+    outline: none;
+    transition: all .2s;
+
+    &:focus {
+      background-color: var(--primary);
+      color: white;
+    }
   }
 
   .highlight {

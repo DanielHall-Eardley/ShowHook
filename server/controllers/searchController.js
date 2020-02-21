@@ -112,7 +112,7 @@ exports.searchAct = async (req, res, next) => {
     } = req.body
 
     const filters = {}
-    const selectedFields = "title address _id "
+    const selectedFields = "title address _id price type selfType bannerPhoto"
     const paginate = {
       skip: page * 12,
       limit: 12
@@ -141,7 +141,7 @@ exports.searchAct = async (req, res, next) => {
       filters["venueDetails.venueType"] = { $in: venueFilters }
     } 
 
-    const venueResults = await Venue.find(filters, selectedFields + "bannerPhoto pricing", paginate)
+    const venueResults = await Venue.find(filters, selectedFields, paginate)
 
     if (!venueResults) {
       errorHandler(404, ["No results found for this search"])

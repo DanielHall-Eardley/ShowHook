@@ -7,59 +7,20 @@ const userConfig = {
     token: null,
     selectedBlog: null,
     offer: {
-      offeror: "",
-      receiver: "",
+      offerorId: null,
+      receiverId: null,
+      offerorName: "",
+      offerorTitle: "",
+      offerorRating: "",
+      receiverName: "",
+      receiverTitle: "",
+      receiverRating: "",
       bookingDate: "",
-      paymentType: "guarantee",
       price: 0,
-      status: null,
-      actPercentage: 50,
-      venuePercentage: 50,
-      backline: "What are you supplying?",
-      merchSeller: "Venue",
-      merchPercentageArtist: 40,
-      merchPercentageVenue: 60,
-      accomodationProvider: "Venue",
-      venueAccRoom: 0,
-      venueAccAddress: null,
-      travelProvider: "Artist",
-      travelExpenses: 0,
-      venueGuestList: 0,
-      artistGuestList: 0,
-      conditionText: "Add a condition, upload a rider, a stage plot",
-      schedule: [
-        {
-          task: "Load In",
-          start: "Not Selected",
-          end: "Not Selected"
-        },
-        {
-          task: "Sound Check",
-          start: "Not Selected",
-          end: "Not Selected"
-        },
-        {
-          task: "Doors Open",
-          start: "Not Selected",
-          end: "Not Selected"
-        },
-        {
-          task: "Opener Set Time",
-          start: "Not Selected",
-          end: "Not Selected"
-        },
-        {
-          task: "Artist Set Time",
-          start: "Not Selected",
-          end: "Not Selected"
-        },
-        {
-          task: "Load Out",
-          start: "Not Selected",
-          end: "Not Selected"
-        }
-      ]
+      status: "Pending",
+      messageArray: [],
     },
+    showSetup: {},
     offerSummary: {},
     baseUser: {},
     venueData: {
@@ -137,6 +98,7 @@ const userConfig = {
     },
     newShowData: {},
     adminErrors: null,
+    error: null
   },
   getters,
   mutations,

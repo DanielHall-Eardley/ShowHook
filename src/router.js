@@ -13,7 +13,7 @@ import SearchPage from './views/SearchPage.vue'
 import AboutHowTo from './views/AboutHowTo.vue'
 import ShowDetails from './views/ShowDetails.vue'
 import PageNotFound from './views/PageNotFound.vue'
-import Offer from './views/Offer.vue'
+import OfferPage from './views/OfferPage'
 import ReadBlog from './views/ReadBlog.vue'
 import OfferSummaryPage from './views/OfferSummaryPage.vue'
 
@@ -53,13 +53,18 @@ export default new Router({
     },
     {
       path: '/admin/venue/:id',
-      name: "venue",
+      name: "admin-venue",
       component: VenueProfile
     },
     {
       path: '/venue/:id',
       name: "venue",
       component: VenueProfile
+    },
+    {
+      path: '/admin/act/:id',
+      name: "admin-act",
+      component: ActProfile
     },
     {
       path: '/act/:id',
@@ -94,7 +99,7 @@ export default new Router({
     {
       path: "/offer/:id",
       name: "offer",
-      component: Offer,
+      component: OfferPage,
     },
     {
       path: "/offer-summary/:id",

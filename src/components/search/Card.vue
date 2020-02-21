@@ -31,6 +31,9 @@
           name: this.data.selfType, 
           params:{
             id: this.data._id
+          },
+          query: {
+            idType: "_id"
           }
         })
       }

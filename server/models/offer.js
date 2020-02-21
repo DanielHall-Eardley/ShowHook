@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose")
+const Message = require("./message")
 
 const Offer = Schema({
   offerorId: {
@@ -18,6 +19,14 @@ const Offer = Schema({
     type: String,
     required: true
   },
+  offerorType: {
+    type: String,
+    required: true
+  },
+  offerorStatus: {
+    type: String,
+    default: "Negotiating"
+  },
   receiverId: {
     type: Schema.Types.ObjectId,
     ref: "BaseUser",
@@ -35,6 +44,14 @@ const Offer = Schema({
     type: String,
     required: true
   },
+  receiverStatus: {
+    type: String,
+    default: "Pending"
+  },
+  receiverType: {
+    type: String,
+    required: true
+  },
   bookingDate: {
     type: Date,
     required: true
@@ -48,9 +65,12 @@ const Offer = Schema({
     required: true
   },
   mostRecentMessage: String,
-  messageArray: {
+  messageArray: [
+    Message
+  ],
+  show: {
     type: Schema.Types.ObjectId,
-    ref: "MessageArray"
+    ref: "Show"
   }
 },
 {

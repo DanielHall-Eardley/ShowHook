@@ -1,4 +1,4 @@
-const Schema = require("mongoose").Schema
+const {Schema} = require("mongoose")
 
 const Message = Schema({
   userId: {

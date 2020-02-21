@@ -6,11 +6,12 @@ const paginate = require("../helper/paginate")
 
 exports.getVenue = async (req, res, next) => {
   try {
-    const venueId = req.params.id
+    const id = req.params.id
+    const idType = req.query.idType || "_id"
 
-    const venue = await Venue.findById(venueId)
+    venue = await Venue.findOne({[idType]: id})
       .populate({ path: "userId", select: ["name", "_id", "userType"] })
-    
+    console.log(venue)
     if (!venue) {
       errorHandler(404, ["Venue not found"])
     }
@@ -36,9 +37,10 @@ exports.getVenue = async (req, res, next) => {
 
 exports.getAct = async (req, res, next) => {
   try {
-    const actId = req.params.id
+    const id = req.params.id
+    const searchType = req.query.idType || "_id"
 
-    const act = await Act.findById(actId)
+    const act = await Act.findOne({[searchType]: id })
       .populate({ path: "userId", select: ["name", "_id", "userType"] })
 
     if (!act) {

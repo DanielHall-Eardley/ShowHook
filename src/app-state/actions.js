@@ -82,7 +82,7 @@ export default {
     context.commit("resetEdit")
   },
   searchResults: async (context, payload) => {
-    context.commit("clearSearchError")
+    context.commit("clearError")
 
     const headers = {
       "Content-Type": "application/json"
@@ -100,14 +100,14 @@ export default {
     const responseData = await postDataFn("search", query, headers)
 
     if (responseData.messages) {
-      return context.commit("searchError", responseData)
+      return context.commit("updateError", responseData)
     }
     console.log(responseData)
     context.commit("updateSearchResults", responseData)
     context.commit("resetSearchQuery")
   },
   refinedSearchResults: async (context, payload) => {
-    context.commit("clearSearchError")
+    context.commit("clearError")
     
     const token = context.rootState.userConfig.token
     const userType = context.rootState.userConfig.baseUser.userType
@@ -125,7 +125,7 @@ export default {
     const responseData = await postDataFn("search/" + userType.toLowerCase(), query, headers)
 
     if (responseData.messages) {
-      return context.commit("searchError", responseData)
+      return context.commit("updateError", responseData)
     }
     console.log(responseData)
 

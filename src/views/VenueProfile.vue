@@ -72,9 +72,6 @@
   </section>
 </template>
 
-
-
-
 <script>
 import Title from "@/components/profile/shared/Title"
 import About from "@/components/profile/shared/About.vue"
@@ -116,10 +113,11 @@ export default {
   async created() {
     await this.$store.dispatch("autoLogin", this.$route.fullPath)
     const id = this.$route.params.id
+    const idType = this.$route.query.idType
 
-    if (this.$route.query.searchType === "userId") {
+    if (this.$route.name === "admin-venue") {
       const token = this.$store.state.userConfig.token
-      const responseData = await getAdminDataFn("admin/venue/" + id, token)
+      const responseData = await getAdminDataFn(`admin/venue/${id}?idType=${idType}`, token)
       this.editable = true
       if (responseData.messages) {
         return this.error = responseData.messages
@@ -137,7 +135,7 @@ export default {
     }
 
     this.$store.commit("loadProfileData", {
-      data: responseData.data.venue,
+      data: responseData.venue,
       profileType: "venueData"
     })
   },

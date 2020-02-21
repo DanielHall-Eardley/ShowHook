@@ -58,16 +58,17 @@
         const type = this.user.userType.toLowerCase()
     
         this.$router.push({
-          name: type,
+          name: "admin-" + type,
           params: {
             id: this.user.userId
           },
           query: {
-            searchType: "userId"
+            idType: "userId"
           }
         })
       },
       logout() {
+        this.$router.push("/")
         this.$store.commit("logout")
       },
       routeLink(){

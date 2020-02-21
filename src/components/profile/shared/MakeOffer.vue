@@ -29,18 +29,23 @@
       </div>
       <p class="error" v-if="error">{{error}}</p>
       <div class="submit-offer-container">
-        <button class="back-btn" @click="hideCalender">
-          Back
-        </button>
+        <textarea 
+          class="edit-input"
+          placeholder="Add an introductory message"
+          v-model="message">
+        </textarea>
         <input 
           v-model="priceInput"
-          placeholder="Enter offer"
+          placeholder="Enter an offer"
           type="number"
           class="edit-input"
           v-if="offerType.toLowerCase() === 'venue'"
         >
+        <button class="alt-button" @click="hideCalender">
+          Back
+        </button>
         <button 
-          class="submit-offer-btn" 
+          class="primary-button" 
           @click="createBooking(dateArray[selectedMonth].month)"
           :disabled="!selectedDay">
           Book
@@ -59,8 +64,9 @@
     },
     props: ["shows", "showCalender", "price", "receiverId"],
     data(){
-      return{
-        priceInput: 0,
+      return {
+        message: "",
+        priceInput: null,
         offerType: this.$store.state.userConfig.baseUser.userType,
         dateArray: [],
         year: "",
@@ -150,6 +156,7 @@
         this.$store.dispatch("createBooking", {
           date,
           price,
+          message: this.message,
           receiverId: this.receiverId,
           path: this.$route.fullPath
         })
@@ -187,7 +194,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "@/globalStyles/mixins";
+  @import "@/globalStyles/helper";
 
   .booking-form {
     background-color: white;
@@ -211,7 +218,7 @@
 
     .select-date-container {
       display: flex;
-    
+
       svg {
         height: 4rem;
         width: 4rem;
@@ -243,18 +250,16 @@
 
   .submit-offer-container {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-    .submit-offer-btn {
-      ;
-      margin-left: auto;
-    }
-
-    .back-btn {
-      ;
+    textarea {
+      height: 15vh;
+      margin-bottom: var(--alt-spacing);
     }
 
     input {
-      margin: 0 var(--spacing);
+      margin-bottom: var(--alt-spacing);
     }
   }
 

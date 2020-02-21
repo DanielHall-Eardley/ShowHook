@@ -2,6 +2,7 @@ const BaseUser = require("../models/baseUser")
 const Venue = require("../models/venue")
 const Offer = require("../models/offer")
 const Act = require("../models/act")
+const Message = require("../models/message")
 
 const { validationResult } = require("express-validator")
 const errorHandler = require("../helper/errorHandler")
@@ -192,9 +193,10 @@ exports.createVenue = async (req, res, next) => {
 
 exports.getEditVenue = async (req, res, next) => {
 	try  {
-		const userId = req.params.id
+		const id = req.params.id
+		const idType = req.query.idType || "_id"
 
-		const venue = await Venue.findOne({userId: userId})
+		const venue = await Venue.findOne({[idType]: id})
 		.populate({path: "userId", select: ["name", "_id", "userType"]})
 	
 		if (!venue) {
@@ -282,12 +284,12 @@ exports.createOffer = async (req, res, next) => {
 
 		const result = await Promise.all([offerorPromise, receiverPromise])
 
-		const [receiver, offeror] = result
+		const [offeror, receiver] = result
 		
 		if (!offeror.userData || !receiver.userData) {
 			errorHandler(404, ["The was a problem retrieving the profiles"])
 		} 
-
+		console.log(offeror._id, receiver._id)
 		if (offeror._id === receiver._id) {
 			errorHandler(401, ["You cannot book any act or venues that are associated with your profile"])
 		}
@@ -307,6 +309,14 @@ exports.createOffer = async (req, res, next) => {
 		if (parseInt(req.body.price)) {
 			price = req.body.price
 		}
+
+		let messageContent = req.body.message || "Hi, lets talk about a potential booking"
+
+		const message = {
+			userId: offeror._id,
+			name: offeror.name,
+			content: messageContent
+		}
 		
 		const offer = new Offer({
 			offerorId: offeror._id,
@@ -321,8 +331,11 @@ exports.createOffer = async (req, res, next) => {
 			receiverRating: receiver.userData.overallRating,
 			bookingDate: req.body.date,
 			price: price,
-			status: "Pending"
+			status: "Pending",
+			mostRecentMessage: message.content,
 		})
+
+		offer.messageArray.push(message)
 
 		const savedOffer = await offer.save()
 
@@ -439,9 +452,10 @@ exports.createAct = async (req, res, next) => {
 
 exports.getEditAct = async (req, res, next) => {
 	try {
-		const userId = req.params.id
+		const id = req.params.id
+		const idType = req.query.idType || "_id"
 
-		const act = await Act.findOne({ userId: userId })
+		const act = await Act.findOne({[idType]: id })
 			.populate({ path: "userId", select: ["name", "_id", "userType"] })
 
 		if (!act) {

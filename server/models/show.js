@@ -1,9 +1,16 @@
 const {Schema, model} = require("mongoose")
 
 const ShowSchema = Schema({
-  title: {
+  actTitle: {
     type: String,
     required: true
+  },
+  venueTitle: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
   },
   selfType: {
     type: String,
@@ -16,15 +23,12 @@ const ShowSchema = Schema({
   },
   description: {
     type: String,
-    required: true
   },
   genre: {
     type: String,
-    required: true
   },
   photoUrl:{
     type: String,
-    required: true
   },
   showDate:{
     type: Date,
@@ -41,7 +45,6 @@ const ShowSchema = Schema({
   },
   ticketPrice: {
     type: Number,
-    required: true
   },
   numberOfTickets: {
     type: Number,
@@ -49,7 +52,6 @@ const ShowSchema = Schema({
   },
   schedule: {
     type: Object,
-    required: true
   },
   actProfits: Number,
   venueProfits: Number,

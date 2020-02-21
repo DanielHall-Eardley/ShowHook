@@ -1,66 +1,23 @@
 <template lang="html">
   <section class="general">
     <h2 class="subheading">
-      <span>Payment Type</span>
-      <svg v-if="!showSection" @click="toggleExpand">
+      <span>General</span>
+      <svg v-if="!showSection" @click="showSection = !showSection">
         <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
       </svg>
-      <svg v-else @click="toggleExpand">
+      <svg v-else @click="showSection = !showSection">
         <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
       </svg>
     </h2>
-
     <div class="expand-container" v-show="showSection">
-      <div class="general-payment-type">
-        <input type="radio"
-          id="guarantee"
-          name="paymentType"
-          value="guarantee"
-          checked
-          v-on:input="updateOffer($event)">
-        <label for="guarantee" class="input-label left">Guarantee</label>
-        <input type="radio"
-          id="split"
-          name="paymentType"
-          value="split"
-          v-on:input="updateOffer($event)">
-        <label for="split" class="input-label right">
-          Split <span class="percentage">%</span>
-        </label>
-      </div>
-
-      <div class="general-payment" v-if="offer.paymentType === 'guarantee'">
-        <label for="general-payment-input" class="general-payment-label">
-          Fixed Price
-        </label>
-        <input type="text"
-          class='edit-input general-payment-input'
-          id="general-payment-input"
-          name="payment"
-          :placeholder="'$' + offer.payment"
-          v-on:input="updateOffer($event)">
-      </div>
-
-      <div class="general-percentage" v-else>
-        <label for="act" class="general-percentage-label">
-          Act %
-        </label>
-        <input type="text"
-          class='edit-input general-percentage-input'
-          id="act"
-          name="actPercentage"
-          :placeholder="offer.actPercentage + '%'"
-          v-on:input="updateOffer($event)">
-        <label for="venue" class="general-percentage-label">
-          Venue %
-        </label>
-        <input type="text"
-        class='edit-input general-percentage-input'
-        id="venue"
-        name="venuePercentage"
-        :placeholder="offer.venuePercentage + '%'"
-        v-on:input="updateOffer($event)">
-      </div>
+      <input 
+        type="text" 
+        class="edit-input"
+        placeholder="Add a title for the show">
+      <textarea 
+        placeholder="Add a description for the show"
+        class="edit-input">
+      </textarea>
     </div>
   </section>
 </template>
@@ -72,31 +29,21 @@ export default {
       showSection: false,
     }
   },
-  computed:{
-    offer(){
-      return this.$store.state.userConfig.offer
-    },
-  },
+  props: ["show"],
   methods:{
     updateOffer(e){
       this.$store.commit("updateOffer", e.target)
     },
-    toggleExpand(){
-      this.showSection = !this.showSection
-    }
   }
 }
 </script>
 
 <style lang="scss">
 @import '../../globalStyles/helper.scss';
-@import '../../globalStyles/mixins.scss';
 
 .subheading{
-  border-bottom: solid .5px var(--alt-primary);
   color: var(--primary);
   font-weight: 100;
-  padding-bottom: var(--spacing);
   display: flex;
 
   svg{
@@ -108,62 +55,12 @@ export default {
 }
 
 .general{
-  background-color: white;
   padding: var(--spacing);
+  border-bottom: var(--light-border);
+}
 
+.expand-container {
   display: grid;
   grid-row-gap: var(--alt-spacing);
-
-  input{
-    height: 3.5rem;
-    font-size: 1.6rem;
-  }
-
-  &-payment-type{
-    #guarantee, #split{
-      display: none;
-    }
-
-    .input-label{
-      padding: .5rem 1rem;
-      transition: all .3s;
-      display: inline-block;
-      border: solid .5px var(--primary);
-      font-size: 1.4rem;
-    }
-
-    .left{
-      border-top-left-radius: var(--border-radius);
-      border-bottom-left-radius: var(--border-radius);
-    }
-
-    .right{
-      border-top-right-radius: var(--border-radius);
-      border-bottom-right-radius: var(--border-radius);
-      border-left: 0;
-    }
-
-    input:checked + .input-label{
-      background-color: var(--primary);
-    }
-
-    input:not(:checked) + .input-label{
-      background-color: white;
-      color: var(--alt-primary);
-    }
-
-    .percentage{
-      font-weight: 600;
-    }
-  }
-
-  &-payment, &-percentage{
-    display: grid;
-    grid-row-gap: .5rem;
-  }
-
-  &-payment-input, &-percentage-input{
-    width: 15rem;
-  }
 }
 </style>
