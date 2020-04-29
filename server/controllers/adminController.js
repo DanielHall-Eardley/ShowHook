@@ -111,9 +111,13 @@ exports.createVenue = async (req, res, next) => {
 		if (checkForVenue) {
 			errorHandler("403", ["You already have venue associated with your account"])
 		}
-
+		//test this if logic
 		let photos;
-		if (req.files.photos) {
+		if (req.files.photos && !isArray(req.files.photos)) {
+			photos = req.file.name
+		}
+
+		if (req.files.photos && isArray(req.files.photos)) {
 			photos = req.files.photos.map(file => {
 				return file.name
 			}) 
