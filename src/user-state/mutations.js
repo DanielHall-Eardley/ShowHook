@@ -29,7 +29,7 @@ export default {
         id: state.baseUser.userId
       },
       query: {
-        searchType: "userId"
+        idType: "userId"
       }
     })
   },
