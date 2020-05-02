@@ -3,6 +3,7 @@ const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const env = require("dotenv")
 const fileUpload = require("express-fileupload")
+const socket = require('./helper/socket.io')
 
 const adminRoutes = require("./routes/adminRoutes")
 const googleApiRoutes = require("./routes/googleApiRoutes")
@@ -38,6 +39,12 @@ mongoose.connect("mongodb://localhost:27017/showhook")
 .then(result => {
   const server = app.listen(process.env.PORT || 3000, () => {
     console.log("listening on port 3000")  
+  })
+
+  socket.init(server)
+  socket.io().on('connection', socket => {
+    socket.emit('testClient', {msg: 'Connected to main namespace'})
+    socket.on('testServer', msg => console.log(msg))
   })
 })
 .catch(err => console.log(err))

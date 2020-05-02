@@ -4,6 +4,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  async mounted () {
+    
+  }
+}
+</script>
+
 <style lang="scss">
 :root {
   --primary: #EE7396;
