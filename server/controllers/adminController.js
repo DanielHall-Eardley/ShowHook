@@ -284,17 +284,17 @@ exports.createOffer = async (req, res, next) => {
 			}
 		}
 		
-		const offerorPromise = BaseUser.findById(req.body.offerorId, "name userType", populate)
+		const offerorPromise = BaseUser.findOne({_id: req.body.offerorId}, "name userType", populate)
 		const receiverPromise = BaseUser.findOne({userData: req.body.receiverId}, "name userType", populate)
 
 		const result = await Promise.all([offerorPromise, receiverPromise])
 
 		const [offeror, receiver] = result
 		
-		if (!offeror.userData || !receiver.userData) {
-			errorHandler(404, ["The was a problem retrieving the profiles"])
+		if (!offeror.userData && !receiver.userData) {
+			errorHandler(404, ["You must have created a venue or act profile to make offers"])
 		} 
-		console.log(offeror._id, receiver._id)
+		
 		if (offeror._id === receiver._id) {
 			errorHandler(401, ["You cannot book any act or venues that are associated with your profile"])
 		}

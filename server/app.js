@@ -42,9 +42,16 @@ mongoose.connect("mongodb://localhost:27017/showhook")
   })
 
   socket.init(server)
-  socket.io().on('connection', socket => {
-    socket.emit('testClient', {msg: 'Connected to main namespace'})
-    socket.on('testServer', msg => console.log(msg))
+  socket.io().on('connection', dSocket => {
+    dSocket.emit('testClient', {msg: 'Client connected to main namespace'})
+    dSocket.on('testServer', data => console.log(data.msg))
+    dSocket.on('sendNameSpaces', namespaces => {
+      namespaces.forEach(ns => {
+        socket.io().of('/' + ns).on('connection', nsSocket => {
+          console.log(`namespace ${ns} connected`)
+        })
+      })
+    })
   })
 })
 .catch(err => console.log(err))

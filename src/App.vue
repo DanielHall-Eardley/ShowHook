@@ -5,9 +5,26 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+import { BASE_URL } from '@/helper/variables'
+
 export default {
   async mounted () {
-    
+    const defaultNameSpace = io.connect(BASE_URL)
+    const namespaces = ['offer', 'offerSummary']
+    const nsObj = {}
+
+    namespaces.forEach(ns => {
+      nsObj[ns] = io.connect(BASE_URL + '/' + ns)
+    })
+
+    this.$store.commit('createNameSpaces', nsObj)
+
+    defaultNameSpace.on('testClient', data => {
+      console.log(data.msg)
+      defaultNameSpace.emit('testServer', {msg: 'Server is connected to main namespace'})
+      defaultNameSpace.emit('sendNameSpaces', namespaces)
+    })
   }
 }
 </script>

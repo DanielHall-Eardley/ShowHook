@@ -8,6 +8,7 @@ const appConfig = {
       description: "placeholder image",
       src: "https://via.placeholder.com/1500"
     },
+    namespaces: null,
     musicGenres: [
       "Pop",
       "Rock",

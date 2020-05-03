@@ -134,5 +134,8 @@ export default {
   },
   addPriceType: (state, payload) => {
     state.searchQuery.priceType = payload.value
+  },
+  createNameSpaces: (state, payload) => {
+    state.namespaces = payload
   }
 }

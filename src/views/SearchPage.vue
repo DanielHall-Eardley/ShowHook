@@ -83,13 +83,17 @@ export default {
 <style lang="scss" scoped>
   @import "@/globalStyles/helper";
   .search-container{
+    height: 100%;
+    position: relative;
 
     .page-controls {
       bottom: 0;
-      position: sticky;
+      left: 0;
+      right: 0;
+      position: absolute;
       display: flex;
       justify-content: space-between;
-      padding: 0 var(--spacing);
+      padding: var(--spacing);
     }
   }
 </style>
