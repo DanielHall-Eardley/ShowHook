@@ -227,13 +227,6 @@ export default {
   signupSuccessful: (state, payload) => {
     router.push({ path: "admin", query: { type: "login" } });
   },
-  updateAdminErrors: (state, payload) => {
-    console.log(payload.messages)
-    state.adminErrors = payload.messages;
-  },
-  clearAdminErrors: state => {
-    state.adminErrors = null;
-  },
   updateError: (state, payload) => {
     state.error = payload.messages;
   },

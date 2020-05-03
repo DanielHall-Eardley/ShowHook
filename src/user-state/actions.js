@@ -43,7 +43,7 @@ export default {
     router.push("/")
   },
   createBlog: async (context, payload) => {
-    context.commit("clearAdminErrors")
+    context.commit("clearError")
     const userId = context.rootState.userConfig.baseUser.userId
 
     if (!userId) {
@@ -64,35 +64,35 @@ export default {
     const responseData = await postDataFn("admin/blog/" + userId, body, headers)
 
     if (responseData.messages) {
-      return context.commit("updateAdminErrors", responseData)
+      return context.commit("updateError", responseData)
     }
 
     context.commit("updateBlogs", responseData)
   },
   getBlogs: async (context, payload) => {
-    context.commit("clearAdminErrors")
+    context.commit("clearError")
 
     const responseData = await getDataFn(`blogs/${payload.id}?page=${payload.page}&userType=${payload.userType}`)
     console.log(responseData)
     if (responseData.messages) {
-      return context.commit("updateAdminErrors", responseData)
+      return context.commit("updateError", responseData)
     }
 
     context.commit("updateBlogs", responseData)
   },
   getBlogDetails: async (context, payload) => {
-    context.commit("clearAdminErrors")
+    context.commit("clearError")
 
     const responseData = await getDataFn(`blog/${payload.blogId}?&userType=${payload.userType}&profileId=${payload.profileId}`)
     console.log(responseData)
     if (responseData.messages) {
-      return context.commit("updateAdminErrors", responseData)
+      return context.commit("updateError", responseData)
     }
 
     context.commit("updateSelectedBlog", responseData)
   },
   createBooking: async (context, payload) => {
-    context.commit("clearAdminErrors")
+    context.commit("clearError")
 
     if (!context.rootState.userConfig.baseUser.userId) {
       context.dispatch("autoLogin", payload.path)
@@ -111,13 +111,13 @@ export default {
     const responseData = await postDataFn("admin/create-offer", offer, headers)
     
     if (responseData.messages) {
-      return context.commit("updateAdminErrors", responseData)
+      return context.commit("updateError", responseData)
     }
 
     router.push({
       name: "offer",
       params: {
-        id: responseData.response
+        id: responseData.response._id
       }
     })
   },
@@ -176,7 +176,7 @@ export default {
     router.push("/")
   },
   updateVenue: async (context, payload) => {
-    context.commit("clearAdminErrors")
+    context.commit("clearError")
     const userId = context.rootState.userConfig.baseUser.userId
 
     if (userId) {
@@ -217,13 +217,13 @@ export default {
 
     const responseData = await postDataFn("admin/update-venue/" + userId, formData, headers, "PUT")
     if (responseData.messages) {
-      return context.commit("updateAdminErrors", responseData)
+      return context.commit("updateError", responseData)
     }
     
     router.go()
   },
   updateAct: async (context, payload) => {
-    context.commit("clearAdminErrors")
+    context.commit("clearError")
     const userId = context.rootState.userConfig.baseUser.userId
 
     if (userId) {
@@ -261,7 +261,7 @@ export default {
 
     const responseData = await postDataFn("admin/update-act/" + userId, formData, headers, "PUT")
     if (responseData.messages) {
-      return context.commit("updateAdminErrors", responseData)
+      return context.commit("updateError", responseData)
     }
 
     router.go()

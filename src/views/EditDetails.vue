@@ -6,6 +6,7 @@
         Save and Exit
       </button>
     </nav>
+    <Error/>
     <section class="edit-profile-box">
       <EditProgress></EditProgress>
       <InputDetails></InputDetails>
@@ -21,6 +22,7 @@ import EditProgress from "@/components/edit/page-template/EditProgress.vue"
 import EditFooter from "@/components/edit/page-template/EditFooter.vue"
 import InputDetails from "@/components/edit/page-template/InputDetails.vue"
 import InputInfo from "@/components/edit/page-template/InputInfo.vue"
+import Error  from "@/components/shared/Error"
 
 export default {
   created(){
@@ -32,7 +34,8 @@ export default {
     EditProgress,
     EditFooter,
     InputDetails,
-    InputInfo
+    InputInfo,
+    Error
   },
   methods:{
     saveAndExit(){
@@ -48,6 +51,7 @@ export default {
 
 .edit-profile{
   overflow: hidden;
+  
   &-header{
     height: 10vh;
     display: flex;

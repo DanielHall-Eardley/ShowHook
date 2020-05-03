@@ -97,7 +97,6 @@ const userConfig = {
       shows: []
     },
     newShowData: {},
-    adminErrors: null,
     error: null
   },
   getters,

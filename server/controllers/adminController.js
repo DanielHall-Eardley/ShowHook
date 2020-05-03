@@ -113,11 +113,11 @@ exports.createVenue = async (req, res, next) => {
 		}
 		//test this if logic
 		let photos;
-		if (req.files.photos && !isArray(req.files.photos)) {
-			photos = req.file.name
+		if (req.files.photos && !Array.isArray(req.files.photos)) {
+			photos = req.files.photos.name
 		}
 
-		if (req.files.photos && isArray(req.files.photos)) {
+		if (req.files.photos && Array.isArray(req.files.photos)) {
 			photos = req.files.photos.map(file => {
 				return file.name
 			}) 
@@ -290,7 +290,7 @@ exports.createOffer = async (req, res, next) => {
 		const result = await Promise.all([offerorPromise, receiverPromise])
 
 		const [offeror, receiver] = result
-		
+		console.log(offeror, receiver)
 		if (!offeror.userData && !receiver.userData) {
 			errorHandler(404, ["You must have created a venue or act profile to make offers"])
 		} 
@@ -380,13 +380,17 @@ exports.createAct = async (req, res, next) => {
 		if (checkForAct) {
 			errorHandler("403", ["You already have venue associated with your account"])
 		}
-
+		
 		let photos;
-		if (req.files.photos) {
+		if (req.files.photos && !Array.isArray(req.files.photos)) {
+			photos = req.files.photos.name
+		}
+
+		if (req.files.photos && Array.isArray(req.files.photos)) {
 			photos = req.files.photos.map(file => {
 				return file.name
-			})
-		}
+			}) 
+		} 
 		//store photo file somewhere
 		const {
 			address,

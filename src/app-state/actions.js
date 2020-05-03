@@ -39,7 +39,7 @@ export default {
     })
   },
   submitProfile: async (context) => {
-    context.commit("clearProfileError")
+    context.commit("clearError")
 
     if (
       !context.rootState.userConfig.baseUser.userId ||
@@ -75,7 +75,7 @@ export default {
     const responseData = await postDataFn("admin/" + user.userType.toLowerCase(), formData, headers)
 
     if (responseData.messages) {
-      return context.commit("profileError", responseData)
+      return context.commit("updateError", responseData)
     }
 
     context.commit("profileSuccess", responseData)

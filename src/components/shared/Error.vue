@@ -1,7 +1,7 @@
 <template>
-  <div class="error" v-if="checkError">
-    <p v-for="error in checkError" :key="error">
-      {{error}}
+  <div class="error" v-if="getError.length > 0">
+    <p v-for="error in getError" :key="error.param">
+      {{error.msg}}
     </p>
   </div>
 </template>
@@ -10,9 +10,8 @@
   export default {
     props: ["errorType"],
     computed: {
-      checkError () {
-        const errorType = this.errorType || "error"
-        return this.$store.state.userConfig[errorType]
+      getError () {
+        return this.$store.state.userConfig.error
       }
     }
   }
