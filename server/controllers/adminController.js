@@ -290,7 +290,6 @@ exports.createOffer = async (req, res, next) => {
 		const result = await Promise.all([offerorPromise, receiverPromise])
 
 		const [offeror, receiver] = result
-		console.log(offeror, receiver)
 		if (!offeror.userData && !receiver.userData) {
 			errorHandler(404, ["You must have created a venue or act profile to make offers"])
 		} 

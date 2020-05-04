@@ -66,7 +66,7 @@
         <input type="number"
           :placeholder="updateMerch"
           :value="updateMerch"
-          class="edit-input merchandise-percentage-input"
+          class="default-input merchandise-percentage-input"
           v-on:input="updateMerchDetails($event)">
       </div>
 
@@ -93,14 +93,14 @@
         <div class="accomodation-details" v-if="offer.accomodationProvider === 'venue'">
           <label class="accomodation-details-rooms">Number of rooms</label>
           <input type="number"
-          class="edit-input accomodation-details-rooms-input"
+          class="default-input accomodation-details-rooms-input"
             v-on:input="updateDetails($event)"
             :placeholder="offer.venueAccRoom"
             :value="offer.venueAccRoom"
             name="rooms">
           <label class="accomodation-details-address">Address</label>
           <input type="text"
-            class="edit-input accomodation-details-address-input"
+            class="default-input accomodation-details-address-input"
             v-on:input="updateDetails($event)"
             :placeholder="offer.venueAccAddress"
             :value="offer.venueAccAddress"
@@ -133,7 +133,7 @@
             How much will you cover of the travel expenses?
           </label>
           <input type="number"
-            class="edit-input travel-expenses-input"
+            class="default-input travel-expenses-input"
             name="travel"
             v-on:input="updateDetails($event)"
             :placeholder="offer.travelExpenses"
@@ -146,7 +146,7 @@
           Number of guests for artist
         </label>
         <input type="number"
-          class="edit-input guest-list-artist-input"
+          class="default-input guest-list-artist-input"
           :placeholder="offer.artistGuestList"
           :value="offer.artistGuestList"
           name="artistGuestList"
@@ -155,7 +155,7 @@
           Number of guest for venue
         </label>
         <input type="number"
-          class="edit-input guest-list-venue-input"
+          class="default-input guest-list-venue-input"
           :placeholder="offer.venueGuestList"
           :value="offer.venueGuestList"
           name="venueGuestList"
@@ -245,6 +245,7 @@ export default {
 .other{
   background-color: white;
   padding: var(--spacing);
+  border-bottom: var(--light-border);
 
   input{
     height: 3.5rem;
@@ -276,7 +277,7 @@ export default {
     &-venue{
       border-top-right-radius: var(--border-radius);
       border-bottom-right-radius: var(--border-radius);
-      border-left: 0;
+      border-left: none;
     }
   }
 

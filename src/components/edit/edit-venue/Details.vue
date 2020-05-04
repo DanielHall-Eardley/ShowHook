@@ -4,7 +4,7 @@
       Provide information about your venue
     </h3>
     <div class="venue-details-form">
-      <select class="edit-input" v-model="venueType">
+      <select class="default-input" v-model="venueType">
         <option selected disabled>Choose your venue type</option>
         <option>Bar</option>
         <option>Shared Space</option>
@@ -12,13 +12,13 @@
       </select>
       <input 
         v-model="guestLimit"
-        class="edit-input"
+        class="default-input"
         type="number" 
         placeholder="How many guests can your venue accommodate?"
       >
       <input 
         v-model="numberOfBathrooms"
-        class="edit-input"
+        class="default-input"
         type="number" 
         placeholder="How bathrooms does your venue have?"
       >

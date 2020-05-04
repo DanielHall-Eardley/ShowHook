@@ -3,14 +3,14 @@
     <div class="search-input">
       <input 
         type="text" 
-        class="edit-input"
+        class="default-input"
         placeholder="Enter a search keyword"
         v-model="keyword"
         name="keyword"
         v-on:change="updateSingleFilter($event)">
       <input 
         type="text" 
-        class="edit-input"
+        class="default-input"
         placeholder="Enter a city"
         v-model="location"
         name="location"

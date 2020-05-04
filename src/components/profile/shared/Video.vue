@@ -18,7 +18,7 @@
     <input 
       v-if="showEdit"
       type="text"
-      class="edit-input"
+      class="default-input"
       placeholder="Paste new video id here"
       v-model="youtubeLink"
       name="youtubeLink"

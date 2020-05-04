@@ -2,7 +2,7 @@
   <div class="act-type">
     <h3 class="section-heading">Type of Act</h3>
     <select 
-      class="edit-input select" 
+      class="default-input select" 
       v-model="actType" 
       v-on:change="updateActType">
       <option disabled>Select Act Type</option>

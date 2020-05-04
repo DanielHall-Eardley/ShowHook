@@ -2,7 +2,7 @@
   <section class="edit-address">
     <h3 class="section-heading">Enter your address</h3>
 
-    <input class="edit-address-input edit-input"
+    <input class="edit-address-input default-input"
       type="text"
       placeholder="Start typing to find your address..."
       v-on:input="getAddress($event)"

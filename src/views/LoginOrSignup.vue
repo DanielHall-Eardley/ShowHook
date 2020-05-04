@@ -1,13 +1,6 @@
 <template>
   <div class="login-signup">
-    <div class="error-container" v-if="getErrors">
-      <p 
-        class="error" 
-        v-for="error in getErrors" 
-        :key="error">
-        {{error}}
-      </p>
-    </div>
+    <Error/>
     <form @submit.prevent="sendUserDetails()" class="login-signup-form">
       <h1>
         {{loginType === 'signUp' ? 'Get Started' : 'Login'}}
@@ -19,7 +12,7 @@
         placeholder="Name"
         name="name"
         v-model="name"
-        class="edit-input">
+        class="default-input">
       <p class="invalid-label" v-if="$v.name.$error">
         Name must be at least 3 characters
       </p>  
@@ -30,7 +23,7 @@
         v-model="email"
         type="email"
         name="email"
-        class="edit-input">
+        class="default-input">
       <p class="invalid-label" v-if="$v.email.$error">
         Please enter a valid email
       </p>  
@@ -41,7 +34,7 @@
         type="password"
         name="password"
         v-model="password"
-        class="edit-input">
+        class="default-input">
       <p class="invalid-label" v-if="$v.password.$error">
         Please enter a valid password over 6 characters
       </p>    
@@ -51,7 +44,7 @@
         v-model="userType"
         v-if="loginType === 'signUp' ? true : false"
         name="userType"
-        class="edit-input">
+        class="default-input">
         <option selected disabled>Choose Profile Type</option>
         <option>User</option>
         <option>Venue</option>
@@ -92,8 +85,12 @@ import {
   minLength,
   email,
 } from "vuelidate/lib/validators"
+import Error from '@/components/shared/Error'
 
 export default {
+  components: {
+    Error
+  },
   data() {
     return {
       loginType: "",
@@ -105,7 +102,7 @@ export default {
   },
   computed: {
     getErrors() {
-      return this.$store.state.userConfig.adminErrors
+      return this.$store.state.userConfig.errors
     },
   },
   methods: {

@@ -5,7 +5,7 @@
     </h3>
     <input 
       type="text"
-      class="edit-input"
+      class="default-input"
       v-model="title"
       placeholder="Enter your act's title"
     >

@@ -4,7 +4,7 @@
     <select 
       name="experience" 
       v-on:change="addPreferences($event)"
-      class="edit-input">
+      class="default-input">
       <option value="">
         Choose your level of experience
       </option>
@@ -21,7 +21,7 @@
     <select 
       name="frequency" 
       v-on:change="addPreferences($event)"
-      class="edit-input">
+      class="default-input">
       <option value="">
         Choose the frequency of which you wish to host shows
       </option>

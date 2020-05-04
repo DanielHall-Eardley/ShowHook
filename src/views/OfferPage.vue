@@ -50,6 +50,7 @@
         </Messages>
       </div>
     </section>
+    <SendMessage :offerId='offer.id'/>
   </div>
 </template>
 
@@ -60,6 +61,7 @@ import General from "@/components/offers/General.vue"
 import Schedule from "@/components/offers/Schedule.vue"
 import Other from "@/components/offers/Other.vue"
 import Messages from "@/components/offers/Messages.vue"
+import SendMessage from "@/components/offers/SendMessage.vue"
 
 import getDataFn from "@/helper/getDataFn"
 
@@ -70,7 +72,8 @@ export default {
     Schedule,
     Other,
     Messages,
-    Error
+    Error, 
+    SendMessage
   },
   async created() {
     this.$store.commit("clearError")
@@ -83,6 +86,8 @@ export default {
       this.$store.commit("upateError", responseData.messages)
     }
     this.$store.commit("loadOffer", responseData)
+
+    
   },
   methods: {
     deleteOffer(id) {
@@ -107,11 +112,9 @@ export default {
   },
   computed: {
     offer() {
-      console.log(this.$store.state.userConfig.offer)
       return this.$store.state.userConfig.offer
     },
     show() {
-      console.log(this.$store.state.userConfig.showSetup)
       return this.$store.state.userConfig.showSetup
     },
     checkUserType() {
@@ -129,11 +132,13 @@ export default {
 
 <style lang="scss">
   .offer-page {
+    height: 100%;
 
     header {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+      height: 10vh;
       padding: 0 var(--spacing);
       border-bottom: var(--light-border);
       color: var(--primary);
@@ -156,6 +161,18 @@ export default {
     font-size: 1.6rem;
     display: grid;
     grid-template-columns: 1.4fr 2fr;
+    height: 70vh;
+  }
+
+  .offer-page-details {
+    height: 100%;
+    overflow-y: auto;
+    border-right: var(--light-border);
+  }
+
+  .offer-page-messages {
+    height: 100%;
+    overflow-y: auto;
   }
 </style>
 

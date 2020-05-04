@@ -34,7 +34,7 @@
     <div class="edit-venue-details" v-if="showEdit">
       <input 
         type="text"
-        class="edit-input"
+        class="default-input"
         id="edit-amenity"
         placeholder="Add a new amenity or enter amenity to be removed"
         v-model="amenities"

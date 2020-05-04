@@ -13,7 +13,7 @@
         type="text" 
         placeholder="Add a new rule for your venue"
         v-model="newRule"  
-        class="edit-input"
+        class="default-input"
       >
       <button @click="addRule">Add</button>
     </div>

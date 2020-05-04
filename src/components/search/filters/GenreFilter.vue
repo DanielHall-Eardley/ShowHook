@@ -6,7 +6,7 @@
       placeholder="Enter a genre"
       v-model="genreFilter"
       v-on:keyup.enter="addGenreFilter"
-      class="edit-input">
+      class="default-input">
       <div class="genre-filters-container">
         <button 
           class="primary-button"

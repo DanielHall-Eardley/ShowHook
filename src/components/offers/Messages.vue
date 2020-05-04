@@ -45,7 +45,6 @@
 
   .message-list {
     padding: var(--spacing);
-    border-left: var(--light-border);
 
     .message {
       display: grid;

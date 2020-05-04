@@ -4,13 +4,13 @@
       Describe your venue
     </h3>
     <input  
-      class="edit-input" 
+      class="default-input" 
       type="text"  
       v-model="listingTitle"
       placeholder="Listing title"
     >
     <textarea 
-      class="edit-input" 
+      class="default-input" 
       v-model="venueDescription"
       placeholder="Describe your venue; What makes it great, What is nearby?">
     </textarea>

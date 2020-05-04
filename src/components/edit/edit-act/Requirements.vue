@@ -15,7 +15,7 @@
         type="text" 
         placeholder="Add a new requirement or preference"
         v-model="newReq"  
-        class="edit-input"
+        class="default-input"
       >
       <button @click="addReqAndPref" class="primary-button">
         Add

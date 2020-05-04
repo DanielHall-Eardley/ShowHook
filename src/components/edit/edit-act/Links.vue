@@ -5,14 +5,14 @@
     </h3>
     <input 
       type="text"
-      class="edit-input"
+      class="default-input"
       placeholder="Paste Youtube video id here"
       name="youtube"
       v-on:input="addLinks($event)"
     >
     <input 
       type="text"
-      class="edit-input"
+      class="default-input"
       placeholder="Paste Soundcloud track id here"
       name="soundcloud"
       v-on:input="addLinks($event)"

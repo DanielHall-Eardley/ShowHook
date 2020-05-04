@@ -4,7 +4,7 @@
     <div class="offer-summary-container">
       <header>
         <h3>Received</h3>
-        <select class="edit-input select" v-model="receivedFilter">
+        <select class="default-input select" v-model="receivedFilter">
           <option value="All"  class="offer-summary-select-option">
             All 
           </option>
@@ -32,7 +32,7 @@
     <div class="offer-summary-container">
       <header>
         <h3>Offered</h3>
-        <select class="edit-input select" v-model="offeredFilter">
+        <select class="default-input select" v-model="offeredFilter">
           <option value="All"  class="offer-summary-select-option">
             All 
           </option>

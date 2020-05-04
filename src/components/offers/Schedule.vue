@@ -14,14 +14,14 @@
     <div class="expand-container" v-show="showSection">
       <div class="schedule-select-times">
         <label for="task" class="schedule-task-label">Select a task</label>
-        <select class="edit-input schedule-select-task"
+        <select class="default-input schedule-select-task"
           v-on:click="selectTask($event)"
           id="task">
           <option v-for="item in offer.schedule">{{item.task}}</option>
         </select>
 
         <label for="start" class="schedule-start-label">Select a start time</label>
-        <select class="edit-input schedule-select-start"
+        <select class="default-input schedule-select-start"
           v-on:click="selectTime($event)"
           id="start"
           name="start">
@@ -29,7 +29,7 @@
         </select>
 
         <label for="end" class="schedule-end-label">Select an end time</label>
-        <select class="edit-input schedule-select-end"
+        <select class="default-input schedule-select-end"
           v-on:click="selectTime($event)"
           id="end"
           name="end">
@@ -126,6 +126,7 @@ export default {
 .schedule{
   background-color: white;
   padding: var(--spacing);
+  border-bottom: var(--light-border);
 
   display: grid;
   grid-row-gap: var(--alt-spacing);

@@ -34,14 +34,14 @@
         type="text" 
         name="title" 
         v-model="title"
-        class="edit-input"
+        class="default-input"
         placeholder="Enter a title for your new blog"
       >
       <BlogPhoto :editable="editable" v-on:updatePhoto="photo = $event"></BlogPhoto>
       <textarea 
         name="content" 
         v-model="content" 
-        class="edit-input"
+        class="default-input"
         placeholder="Enter the content for your new blog">
       </textarea>
       <button class="primary-button" @click="submitBlog">

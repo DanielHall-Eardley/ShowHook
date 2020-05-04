@@ -18,7 +18,7 @@
       <input 
         type="text" 
         placeholder="Edit Title"
-        class="edit-input"
+        class="default-input"
         v-model="title"
         name="title"
         v-on:change="editProfile($event, userType)"
@@ -27,7 +27,7 @@
         type="text"
         placeholder="Add Genre or Enter Genre to be removed"
         v-on:change="editProfile($event, userType)"
-        class="edit-input"
+        class="default-input"
         name="genres"
         v-model="genres"
       >

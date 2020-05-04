@@ -30,7 +30,7 @@
       <p class="error" v-if="error">{{error}}</p>
       <div class="submit-offer-container">
         <textarea 
-          class="edit-input"
+          class="default-input"
           placeholder="Add an introductory message"
           v-model="message">
         </textarea>
@@ -38,7 +38,7 @@
           v-model="priceInput"
           placeholder="Enter an offer"
           type="number"
-          class="edit-input"
+          class="default-input"
           v-if="offerType.toLowerCase() === 'venue'"
         >
         <button class="alt-button" @click="hideCalender">

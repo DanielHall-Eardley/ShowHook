@@ -2,7 +2,7 @@
   <section class="pricing">
     <h3 v-if="!editable" class="section-heading">Pricing</h3>
     <select 
-      class="edit-input" 
+      class="default-input" 
       v-model="priceType"
       v-on:change="updatePricing($event)"
       name="priceType">
@@ -13,7 +13,7 @@
     </select>
     <input 
       type="number" 
-      class="edit-input"
+      class="default-input"
       v-model="price"
       placeholder="Set your base price"
       v-on:change="updatePricing($event)"

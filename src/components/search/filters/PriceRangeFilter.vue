@@ -3,7 +3,7 @@
     <h3>Price Range</h3>
     <input 
       type="number" 
-      class="edit-input"
+      class="default-input"
       v-on:change="updatePriceRange($event)"
       placeholder="Min"
       name="min"
@@ -11,7 +11,7 @@
     >      
     <input 
       type="number" 
-      class="edit-input"
+      class="default-input"
       v-on:change="updatePriceRange($event)"
       placeholder="Max"
       name="max"

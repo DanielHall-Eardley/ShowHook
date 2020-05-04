@@ -113,11 +113,11 @@ export default {
     if (responseData.messages) {
       return context.commit("updateError", responseData)
     }
-
+    console.log('offer', responseData)
     router.push({
       name: "offer",
       params: {
-        id: responseData.response._id
+        id: responseData.response
       }
     })
   },

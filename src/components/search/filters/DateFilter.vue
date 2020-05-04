@@ -6,11 +6,11 @@
       v-model="start" 
       name="start" 
       v-on:change="updateDateRange($event)"
-      class="edit-input">
+      class="default-input">
     <input 
       type="date" 
       v-model="end" 
-      class="edit-input"
+      class="default-input"
       name="end" 
       v-on:change="updateDateRange($event)">
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="error" v-if="getError.length > 0">
+  <div class="error" v-if="getError && getError.length > 0">
     <p v-for="error in getError" :key="error.param">
       {{error.msg}}
     </p>

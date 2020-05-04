@@ -12,11 +12,11 @@
     <div class="expand-container" v-show="showSection">
       <input 
         type="text" 
-        class="edit-input"
+        class="default-input"
         placeholder="Add a title for the show">
       <textarea 
         placeholder="Add a description for the show"
-        class="edit-input">
+        class="default-input">
       </textarea>
     </div>
   </section>

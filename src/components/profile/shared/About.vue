@@ -35,7 +35,7 @@
       <textarea 
         type="text" 
         placeholder="Edit Description"
-        class="edit-input"
+        class="default-input"
         v-on:change="editProfile($event, userType)"
         v-model="description"
         name="description">
