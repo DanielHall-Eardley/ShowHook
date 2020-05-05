@@ -86,12 +86,12 @@ export default {
       this.$store.commit("upateError", responseData.messages)
     }
     this.$store.commit("loadOffer", responseData)
+  },
+  mounted () {
+    const io = this.$store.state.appConfig.namespaces
 
-    const io = this.$store.state.userConfig.namespaces.offer
-
-    io.emit('createRoom', {
+    io.emit('joinRoom', {
         roomId: this.offer._id,
-        users: []
       }
     )
   },

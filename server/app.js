@@ -45,10 +45,17 @@ mongoose.connect("mongodb://localhost:27017/showhook")
   socket.io().on('connection', dSocket => {
     dSocket.emit('testClient', {msg: 'Client connected to main namespace'})
     dSocket.on('testServer', data => console.log(data.msg))
+    
     dSocket.on('sendNameSpaces', namespaces => {
       namespaces.forEach(ns => {
         socket.io().of('/' + ns).on('connection', nsSocket => {
           console.log(`namespace ${ns} connected`)
+          
+          nsSocket.on('joinRoom', data => {
+            nsSocket.join(data.roomId, () => {
+              console.log('joined room', data.roomId)
+            })
+          })
         })
       })
     })
