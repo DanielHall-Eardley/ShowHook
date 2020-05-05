@@ -21,8 +21,8 @@ export default {
     sendMessage () {
       this.$store.dispatch('sendMessage', {
         messageType: 'offer',
-        message: this.input,
-        offerId: this. offerId
+        content: this.input,
+        offerId: this.offerId
       })
     }
   }

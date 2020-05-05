@@ -1,6 +1,7 @@
  <template lang="html">
   <section class="offer-summary">
     <Menu></Menu>
+    <Error/>
     <div class="offer-summary-container">
       <header>
         <h3>Received</h3>
@@ -62,12 +63,14 @@
 
 <script>
   import Menu from "@/components/shared/Menu.vue"
+  import Error from "@/components/shared/Error.vue"
   import OfferSummary from "@/components/offers/OfferSummary"
 
   import getAdminDataFn from "@/helper/getAdminDataFn"
 
   export default {
     async created() {
+      this.$store.commit('clearErrors')
       await this.$store.dispatch("autoLogin", this.$route.fullPath)
       const id = this.$route.params.id
 
@@ -75,7 +78,7 @@
       const responseData = await getAdminDataFn("offers-summary/" + id, token)
       
       if (responseData.messages) {
-        return this.receivedError = responseData.messages
+        return this.$store.commit('updateErrors')
       }
 
       this.$store.commit("loadOfferSummary", {
@@ -92,7 +95,8 @@
     },
     components:{
       Menu,
-      OfferSummary
+      OfferSummary,
+      Error
     },
     computed:{
       receivedArray(){

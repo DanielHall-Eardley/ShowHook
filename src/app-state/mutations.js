@@ -20,7 +20,6 @@ export default {
 
     updatedArray = updatedArray.filter(el => el !== title)
     state.searchQuery[payload.arrayType] = updatedArray
-    console.log(state.searchQuery)
   },
   resetEdit: state => {
     state.profileCreationPage = 0

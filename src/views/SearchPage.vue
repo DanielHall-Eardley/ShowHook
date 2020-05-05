@@ -1,8 +1,8 @@
 <template lang="html">
   <div class="search-container">
     <Menu></Menu>
+    <Error/>
     <Filters :userType="userType" :page="page"></Filters>
-    <Error errorType="error"></Error>
     <List :array="results"></List>
     <div class="page-controls" v-if="results.length > 0">
       <button class="primary-button" @click="decPage">
@@ -23,6 +23,7 @@ import Error from '@/components/shared/Error.vue'
 
 export default {
   async created () {
+    this.$store.commit('clearError')
     const token = localStorage.getItem("token") 
     if (token) {
       await this.$store.dispatch("autoLogin", this.$route.fullPath)

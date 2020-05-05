@@ -14,7 +14,8 @@
       </router-link>
     </div>
     <div class="menu-loggedin-links" v-else>
-      <!--<router-link 
+      <span class='default-link'>{{user.name}}</span>
+      <!-- <router-link 
         class="default-link"
         :to="{name: 'profile', params: {id: user._id}}">
         {{user.name}}

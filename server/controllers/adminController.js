@@ -291,7 +291,7 @@ exports.createOffer = async (req, res, next) => {
 		const result = await Promise.all([offerorPromise, receiverPromise])
 
 		const [offeror, receiver] = result
-		if (!offeror.userData && !receiver.userData) {
+		if (!offeror.userData) {
 			errorHandler(404, ["You must have created a venue or act profile to make offers"])
 		} 
 		
@@ -378,7 +378,7 @@ exports.createAct = async (req, res, next) => {
 		const checkForAct = await Act.findOne({userId: req.body.userId})
 
 		if (checkForAct) {
-			errorHandler("403", ["You already have venue associated with your account"])
+			errorHandler("403", ["You already have act associated with your account"])
 		}
 		
 		let photos;
@@ -436,7 +436,7 @@ exports.createAct = async (req, res, next) => {
 		const savedAct = await act.save()
 
 		if (!savedAct) {
-			errorHandler("500", ["Unable to store your venue information"])
+			errorHandler("500", ["Unable to store your act information"])
 		}
 
 		const userProfile = await BaseUser.findById(req.body.userId)
@@ -450,7 +450,7 @@ exports.createAct = async (req, res, next) => {
 		res.status(200).json({
 			alert: "Sucessfully created your act profile",
 			type: req.body.userType.toLowerCase(),
-			userData: savedVenue._id
+			userData: savedAct._id
 		})
 	} catch (error) {
 		if (!error.status) {

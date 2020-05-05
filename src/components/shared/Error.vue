@@ -1,7 +1,7 @@
 <template>
   <div class="error" v-if="getError && getError.length > 0">
     <p v-for="error in getError" :key="error.param">
-      {{error.msg}}
+      {{error.msg || error}}
     </p>
   </div>
 </template>

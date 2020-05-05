@@ -50,7 +50,7 @@
         </Messages>
       </div>
     </section>
-    <SendMessage :offerId='offer.id'/>
+    <SendMessage :offerId='offer._id'/>
   </div>
 </template>
 
@@ -86,14 +86,16 @@ export default {
       this.$store.commit("upateError", responseData.messages)
     }
     this.$store.commit("loadOffer", responseData)
-  },
-  mounted () {
-    const io = this.$store.state.appConfig.namespaces
 
+    const io = this.$store.state.appConfig.namespaces.offer
     io.emit('joinRoom', {
-        roomId: this.offer._id,
+        roomId: responseData.offer._id.toString()
       }
     )
+
+    io.on('updateMessage', message => {
+      this.$store.commit('loadOfferMessage', message)
+    })
   },
   methods: {
     deleteOffer(id) {

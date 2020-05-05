@@ -1,6 +1,7 @@
 <template lang="html">
   <section class="act-profile">
     <Menu></Menu>
+    <Error/>
     <div class="venue-profile" v-if="actData.userId">
       <Banner 
         :photoUrl="actData.bannerPhoto"
@@ -87,6 +88,7 @@ import BookShow from "@/components/profile/shared/BookShow"
 import MakeOffer from "@/components/profile/shared/MakeOffer"
 import Banner from "@/components/shared/Banner"
 import Menu from "@/components/shared/Menu"
+import Error from "@/components/shared/Error"
 
 import getAdminDataFn from "@/helper/getAdminDataFn"
 import getDataFn from "@/helper/getDataFn"
@@ -104,16 +106,18 @@ export default {
     BookShow,
     About,
     Reviews,
-    Title
+    Title,
+    Error
   },
-    data() {
+  data() {
     return {
       editable: false,
       photoArray: null,
-      error: null,
     }
   },
   async created() {
+    this.$store.commit('clearError')
+
     await this.$store.dispatch("autoLogin", this.$route.fullPath)
     const id = this.$route.params.id
     const idType = this.$route.query.idType
@@ -123,7 +127,7 @@ export default {
       const responseData = await getAdminDataFn(`admin/act/${id}?idType=${idType}`, token)
       this.editable = true
       if (responseData.messages) {
-        return this.error = responseData.messages
+        return this.$store.commit('updateError', responseData.messages) 
       }
 
       return this.$store.commit("loadProfileData", {
@@ -134,7 +138,7 @@ export default {
 
     const responseData = await getDataFn(`act/${id}?idType=${idType}`)
     if (responseData.messages) {
-      return this.error = responseData.messages
+      return this.$store.commit('updateError', responseData.messages) 
     }
 
     this.$store.commit("loadProfileData", {

@@ -14,6 +14,9 @@ export default {
     state.offer = {...state.offer, ...payload.offer}
     state.showSetup = payload.show
   },
+  loadOfferMessage: (state, payload) => {
+    state.offer.messageArray = [...state.offer.messageArray, payload]
+  },
   getVideo: state => {
     fetch(
       `https://www.googleapis.com/youtube/v3/videos?id=${state.user.video.videoId}&key=${key.youtube}`

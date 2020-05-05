@@ -37,7 +37,7 @@
       <ReviewStars :rating="summary[type + 'Rating']"></ReviewStars>
     </div>
     <div class="recent-message">
-      <p>{{summary.mostRecentMessage}}</p>
+      <p>{{summary.mostRecentMessage.content}}</p>
       <span>{{formatDate(summary.updatedAt, true)}}</span>
     </div>
   </div>

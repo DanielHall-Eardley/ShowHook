@@ -64,7 +64,7 @@ const Offer = Schema({
     type: String,
     required: true
   },
-  mostRecentMessage: String,
+  mostRecentMessage: Object,
   messageArray: [
     Message
   ],

@@ -130,5 +130,27 @@ export default {
 
     context.commit("updateSearchResults", responseData)
     context.commit("resetSearchQuery")
-  }  
+  },
+  sendMessage: async (context, payload) => {
+    context.commit("clearError")
+    
+    const token = context.rootState.userConfig.token
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    }
+
+    const body = JSON.stringify({
+      content: payload.content,
+      name: context.rootState.userConfig.baseUser.name,
+      userId: context.rootState.userConfig.baseUser.userId,
+      offerId: payload.offerId
+    })
+
+    const responseData = await postDataFn(payload.messageType + "/send-message", body, headers)
+
+    if (responseData.messages) {
+      return context.commit("updateError", responseData)
+    }
+  } 
 }

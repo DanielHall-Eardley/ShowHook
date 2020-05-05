@@ -4,6 +4,7 @@ const Act = require("../models/act")
 const Offer = require("../models/offer")
 const Show = require("../models/show")
 const errorHandler = require("../helper/errorHandler")
+const socket = require('../helper/socket.io')
 
 exports.getOffer = async (req, res, next) => {
   try {
@@ -124,6 +125,37 @@ exports.updateOfferStatus = async (req, res, next) => {
       show: savedShow
     })
 
+  } catch (error) {
+    if (!error.status) {
+      error.status = 500
+    }
+    next(error)
+  }
+}
+
+exports.updateOfferMessage = async (req, res, next) => {
+  try {
+    const offerId = req.body.offerId
+    const offer = await Offer.findById(offerId)
+
+    if (!offer) {
+      errorHandler(404, ["Your offer could not be found"])
+    }
+
+    const message = {
+      userId: req.body.userId,
+      content: req.body.content,
+      name: req.body.name
+    }
+
+    offer.mostRecentMessage = message
+    offer.messageArray.push(message)
+    await offer.save()
+    const lastMessage = offer.messageArray[offer.messageArray.length - 1]
+
+    res.status(200)
+
+    socket.io().of('/offer').to(offerId.toString()).emit('updateMessage', lastMessage)
   } catch (error) {
     if (!error.status) {
       error.status = 500

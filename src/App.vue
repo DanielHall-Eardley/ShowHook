@@ -9,7 +9,7 @@ import io from 'socket.io-client'
 import { BASE_URL } from '@/helper/variables'
 
 export default {
-  async mounted () {
+  async beforeCreate () {
     const defaultNameSpace = io.connect(BASE_URL)
     const namespaces = ['offer', 'offerSummary']
     const nsObj = {}

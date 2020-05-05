@@ -52,6 +52,10 @@
       padding: var(--alt-spacing);
       border-radius: var(--border-radius);
 
+      &:not(:last-child) {
+        margin-bottom: var(--spacing);
+      }
+
       span {
         justify-self: end;
       }
