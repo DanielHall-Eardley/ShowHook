@@ -88,6 +88,7 @@ export default {
     this.$store.commit("loadOffer", responseData)
 
     const io = this.$store.state.appConfig.namespaces.offer
+    
     io.emit('joinRoom', {
         roomId: responseData.offer._id.toString()
       }
@@ -96,6 +97,22 @@ export default {
     io.on('updateMessage', message => {
       this.$store.commit('loadOfferMessage', message)
     })
+  },
+  updated () {
+    const list = document.querySelector('.offer-page-messages')
+    list.scroll({
+      top: list.scrollHeight,
+      left: 0,
+      behavior: 'smooth'
+    })
+  },
+  beforeDestroy () {
+    const io = this.$store.state.appConfig.namespaces.offer
+
+    io.emit('leaveRoom', {
+        roomId: this.offer._id.toString()
+      }
+    )
   },
   methods: {
     deleteOffer(id) {

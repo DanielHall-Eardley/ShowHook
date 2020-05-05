@@ -1,5 +1,5 @@
 const loginSignupFn = async (commit, payload, type, redirect) => {
-  commit("clearAdminErrors");
+  commit("clearErrors");
   try {
     const response = await fetch("http://localhost:3000/admin/" + type, {
       body: JSON.stringify(payload),
@@ -21,7 +21,7 @@ const loginSignupFn = async (commit, payload, type, redirect) => {
       redirect
     });
   } catch (error) {
-    commit("updateAdminErrors", error);
+    commit("updateErrors", error);
   }
 }
 

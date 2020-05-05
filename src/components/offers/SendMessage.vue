@@ -24,6 +24,8 @@ export default {
         content: this.input,
         offerId: this.offerId
       })
+
+      this.input = ""
     }
   }
 }

@@ -12,6 +12,8 @@ export default {
   async beforeCreate () {
     const defaultNameSpace = io.connect(BASE_URL)
     const namespaces = ['offer', 'offerSummary']
+
+    if (!this.$store.state.appConfig.namespaces) {
     const nsObj = {}
 
     namespaces.forEach(ns => {
@@ -19,7 +21,8 @@ export default {
     })
 
     this.$store.commit('createNameSpaces', nsObj)
-
+    }
+    
     defaultNameSpace.on('testClient', data => {
       console.log(data.msg)
       defaultNameSpace.emit('testServer', {msg: 'Server is connected to main namespace'})

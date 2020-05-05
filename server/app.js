@@ -41,6 +41,8 @@ mongoose.connect("mongodb://localhost:27017/showhook")
     console.log("listening on port 3000")  
   })
 
+  const namespaceState = []
+
   socket.init(server)
   socket.io().on('connection', dSocket => {
     dSocket.emit('testClient', {msg: 'Client connected to main namespace'})
@@ -48,15 +50,30 @@ mongoose.connect("mongodb://localhost:27017/showhook")
     
     dSocket.on('sendNameSpaces', namespaces => {
       namespaces.forEach(ns => {
-        socket.io().of('/' + ns).on('connection', nsSocket => {
-          console.log(`namespace ${ns} connected`)
-          
-          nsSocket.on('joinRoom', data => {
-            nsSocket.join(data.roomId, () => {
-              console.log('joined room', data.roomId)
+        let checkNamespaceExists = null
+        
+        if (namespaceState.length > 0) {
+          checkNamespaceExists = namespaceState.includes(ns)
+        }
+
+        if (!checkNamespaceExists) {
+          socket.io().of('/' + ns).on('connection', nsSocket => {
+            console.log(`namespace ${ns} connected`)
+            namespaceState.push(ns)
+
+            nsSocket.on('joinRoom', data => {
+              nsSocket.join(data.roomId, () => {
+                console.log('joined room', data.roomId)
+              })
+            })
+
+            nsSocket.on('leaveRoom', data => {
+              nsSocket.leave(data.roomId, () => {
+                console.log('left room', data.roomId)
+              })
             })
           })
-        })
+        }
       })
     })
   })
