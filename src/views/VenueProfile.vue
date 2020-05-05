@@ -1,6 +1,7 @@
 <template lang="html">
   <section class="venue-container">
     <Menu></Menu>
+    <Error></Error>
     <div class="venue-profile" v-if="venueData">
       <Banner 
         :photoUrl="venueData.bannerPhoto"
@@ -84,6 +85,7 @@ import Map from "@/components/shared/Map"
 import BookShow from "@/components/profile/shared/BookShow"
 import Shows from "@/components/profile/shared/Shows.vue"
 import Gallery from "@/components/profile/shared/Gallery.vue"
+import Error from "@/components/shared/Error.vue"
 
 import getAdminDataFn from "@/helper/getAdminDataFn"
 import getDataFn from "@/helper/getDataFn"
@@ -101,16 +103,17 @@ export default {
     BookShow,
     Menu,
     Shows,
-    Gallery
+    Gallery,
+    Error
   },
   data() {
     return {
       editable: false,
       photoArray: null,
-      error: null
     }
   },
   async created() {
+    this.$store.commit('clearError')
     await this.$store.dispatch("autoLogin", this.$route.fullPath)
     const id = this.$route.params.id
     const idType = this.$route.query.idType
@@ -120,7 +123,7 @@ export default {
       const responseData = await getAdminDataFn(`admin/venue/${id}?idType=${idType}`, token)
       this.editable = true
       if (responseData.messages) {
-        return this.error = responseData.messages
+        return this.$store.commit('updateError', responseData.messages)
       }
       
       return this.$store.commit("loadProfileData", {
@@ -131,7 +134,7 @@ export default {
 
     const responseData = await getDataFn("venue/" + id)
     if (responseData.messages) {
-      return this.error = responseData.messages
+      return this.$store.commit('updateError', responseData.messages)
     }
 
     this.$store.commit("loadProfileData", {

@@ -23,8 +23,11 @@ export default {
   },
   profileSuccess: (state, payload) => {
     alert(payload.alert || "Profile creation failed")
+    state.baseUser.userData = payload.userData
+    localStorage.setItem('baseUserData', payload.userData)
+    
     router.push({
-      name: payload.type,
+      name: 'admin-' + payload.type,
       params: {
         id: state.baseUser.userId
       },

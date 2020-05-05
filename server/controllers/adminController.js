@@ -185,7 +185,8 @@ exports.createVenue = async (req, res, next) => {
 
 		res.status(200).json({
 			alert: "Sucessfully created your venue profile",
-			type: req.body.userType.toLowerCase()
+			type: req.body.userType.toLowerCase(),
+			userData: savedVenue._id
 		})
 	} catch (error) {
 		if (!error.status) {
@@ -448,7 +449,8 @@ exports.createAct = async (req, res, next) => {
 
 		res.status(200).json({
 			alert: "Sucessfully created your act profile",
-			type: req.body.userType.toLowerCase()
+			type: req.body.userType.toLowerCase(),
+			userData: savedVenue._id
 		})
 	} catch (error) {
 		if (!error.status) {

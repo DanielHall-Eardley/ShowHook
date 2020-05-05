@@ -72,7 +72,8 @@
         this.$store.commit("logout")
       },
       routeLink(){
-        if (this.user.userData === "undefined" || !this.user.userData) {
+        console.log(this.user)
+        if (this.user.userData === "undefined") {
           return this.$router.push({name: "edit"})
         }
 

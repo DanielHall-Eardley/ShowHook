@@ -87,7 +87,13 @@ export default {
     }
     this.$store.commit("loadOffer", responseData)
 
-    
+    const io = this.$store.state.userConfig.namespaces.offer
+
+    io.emit('createRoom', {
+        roomId: this.offer._id,
+        users: []
+      }
+    )
   },
   methods: {
     deleteOffer(id) {

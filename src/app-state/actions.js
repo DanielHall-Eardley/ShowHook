@@ -90,7 +90,7 @@ export default {
 
     const keyword = context.rootState.appConfig.searchQuery.keyword
     const location = context.rootState.appConfig.searchQuery.location
-    console.log(payload.page)
+    
     const query = JSON.stringify({
       keyword,
       location,
@@ -127,7 +127,6 @@ export default {
     if (responseData.messages) {
       return context.commit("updateError", responseData)
     }
-    console.log(responseData)
 
     context.commit("updateSearchResults", responseData)
     context.commit("resetSearchQuery")
