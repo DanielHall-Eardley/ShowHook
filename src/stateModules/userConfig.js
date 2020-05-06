@@ -20,7 +20,15 @@ const userConfig = {
       status: "Pending",
       messageArray: [],
     },
-    showSetup: {},
+    showSetup: {
+      title: null,
+      description: null,
+      price: null,
+      priceType: null,
+      ticketPrice: null,
+      actProfits: null,
+      venueProfits: null
+    },
     offerSummary: {},
     baseUser: {},
     venueData: {

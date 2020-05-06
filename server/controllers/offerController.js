@@ -120,11 +120,13 @@ exports.updateOfferStatus = async (req, res, next) => {
     }
 
     const updatedOffer = await offer.save()
-    res.status(200).json({ 
+    const response ={ 
       offer: updatedOffer,
       show: savedShow
-    })
+    }
+    res.status(200).json({msg: 'Response returned via socket.io'})
 
+    socket.io().of('/offer').to(updatedOffer._id.toString()).emit('updateOffer', response)
   } catch (error) {
     if (!error.status) {
       error.status = 500
@@ -153,7 +155,7 @@ exports.updateOfferMessage = async (req, res, next) => {
     await offer.save()
     const lastMessage = offer.messageArray[offer.messageArray.length - 1]
 
-    res.status(200)
+    res.status(200).json({msg: 'Response returned via socket.io'})
 
     socket.io().of('/offer').to(offerId.toString()).emit('updateMessage', lastMessage)
   } catch (error) {

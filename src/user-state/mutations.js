@@ -12,7 +12,9 @@ export default {
   },
   loadOffer: (state, payload) => {
     state.offer = {...state.offer, ...payload.offer}
-    state.showSetup = payload.show
+    if (payload.show) {
+      state.showSetup = payload.show
+    }
   },
   loadOfferMessage: (state, payload) => {
     state.offer.messageArray = [...state.offer.messageArray, payload]
@@ -197,8 +199,9 @@ export default {
     state.actData.description = payload.bio
     state.actData.title = payload.title
   },
-  updateOffer: (state, payload) => {
-    state.offer[payload.name] = payload.value;
+  updateShowSetup: (state, payload) => {
+    state.showSetup[payload.key] = payload.value;
+    console.log(state.showSetup)
   },
   updateSchedule: (state, payload) => {
     state.offer.schedule.map(el => {

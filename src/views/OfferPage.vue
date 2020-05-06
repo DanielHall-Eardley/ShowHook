@@ -24,7 +24,11 @@
     </header>
     <header v-if="offer.status === 'Negotiating'">
       <h1>
-        You are negotiating with {{offer[checkUserType + "Name"]}}
+        You are negotiating with 
+        {{ checkUserType === 'receiver' ?
+          offer.offerorName :
+          offer.receiverName
+        }}
       </h1>
       <div class="button-container">
         <button class="alt-button" @click="deleteOffer(offer._id)">
@@ -40,7 +44,11 @@
         <General :show="show"></General>
         <Schedule :show="show"></Schedule>
         <Other :show="show"></Other>
-        <button @click="submitShowChanges">Submit Changes</button>
+        <button 
+          @click="submitShowChanges" 
+          class="primary-button submit-offer-changes">
+          Submit Changes
+        </button>
       </div>
       <div class="offer-page-messages">
         <Messages 
@@ -80,7 +88,7 @@ export default {
     const offerId = this.$route.params.id
     await this.$store.dispatch("autoLogin", this.$route.fullPath)
 
-    const responseData = await getDataFn("conversation/" + offerId)
+    const responseData = await getDataFn("offer/" + offerId)
 
     if (responseData.messages) {
       this.$store.commit("upateError", responseData.messages)
@@ -97,6 +105,10 @@ export default {
     io.on('updateMessage', message => {
       this.$store.commit('loadOfferMessage', message)
     })
+
+    io.on('updateOffer', data => {
+      this.$store.commit('loadOffer', data)
+    })
   },
   updated () {
     const list = document.querySelector('.offer-page-messages')
@@ -108,7 +120,7 @@ export default {
   },
   beforeDestroy () {
     const io = this.$store.state.appConfig.namespaces.offer
-
+    
     io.emit('leaveRoom', {
         roomId: this.offer._id.toString()
       }
@@ -144,7 +156,7 @@ export default {
     },
     checkUserType() {
       const id = this.$store.state.userConfig.baseUser.userId
-
+      
       if (id === this.offer.receiverId) {
         return "receiver"
       }
@@ -193,6 +205,11 @@ export default {
     height: 100%;
     overflow-y: auto;
     border-right: var(--light-border);
+    position: relative
+  }
+
+  .submit-offer-changes {
+    margin: var(--alt-spacing);
   }
 
   .offer-page-messages {

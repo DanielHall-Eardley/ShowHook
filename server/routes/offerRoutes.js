@@ -2,7 +2,7 @@ const router = require("express").Router()
 const offerController = require("../controllers/offerController")
 const isAuth = require("../middleware/isAuth")
 
-router.get("/conversation/:id", offerController.getOffer)
+router.get("/offer/:id", offerController.getOffer)
 
 router.get("/offers-summary/:id", isAuth, offerController.getOffersSummary)
 
