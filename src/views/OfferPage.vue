@@ -141,7 +141,10 @@ export default {
       })
     },
     submitShowChanges() {
-
+      this.$store.dispatch('updateShowSetup', {
+        offerId: this.offer._id,
+        redirect: this.$route.fullPath
+      })
     },
     finalizeShow() {
 

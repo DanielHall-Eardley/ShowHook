@@ -28,7 +28,8 @@ const userConfig = {
       ticketPrice: null,
       actProfits: null,
       venueProfits: null,
-      schedule: {}
+      schedule: {},
+      guestList: []
     },
     offerSummary: {},
     baseUser: {},
@@ -105,7 +106,6 @@ const userConfig = {
       overallRating: 0,
       shows: []
     },
-    newShowData: {},
     error: null
   },
   getters,

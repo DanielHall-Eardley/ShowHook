@@ -16,6 +16,9 @@ export default {
       state.showSetup = payload.show
     }
   },
+  updateGuestList: (state, payload) => {
+    state.showSetup.guestList = [...state.showSetup.guestList, payload]
+  },
   loadOfferMessage: (state, payload) => {
     state.offer.messageArray = [...state.offer.messageArray, payload]
   },
@@ -204,12 +207,7 @@ export default {
     console.log(state.showSetup)
   },
   updateSchedule: (state, payload) => {
-    state.offer.schedule.map(el => {
-      if (el.task === payload.currentTask) {
-        el[payload.time.name] = payload.time.value;
-      }
-      return el;
-    });
+    state.showSetup.schedule = payload.schedule
   },
   toggleArtistVenue: (state, payload) => {
     state.offer[payload.name] = payload.type;

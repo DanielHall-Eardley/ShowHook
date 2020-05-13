@@ -29,7 +29,7 @@
         <label for="start" class="schedule-start-label">Select a start time</label>
         <select 
           class="default-input schedule-select-start"
-          v-on:click='addTask($event)'
+          v-on:change='addTask($event)'
           name='start'>
           <option selected disabled>Select Start Time</option>
           <option v-for="time in timesArray">{{time}}</option>
@@ -37,24 +37,19 @@
 
         <label for="end" class="schedule-end-label">Select an end time</label>
         <select class="default-input schedule-select-end"
-          v-on:click='addTask($event)'
+          v-on:change='addTask($event)'
           name='end'>
           <option selected disabled>Select End Time</option>
           <option v-for="time in timesArray">{{time}}</option>
         </select>
       </div>
       <button class="primary-button">Update Schedule</button>
-      <div class="schedule-summary">
+      <div class="schedule-summary" v-if='showSchedule.length > 0'>
         <h2 class="subheading">Summary</h2>
         <ul>
-          <template v-if='!editing'>
+          <template>
             <li v-for='(task, key) in showSchedule' :key='key'>
-              {{key}}: {{task.start}} --- {{task.end}}
-            </li>
-          </template>
-          <template v-if='editing'>
-            <li v-for='(task, key) in schedule' :key='key'>
-              {{key}}: {{task.start}} --- {{task.end}}
+              {{key}}: {{task.start}} - {{task.end}}
             </li>
           </template>
         </ul>
@@ -67,6 +62,11 @@
 export default {
   computed:{
     showSchedule(){
+      if (this.editing) {
+        console.log(this.schedule.length)
+        return this.schedule
+      }
+
       return this.$store.state.userConfig.showSetup.schedule
     },
   },
@@ -159,19 +159,11 @@ export default {
         return
       }
 
-      if (time === 'Select Start Time' || time === 'Select End Time') {
-        this.$store.commit('updateError', {
-          messages: ['You must select a start and end time']
-        })
-        return
-      }
-
       if (!this.editing) {
         this.editing = true
       }
 
       this.schedule[this.currentTask][timeType] = time
-      console.log(this.schedule)
     },
     updateSchedule () {
        this.$store.commit('updateSchedule', {
@@ -192,6 +184,7 @@ export default {
   background-color: white;
   padding: var(--spacing);
   border-bottom: var(--light-border);
+  border-right: var(--light-border);
 
   display: grid;
   grid-row-gap: var(--alt-spacing);
@@ -206,18 +199,18 @@ export default {
     margin-bottom: var(--alt-spacing);
   }
 
+  &-summary {
+    h2 {
+      margin-bottom: var(--alt-spacing);
+    }
 
-  &-list{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-row-gap: .5rem;
-    border-bottom: solid .5px var(--secondary-six)
-  }
+    ul {
+      list-style: none;
+    }
 
-  &-select-task, &-select-start, &-select-end{
-
-    option{
-      outline: none;
+    li {
+      margin-bottom: .5rem;
+      margin-left: var(--alt-spacing);
     }
   }
 

@@ -20,7 +20,10 @@ exports.getOffer = async (req, res, next) => {
       errorHandler(404, ["Your offer could not be found"])
     }
 
-    res.status(200).json({ offer: offer })
+    res.status(200).json({ 
+      offer: offer,
+      show: offer.show 
+    })
 
   } catch (error) {
     if (!error.status) {
@@ -162,6 +165,55 @@ exports.updateOfferMessage = async (req, res, next) => {
     if (!error.status) {
       error.status = 500
     }
+    next(error)
+  }
+}
+
+exports.updateShowSetup = async (req, res, next) => {
+  try {
+    const offerId = req.body.offerId
+    const userId = req.body.userId
+
+    const offer = await Offer.findById(offerId)
+
+    if (!offer) {
+      errorHandler(404, ["Your offer could not be found"])
+    }
+
+    if (userId !== offer.offerorId && userId !== offer.receiverId) {
+      errorHandler(401, ["You are not authorized to modify this offer"])
+    }
+
+    const show = await Show.findById(offer.show)
+
+    if (!show) {
+      errorHandler(404, ["Your show could not be found"])
+    }
+
+    show.title = req.body.title
+    show.description = req.body.description
+    show.actProfits = req.body.actProfits
+    show.venueProfits = req.body.venueProfits
+    show.guestList = req.body.guestList
+    show.ticketPrice = req.body.ticketPrice
+    show.price = req.body.price
+    show.priceType = req.body.priceType
+    show.schedule = req.body.schedule
+
+    const savedShow = await show.save()
+
+    const response ={ 
+      offer: offer,
+      show: savedShow
+    }
+    res.status(200).json({msg: 'Response returned via socket.io'})
+
+    socket.io().of('/offer').to(offer._id.toString()).emit('updateOffer', response)
+  } catch (error) {
+    if (!error.status) {
+      error.status = 500
+    }
+
     next(error)
   }
 }

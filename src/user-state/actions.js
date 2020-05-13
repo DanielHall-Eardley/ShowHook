@@ -179,7 +179,7 @@ export default {
     context.commit("clearError")
     const userId = context.rootState.userConfig.baseUser.userId
 
-    if (userId) {
+    if (!userId) {
       context.dispatch("autoLogin", payload)
     }
 
@@ -226,7 +226,7 @@ export default {
     context.commit("clearError")
     const userId = context.rootState.userConfig.baseUser.userId
 
-    if (userId) {
+    if (!userId) {
       context.dispatch("autoLogin", payload)
     }
 
@@ -266,4 +266,27 @@ export default {
 
     router.go()
   },
+  updateShowSetup: async (context, payload) => {
+    context.commit('clearError')
+    const userId = context.rootState.userConfig.baseUser.userId
+
+    if (!userId) {
+      context.dispatch("autoLogin", payload.redirect)
+    }
+
+    const body = context.rootState.userConfig.showSetup
+    body.offerId = payload.offerId
+    body.userId = userId
+    const stringifiedBody = JSON.stringify(body)
+
+    const headers = {
+      "Authorization": "Bearer " + context.rootState.userConfig.token,
+    }
+
+    const responseData = await postDataFn("/update-show-setup", stringifiedBody, headers, "PUT")
+    
+    if (responseData.messages) {
+      return context.commit("updateError", responseData)
+    }
+  }
 }
