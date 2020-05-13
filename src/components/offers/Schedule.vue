@@ -14,40 +14,50 @@
     <div class="expand-container" v-show="showSection">
       <div class="schedule-select-times">
         <label for="task" class="schedule-task-label">Select a task</label>
-        <select class="default-input schedule-select-task"
-          v-model='task'
-          id="task">
-          <option selected disabled>Select Task</option>
+        <select 
+          class="default-input schedule-select-task"
+          v-model='currentTask'>
+          <option disabled>Select Task</option>
           <option>Load In</option>
           <option>Set Up</option>
           <option>Openers</option>
           <option>Main Event</option>
           <option>Teardown</option>
-          <option>Stage Clear</option>
+          <option>Load Out</option>
         </select>
 
         <label for="start" class="schedule-start-label">Select a start time</label>
-        <select class="default-input schedule-select-start"
-          v-on:click="selectTime($event)"
-          id="start"
-          name="start">
+        <select 
+          class="default-input schedule-select-start"
+          v-on:click='addTask($event)'
+          name='start'>
+          <option selected disabled>Select Start Time</option>
           <option v-for="time in timesArray">{{time}}</option>
         </select>
 
         <label for="end" class="schedule-end-label">Select an end time</label>
         <select class="default-input schedule-select-end"
-          v-on:click="selectTime($event)"
-          id="end"
-          name="end">
+          v-on:click='addTask($event)'
+          name='end'>
+          <option selected disabled>Select End Time</option>
           <option v-for="time in timesArray">{{time}}</option>
         </select>
       </div>
-      <div class="schedule-show-times">
-        <div v-for="item in show.schedule" class="schedule-list">
-          <span class="schedule-task">{{item.task}}</span>
-          <span class="schedule-start"><b>Start: </b>{{item.start}}</span>
-          <span class="schedule-end"><b>End: </b>{{item.end}}</span>
-        </div>
+      <button class="primary-button">Update Schedule</button>
+      <div class="schedule-summary">
+        <h2 class="subheading">Summary</h2>
+        <ul>
+          <template v-if='!editing'>
+            <li v-for='(task, key) in showSchedule' :key='key'>
+              {{key}}: {{task.start}} --- {{task.end}}
+            </li>
+          </template>
+          <template v-if='editing'>
+            <li v-for='(task, key) in schedule' :key='key'>
+              {{key}}: {{task.start}} --- {{task.end}}
+            </li>
+          </template>
+        </ul>
       </div>
     </div>
   </section>
@@ -56,8 +66,8 @@
 <script>
 export default {
   computed:{
-    show(){
-      return this.$store.state.userConfig.showSetup
+    showSchedule(){
+      return this.$store.state.userConfig.showSetup.schedule
     },
   },
   data(){
@@ -105,15 +115,67 @@ export default {
         "2:45 am",
         "3:00 am",
       ],
-      task: "Load In",
       showSection: false,
+      editing: false,
+      currentTask: 'Select Task',
+      schedule: {
+        'Load In': {
+          start: null,
+          end: null
+        },
+        'Set Up': {
+          start: null,
+          end: null
+        },
+        'Openers': {
+          start: null,
+          end: null
+        },
+        'Main Event': {
+          start: null,
+          end: null
+        },
+        'Teardown': {
+          start: null,
+          end: null
+        },
+        'Load Out': {
+          start: null,
+          end: null
+        },
+      }
     }
   },
   methods:{
-    selectTime(e){
-      this.$store.commit('updateSchedule', {
-        currentTask: this.task,
-        time: event.target
+    addTask (e) {
+      this.$store.commit('clearError')
+      const time = e.target.value
+      const timeType = e.target.name
+      
+      if (this.currentTask === 'Select Task') {
+        this.$store.commit('updateError', {
+          messages: ['You must select a task to modify']
+        })
+        return
+      }
+
+      if (time === 'Select Start Time' || time === 'Select End Time') {
+        this.$store.commit('updateError', {
+          messages: ['You must select a start and end time']
+        })
+        return
+      }
+
+      if (!this.editing) {
+        this.editing = true
+      }
+
+      this.schedule[this.currentTask][timeType] = time
+      console.log(this.schedule)
+    },
+    updateSchedule () {
+       this.$store.commit('updateSchedule', {
+        schedule: this.schedule
       })
     },
     toggleExpand(){
@@ -135,7 +197,6 @@ export default {
   grid-row-gap: var(--alt-spacing);
 
   select{
-    height: 3.5rem;
     font-size: 1.6rem;
   }
 
@@ -145,10 +206,6 @@ export default {
     margin-bottom: var(--alt-spacing);
   }
 
-  &-show-times{
-    display: grid;
-    grid-row-gap: var(--alt-spacing);
-  }
 
   &-list{
     display: grid;
