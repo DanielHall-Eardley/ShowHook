@@ -28,7 +28,7 @@
       </textarea>
       <label for="">Select price type</label>
       <select 
-        class="default-input" 
+        class="default-input select-price-type" 
         v-model="priceType"
         v-on:change="updateShow($event)"
         name="priceType">
@@ -159,6 +159,10 @@ export default {
   textarea {
     height: 12rem;
   }
+}
+
+.select-price-type {
+  height: 4rem;
 }
 
 .expand-container {

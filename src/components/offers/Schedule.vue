@@ -15,9 +15,15 @@
       <div class="schedule-select-times">
         <label for="task" class="schedule-task-label">Select a task</label>
         <select class="default-input schedule-select-task"
-          v-on:click="selectTask($event)"
+          v-model='task'
           id="task">
-          <option v-for="item in offer.schedule">{{item.task}}</option>
+          <option selected disabled>Select Task</option>
+          <option>Load In</option>
+          <option>Set Up</option>
+          <option>Openers</option>
+          <option>Main Event</option>
+          <option>Teardown</option>
+          <option>Stage Clear</option>
         </select>
 
         <label for="start" class="schedule-start-label">Select a start time</label>
@@ -37,7 +43,7 @@
         </select>
       </div>
       <div class="schedule-show-times">
-        <div v-for="item in offer.schedule" class="schedule-list">
+        <div v-for="item in show.schedule" class="schedule-list">
           <span class="schedule-task">{{item.task}}</span>
           <span class="schedule-start"><b>Start: </b>{{item.start}}</span>
           <span class="schedule-end"><b>End: </b>{{item.end}}</span>
@@ -50,8 +56,8 @@
 <script>
 export default {
   computed:{
-    offer(){
-      return this.$store.state.userConfig.offer
+    show(){
+      return this.$store.state.userConfig.showSetup
     },
   },
   data(){
@@ -104,9 +110,6 @@ export default {
     }
   },
   methods:{
-    selectTask(e){
-      this.task = e.target.value
-    },
     selectTime(e){
       this.$store.commit('updateSchedule', {
         currentTask: this.task,
