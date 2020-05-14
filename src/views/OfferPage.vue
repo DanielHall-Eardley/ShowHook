@@ -28,7 +28,8 @@
         {{ checkUserType === 'receiver' ?
           offer.offerorName :
           offer.receiverName
-        }}
+        }} for a show at 
+        {{readableDate(offer.show.showDate)}}
       </h1>
       <div class="button-container">
         <button class="alt-button" @click="deleteOffer(offer._id)">
@@ -41,9 +42,9 @@
     </header>
     <section class="offer-page-conversation">
       <div class="offer-page-details">
-        <General :show="show"></General>
-        <Schedule :show="show"></Schedule>
-        <Other :show="show"></Other>
+        <General></General>
+        <Schedule></Schedule>
+        <Other :userType='offer[checkUserType + "Type"]'></Other>
         <button 
           @click="submitShowChanges" 
           class="primary-button submit-offer-changes">
@@ -72,6 +73,7 @@ import Messages from "@/components/offers/Messages.vue"
 import SendMessage from "@/components/offers/SendMessage.vue"
 
 import getDataFn from "@/helper/getDataFn"
+import formatDate from '@/helper/formatDate'
 
 export default {
   components:{
@@ -133,6 +135,9 @@ export default {
         offerId: id
       })
     },
+    readableDate(date) {
+      return formatDate(date, false)
+    },
     updateOffer(status, id) {
       this.$store.dispatch("updateOffer", {
         offerId: id,
@@ -153,9 +158,6 @@ export default {
   computed: {
     offer() {
       return this.$store.state.userConfig.offer
-    },
-    show() {
-      return this.$store.state.userConfig.showSetup
     },
     checkUserType() {
       const id = this.$store.state.userConfig.baseUser.userId

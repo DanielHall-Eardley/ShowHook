@@ -5,6 +5,7 @@ const Offer = require("../models/offer")
 const Show = require("../models/show")
 const errorHandler = require("../helper/errorHandler")
 const socket = require('../helper/socket.io')
+const checkForValidationError = require('../helper/checkForValidationErr')
 
 exports.getOffer = async (req, res, next) => {
   try {
@@ -106,7 +107,7 @@ exports.updateOfferStatus = async (req, res, next) => {
       const results = await Promise.all([actProfile, venueProfile])
 
       const [act, venue] = results
-      console.log(act, venue)
+     
       const show = new Show({
         actTitle: act.title,
         venueTitle: venue.title,
@@ -114,7 +115,8 @@ exports.updateOfferStatus = async (req, res, next) => {
         venueId: venue._id,
         address: venue.address,
         showDate: offer.bookingDate,
-        numberOfTickets: venue.capacity,
+        numberOfTickets: 0,
+        capacity: venue.capacity,
         photoUrl: act.bannerProfile
       })
 
@@ -171,6 +173,8 @@ exports.updateOfferMessage = async (req, res, next) => {
 
 exports.updateShowSetup = async (req, res, next) => {
   try {
+    checkForValidationError(req)
+
     const offerId = req.body.offerId
     const userId = req.body.userId
 
@@ -190,6 +194,12 @@ exports.updateShowSetup = async (req, res, next) => {
       errorHandler(404, ["Your show could not be found"])
     }
 
+    let guestNumber = req.body.numberOfTickets
+    if (guestNumber > show.numberOfTickets) {
+      errorHandler(403, ['The number of guests must less than venue capacity'])
+      guestNumber = show.numberOfTickets
+    }
+
     show.title = req.body.title
     show.description = req.body.description
     show.actProfits = req.body.actProfits
@@ -199,6 +209,9 @@ exports.updateShowSetup = async (req, res, next) => {
     show.price = req.body.price
     show.priceType = req.body.priceType
     show.schedule = req.body.schedule
+    show.actRequirements = req.body.actRequirements
+    show.venueRequirements = req.body.venueRequirements
+    show.numberOfTickets = guestNumber
 
     const savedShow = await show.save()
 

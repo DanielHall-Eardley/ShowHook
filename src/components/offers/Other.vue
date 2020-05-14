@@ -2,15 +2,15 @@
   <section class="other">
     <h2 class="subheading">
       <span>Other</span>
-      <svg v-if="!showSection" @click="toggleExpand">
+      <svg v-if="!showSection" @click='showSection = !showSection'>
         <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
       </svg>
-      <svg v-else @click="toggleExpand">
+      <svg v-else @click='showSection = !showSection'>
         <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
       </svg>
     </h2>
     <div class="edit-offer" v-if='showSection'>
-      <div class="add-list">
+      <div class="add-guest">
         <label for="">Add to Guestlist</label>
         <input 
           type="text" 
@@ -18,10 +18,35 @@
           class='default-input'
           v-model='guest'
           v-on:change='addGuest'>  
-        <div class='guest-list' v-if='getGuestList.length > 0'> 
+        <div class='guest-list' v-if='show.guestList.length > 0'> 
           <h3 class='subheading'>Guest List</h3>
           <ul>
-            <li v-for='guest in getGuestList'>{{guest}}</li>
+            <li v-for='guest in show.guestList'>{{guest}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="add-condition">
+        <label for="">Add any requirements</label>
+        <input 
+          type="text"
+          class='default-input'
+          placeholder="Add any extra conditions"
+          v-model='condition'
+          v-on:change="addCondition">
+        <div 
+          class="act-condition-list" 
+          v-if="show.actRequirements.length > 0">
+          <h3>Act requirements</h3>
+          <ul class='act-conditions'>
+            <li v-for='condition in show.actRequirements'>{{condition}}</li>
+          </ul>
+        </div>
+        <div 
+          class="venue-condition-list" 
+          v-if="show.venueRequirements.length > 0">
+          <h3>Venue requirements</h3>
+          <ul class="venue-conditions">
+            <li v-for='condition in show.venueRequirements'>{{condition}}</li>
           </ul>
         </div>
       </div>
@@ -31,23 +56,32 @@
 
 <script>
 export default {
-  data(){
+  props: ['userType'],
+  data () {
     return { 
       showSection: false,
       guest: "",
+      condition: ""
     }
   },
   methods:{
     addGuest(){
       this.$store.commit('updateGuestList', this.guest)
+
+      this.guest = ""
     },
-    toggleExpand(){
-      this.showSection = !this.showSection
-    }
+    addCondition(){
+      this.$store.commit('updateConditionList', {
+        condition: this.condition,
+        userType: this.userType
+      })
+
+      this.condition = ""
+    },
   },
   computed:{
-    getGuestList () {
-      return this.$store.state.userConfig.showSetup.guestList
+    show () {
+      return this.$store.state.userConfig.showSetup
     }
   },
 }
@@ -67,12 +101,16 @@ export default {
     font-size: 1.6rem;
   }
 
-  .add-list{
+
+  .add-guest, .add-condition {
+    margin-bottom: var(--alt-spacing);
     display: grid;
-    grid-row-gap: var(--alt-spacing);
+    row-gap: var(--alt-spacing);
   }
 
-  .guest-list {
+  .guest-list, 
+  .act-condition-list,
+  .venue-condition-list {
     ul {
       list-style: none;
     }

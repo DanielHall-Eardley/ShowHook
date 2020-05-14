@@ -70,7 +70,15 @@
         v-model='ticketPrice'
         :placeholder="showSetup.ticketPrice || 'Add ticket price'"
         v-on:change='updateShow($event)'>
-    </div>
+      <label for="">Number of tickets - venue capacity: {{showSetup.capacity}}</label>
+      <input 
+        type="number" 
+        class="default-input"
+        name='numberOfTickets'
+        v-model='numberOfTickets'
+        :placeholder="showSetup.numberOfTickets || 'Add ticket price'"
+        v-on:change='updateShow($event)'>
+  </div>
   </section>
 </template>
 
@@ -85,10 +93,10 @@ export default {
       priceType: "Select price type",
       ticketPrice: 0,
       actProfit: 50,
-      venueProfit: 50
+      venueProfit: 50,
+      numberOfTickets: 0
     }
   },
-  props: ["show"],
   methods:{
     updateShow(e){
       const key = e.target.name

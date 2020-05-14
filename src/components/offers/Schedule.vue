@@ -3,15 +3,15 @@
 
     <h2 class="subheading">
       <span>Schedule</span>
-      <svg v-if="!showSection" @click="toggleExpand">
+      <svg v-if="!showSection" @click='showSection = !showSection'>
         <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
       </svg>
-      <svg v-else @click="toggleExpand">
+      <svg v-else @click='showSection = !showSection'>
         <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
       </svg>
     </h2>
 
-    <div class="expand-container" v-show="showSection">
+    <div class="expand-container" v-if="showSection">
       <div class="schedule-select-times">
         <label for="task" class="schedule-task-label">Select a task</label>
         <select 
@@ -44,7 +44,7 @@
         </select>
       </div>
       <button class="primary-button">Update Schedule</button>
-      <div class="schedule-summary" v-if='checkScheduleExists > 0'>
+      <div class="schedule-summary" v-if='checkScheduleExists'>
         <h3 class="subheading">Summary</h3>
         <ul>
           <template>
@@ -69,8 +69,12 @@ export default {
       return this.$store.state.userConfig.showSetup.schedule
     },
     checkScheduleExists () {
-      const obj = Object.keys(this.showSchedule)
-      return obj.length
+      if (this.showSchedule) {
+        const obj = Object.keys(this.showSchedule)
+        return obj.length
+      }
+      
+      return null
     }
   },
   data(){
@@ -172,9 +176,6 @@ export default {
        this.$store.commit('updateSchedule', {
         schedule: this.schedule
       })
-    },
-    toggleExpand(){
-      this.showSection = !this.showSection
     }
   }
 }

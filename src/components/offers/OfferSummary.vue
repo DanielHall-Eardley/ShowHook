@@ -38,14 +38,14 @@
     </div>
     <div class="recent-message">
       <p>{{summary.mostRecentMessage.content}}</p>
-      <span>{{formatDate(summary.updatedAt, true)}}</span>
+      <span>{{readableDate(summary.updatedAt)}}</span>
     </div>
   </div>
 </template>
 
 <script>
   import ReviewStars from "@/components/profile/shared/ReviewStars"
-
+  import formatDate from '@/helper/formatDate'
   export default {
     props: ["summary", "type"],
     components: {
@@ -63,25 +63,8 @@
       }
     },
     methods: {
-      formatDate(date, addTime) {
-        let options = {
-          weekday: 'long', 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric'
-        }
-
-        if (addTime) {
-          options = {
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric',
-            hour: "numeric",
-            minute: "numeric"
-          }
-        }
-
-        return new Date(date).toLocaleString("en-CA", options)
+      readableDate(date) {
+        return formatDate(date, true)
       },
       highlight(val){
         let color;

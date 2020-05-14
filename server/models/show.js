@@ -50,6 +50,10 @@ const ShowSchema = Schema({
     type: Number,
     required: true
   },
+  capacity: {
+    type: Number,
+    required: true
+  },
   schedule: {
     type: Object,
   },

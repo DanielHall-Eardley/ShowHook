@@ -26,10 +26,13 @@ const userConfig = {
       price: null,
       priceType: null,
       ticketPrice: null,
-      actProfits: null,
-      venueProfits: null,
+      actProfits: '50%',
+      venueProfits: '50%',
       schedule: {},
-      guestList: []
+      guestList: [],
+      actRequirements: [],
+      venueRequirements: [],
+      numberOfTickets: null
     },
     offerSummary: {},
     baseUser: {},

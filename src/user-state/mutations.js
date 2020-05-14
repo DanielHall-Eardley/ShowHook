@@ -19,6 +19,10 @@ export default {
   updateGuestList: (state, payload) => {
     state.showSetup.guestList = [...state.showSetup.guestList, payload]
   },
+  updateConditionList: (state, payload) => {
+    const key = payload.userType.toLowerCase() + 'Requirements'
+    state.showSetup[key] = [...state.showSetup[key], payload.condition]
+  },
   loadOfferMessage: (state, payload) => {
     state.offer.messageArray = [...state.offer.messageArray, payload]
   },
