@@ -19,7 +19,7 @@
           v-model='guest'
           v-on:change='addGuest'>  
         <div class='guest-list' v-if='getGuestList.length > 0'> 
-          <h2 class='subheading'>Guest List</h2>
+          <h3 class='subheading'>Guest List</h3>
           <ul>
             <li v-for='guest in getGuestList'>{{guest}}</li>
           </ul>
@@ -70,7 +70,17 @@ export default {
   .add-list{
     display: grid;
     grid-row-gap: var(--alt-spacing);
+  }
 
+  .guest-list {
+    ul {
+      list-style: none;
+    }
+
+    li {
+      padding-left: var(--alt-spacing);
+      padding-top: var(--alt-spacing);
+    }
   }
 }
 

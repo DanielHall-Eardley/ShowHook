@@ -44,8 +44,8 @@
         </select>
       </div>
       <button class="primary-button">Update Schedule</button>
-      <div class="schedule-summary" v-if='showSchedule.length > 0'>
-        <h2 class="subheading">Summary</h2>
+      <div class="schedule-summary" v-if='checkScheduleExists > 0'>
+        <h3 class="subheading">Summary</h3>
         <ul>
           <template>
             <li v-for='(task, key) in showSchedule' :key='key'>
@@ -61,14 +61,17 @@
 <script>
 export default {
   computed:{
-    showSchedule(){
+    showSchedule () {
       if (this.editing) {
-        console.log(this.schedule.length)
         return this.schedule
       }
 
       return this.$store.state.userConfig.showSetup.schedule
     },
+    checkScheduleExists () {
+      const obj = Object.keys(this.showSchedule)
+      return obj.length
+    }
   },
   data(){
     return{
@@ -200,7 +203,7 @@ export default {
   }
 
   &-summary {
-    h2 {
+    h3 {
       margin-bottom: var(--alt-spacing);
     }
 
@@ -212,22 +215,6 @@ export default {
       margin-bottom: .5rem;
       margin-left: var(--alt-spacing);
     }
-  }
-
-  &-task{
-    grid-column: 1 / -1;
-    font-size: 1.8rem;
-    color: var(--primary);
-  }
-
-  &-start{
-    grid-column: 1 / span 2;
-    padding-bottom: var(--alt-spacing);
-  }
-
-  &-end{
-    grid-column: 3 / span 2;
-    padding-bottom: var(--alt-spacing);
   }
 }
 </style>
