@@ -290,15 +290,19 @@ exports.finalizeOffer = async (req, res, next) => {
     }
 
     if (offer.offerorId.toString() === userId.toString()) {
-      offer.offerorStatus = 'Accepted'
+      offer.offerorStatus = req.body.status
     }
 
     if (offer.receiverId.toString() === userId.toString()) {
-      offer.receiverStatus = 'Accepted'
+      offer.receiverStatus = req.body.status
     }
 
-    if (offer.offerorStatus === "Accepted" && offer.receiverStatus === "Accepted") {
-      offer.status = 'Confirmed'
+    if (offer.offerorStatus === offer.receiverStatus) {
+      offer.status = offer.receiverStatus
+    }
+
+    if (req.body.status === 'Negotiating') {
+      offer.status = 'Negotiating'
     }
 
     const updatedOffer = await offer.save()

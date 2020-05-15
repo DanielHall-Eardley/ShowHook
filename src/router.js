@@ -8,7 +8,6 @@ import Home from './views/Home.vue'
 import VenueProfile from './views/VenueProfile.vue'
 import ActProfile from './views/ActProfile.vue'
 import EditDetails from './views/EditDetails.vue'
-import PageTemplate from './views/PageTemplate.vue'
 import SearchPage from './views/SearchPage.vue'
 import AboutHowTo from './views/AboutHowTo.vue'
 import ShowDetails from './views/ShowDetails.vue'
@@ -85,11 +84,6 @@ export default new Router({
       path: "/information",
       name: "info",
       component: AboutHowTo,
-    },
-    {
-      path: "/show-details",
-      name: "show-details",
-      component: ShowDetails,
     },
     {
       path: "/page-not-found",

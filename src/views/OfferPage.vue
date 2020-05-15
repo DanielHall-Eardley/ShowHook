@@ -35,8 +35,19 @@
         <button class="alt-button" @click="deleteOffer(offer._id)">
           Cancel Offer
         </button>
-        <button @click="finalizeOffer" class="primary-button">
+        <button @click="finalizeOffer('Review')" class="primary-button">
           Accept Show Setup
+        </button>
+      </div>
+    </header>
+    <header v-if="offer.status === 'Review'">
+      <h1>Review Show</h1>
+      <div class="button-container">
+        <button class="alt-button" @click="finalizeOffer('Negotiating')">
+          Make a Change
+        </button>
+        <button @click="finalizeOffer('Confirmed')" class="primary-button">
+          Confirm Show
         </button>
       </div>
     </header>
@@ -59,6 +70,20 @@
           :offerorId="offer.offerorId"
           :receiverId="offer.receiverId">
         </Messages>
+      </div>
+      <div class="contract" v-if='offer.status === "Review"'>
+        <h3>
+          Confirm Booking on {{readableDate(offer.bookingDate)}}
+          for {{title.actTitle}}
+          to perform at {{title.venueTitle}}
+        </h3>
+        <h4>
+          Warning! This is a legally binding contract 
+          canceling within 48 hours of the show date or not 
+          notifying the opposing party of cancellation will result in deposit
+          being forfeited.
+        </h4>
+        <p>Add terms and conditions</p>
       </div>
     </section>
     <SendMessage :offerId='offer._id'/>
@@ -154,15 +179,49 @@ export default {
         redirect: this.$route.fullPath
       })
     },
-    finalizeOffer() {
+    finalizeOffer(status) {
       this.$store.dispatch('finalizeOffer', {
-        offerId: this.offer._id
+        offerId: this.offer._id,
+        status
       })
     }
   },
   computed: {
     offer() {
-      return this.$store.state.offer
+      const offer = this.$store.state.offer
+      console.log(offer)
+      if (offer.status === 'Confirmed') {
+        if (this.checkUserType === 'offeror') {
+          return this.$router.push({
+            name: 'checkout', 
+            params: {
+              id: offer.id
+            }
+          })
+        }
+
+        return this.$router.push({
+          name: 'show', 
+          params: {
+            id: offer.show._id
+          }
+        })
+      }
+
+      return offer
+    },
+    title () {
+      const titleObj = {}
+
+      if (this.offer.offerorType === 'Act') {
+        titleObj.actTitle = this.offer.offerorTitle
+        titleObj.venueTitle = this.offer.receiverTitle
+      } else {
+        titleObj.venueTitle = this.offer.offerorTitle
+        titleObj.actTitle = this.offer.receiverTitle
+      }
+
+      return titleObj
     },
     checkUserType() {
       const id = this.$store.state.baseUser.userId
@@ -177,7 +236,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .offer-page {
     height: 100%;
 
@@ -214,6 +273,7 @@ export default {
     display: grid;
     grid-template-columns: 1.4fr 2fr;
     height: 70vh;
+    position: relative
   }
 
   .offer-page-details {
@@ -230,6 +290,14 @@ export default {
   .offer-page-messages {
     height: 100%;
     overflow-y: auto;
+  }
+
+  .contract {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 </style>
 

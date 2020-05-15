@@ -452,7 +452,8 @@ export default {
 
     const body = JSON.stringify({
       userId: context.rootState.baseUser.userId,
-      offerId: payload.offerId
+      offerId: payload.offerId,
+      status: payload.status
     })
 
     const responseData = await postDataFn('finalize-offer', body, headers, 'PUT')

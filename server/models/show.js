@@ -79,6 +79,10 @@ const ShowSchema = Schema({
   actId: {
     type: Schema.Types.ObjectId,
     required: true
+  },
+  published: {
+    type: Boolean,
+    default: false
   }
 },
 {
