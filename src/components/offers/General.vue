@@ -1,15 +1,7 @@
 <template lang="html">
   <section class="general">
-    <h2 class="subheading">
-      <span>General</span>
-      <svg v-if="!showSection" @click="showSection = !showSection">
-        <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
-      </svg>
-      <svg v-else @click="showSection = !showSection">
-        <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
-      </svg>
-    </h2>
-    <div class="expand-container" v-show="showSection">
+    <h2 class="subheading">General</h2>
+    <div class="container">
       <label for="">Title</label>
       <input 
         type="text" 
@@ -36,15 +28,15 @@
         <option>Split</option>
         <option>Fixed</option>
       </select>
-      <div class="profits" v-if='priceType === "Split"'>
+      <div class="profits" v-if='priceType === "Split" || showSetup.priceType === "Split"'>
         <label>Profit Split</label>
         <span>Act</span>
         <input 
           class='default-input'
           type="number" 
           :value='actProfit'
-          name='act' 
           :placeholder='showSetup.actProfit'
+          name='act' 
           v-on:input="changePercentage($event)"
           v-on:change="updatePercentage">
         <span>Venue</span>
@@ -81,7 +73,7 @@
         v-model='numberOfTickets'
         :placeholder="showSetup.numberOfTickets || 'Add number of tickets'"
         v-on:change='updateShow($event)'>
-  </div>
+    </div>
   </section>
 </template>
 
@@ -138,7 +130,7 @@ export default {
 
       this.$store.commit("updateShowProfits", payload)
     },
-    updatedPriceType (e) {
+    updatePriceType (e) {
       this.priceType = e.target.value
     }
   },
@@ -150,21 +142,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../globalStyles/helper.scss';
-
-.subheading{
-  color: var(--primary);
-  font-weight: 100;
-  display: flex;
-
-  svg{
-    height: 3.5rem;
-    width: 3.5rem;
-    fill: var(--primary);
-    margin-left: auto;
-  }
-}
 
 .general{
   padding: var(--spacing);
@@ -179,7 +158,7 @@ export default {
   height: 4rem;
 }
 
-.expand-container {
+.container {
   display: grid;
   grid-row-gap: var(--alt-spacing);
 }

@@ -28,7 +28,32 @@ const userConfig = {
       ticketPrice: null,
       actProfit: 50,
       venueProfit: 50,
-      schedule: {},
+      schedule: {
+        'Load In': {
+          start: null,
+          end: null
+        },
+        'Set Up': {
+          start: null,
+          end: null
+        },
+        'Openers': {
+          start: null,
+          end: null
+        },
+        'Main Event': {
+          start: null,
+          end: null
+        },
+        'Teardown': {
+          start: null,
+          end: null
+        },
+        'Load Out': {
+          start: null,
+          end: null
+        },
+      },
       guestList: [],
       actRequirements: [],
       venueRequirements: [],

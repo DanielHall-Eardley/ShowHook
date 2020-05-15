@@ -209,8 +209,8 @@ exports.updateShowSetup = async (req, res, next) => {
     }
 
     if (req.body.priceType === 'Split') {
-      show.actProfits = req.body.actProfits
-      show.venueProfits = req.body.venueProfits
+      show.actProfit = req.body.actProfit
+      show.venueProfit = req.body.venueProfit
     }
 
     show.title = req.body.title

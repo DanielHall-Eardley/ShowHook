@@ -1,17 +1,7 @@
 <template lang="html">
   <section class="schedule">
-
-    <h2 class="subheading">
-      <span>Schedule</span>
-      <svg v-if="!showSection" @click='showSection = !showSection'>
-        <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
-      </svg>
-      <svg v-else @click='showSection = !showSection'>
-        <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
-      </svg>
-    </h2>
-
-    <div class="expand-container" v-if="showSection">
+    <h2 class="subheading">Schedule</h2>
+    <div class="container">
       <div class="schedule-select-times">
         <label for="task" class="schedule-task-label">Select a task</label>
         <select 
@@ -62,10 +52,6 @@
 export default {
   computed:{
     showSchedule () {
-      if (this.editing) {
-        return this.schedule
-      }
-
       return this.$store.state.userConfig.showSetup.schedule
     },
     checkScheduleExists () {
@@ -122,35 +108,7 @@ export default {
         "2:45 am",
         "3:00 am",
       ],
-      showSection: false,
-      editing: false,
       currentTask: 'Select Task',
-      schedule: {
-        'Load In': {
-          start: null,
-          end: null
-        },
-        'Set Up': {
-          start: null,
-          end: null
-        },
-        'Openers': {
-          start: null,
-          end: null
-        },
-        'Main Event': {
-          start: null,
-          end: null
-        },
-        'Teardown': {
-          start: null,
-          end: null
-        },
-        'Load Out': {
-          start: null,
-          end: null
-        },
-      }
     }
   },
   methods:{
@@ -166,23 +124,18 @@ export default {
         return
       }
 
-      if (!this.editing) {
-        this.editing = true
-      }
-
-      this.schedule[this.currentTask][timeType] = time
-    },
-    updateSchedule () {
-       this.$store.commit('updateSchedule', {
-        schedule: this.schedule
+      this.$store.commit('updateSchedule', {
+        currentTask: this.currentTask,
+        timeType,
+        time
       })
-    }
+    },
   }
 }
 </script>
 
-<style lang="scss">
-@import '../../globalStyles/variables.scss';
+<style lang="scss" scoped>
+@import '../../globalStyles/helper.scss';
 
 .schedule{
   background-color: white;
@@ -190,9 +143,11 @@ export default {
   border-bottom: var(--light-border);
   border-right: var(--light-border);
 
-  display: grid;
-  grid-row-gap: var(--alt-spacing);
-
+  .container {
+    display: grid;
+    grid-row-gap: var(--alt-spacing);
+  }
+  
   select{
     font-size: 1.6rem;
   }
@@ -219,10 +174,3 @@ export default {
   }
 }
 </style>
-
-/*
-create array with of times with quarter hour intervals
-when end is set for a task the next task's start is also section
-start select array from most recent end
-make sure end time index is greater than start time
-*/

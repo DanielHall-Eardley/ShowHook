@@ -111,7 +111,7 @@ export default {
     })
 
     io.on('updateOffer', data => {
-      console.log('f')
+      console.log('updatingOffer')
       this.$store.commit('loadOffer', data)
     })
   },

@@ -64,11 +64,11 @@ const ShowSchema = Schema({
     type: String,
     default: 'Fixed'
   },
-  actProfits: {
+  actProfit: {
     type: Number,
     default: 50
   },
-  venueProfits: {
+  venueProfit: {
     type: Number,
     default: 50
   },

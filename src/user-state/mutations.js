@@ -214,7 +214,7 @@ export default {
     state.showSetup.venueProfit = payload.venueProfit
   },
   updateSchedule: (state, payload) => {
-    state.showSetup.schedule = payload.schedule
+    state.showSetup.schedule[payload.currentTask][payload.timeType] = payload.time
   },
   toggleArtistVenue: (state, payload) => {
     state.offer[payload.name] = payload.type;
