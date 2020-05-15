@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     getUser() {
-      const user = this.$store.state.userConfig.baseUser
+      const user = this.$store.state.baseUser
 
       if (!baseUser.userId) {
         this.$store.dispatch("autoLogin", this.$route.fullPath)

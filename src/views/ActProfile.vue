@@ -123,7 +123,7 @@ export default {
     const idType = this.$route.query.idType
 
     if (this.$route.name === "admin-act") {
-      const token = this.$store.state.userConfig.token
+      const token = this.$store.state.token
       const responseData = await getAdminDataFn(`admin/act/${id}?idType=${idType}`, token)
       this.editable = true
       if (responseData.messages) {
@@ -170,7 +170,7 @@ export default {
   },
   computed:{
     actData(){
-      return this.$store.state.userConfig.actData
+      return this.$store.state.actData
     }
   }
 }

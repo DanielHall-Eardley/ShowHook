@@ -17,7 +17,10 @@ router.put(
     body('price', 'a price must be specified').toInt().isInt({gt: 0}),
     body('ticketPrice', 'a ticket price must be specified').toInt().isInt({gt: 0}),
   ],
-  offerController.updateShowSetup)
+  offerController.updateShowSetup
+)
+
+router.put('/finalize-offer', isAuth, offerController.finalizeOffer)
 
 router.post('/offer/send-message', isAuth, offerController.updateOfferMessage)
 

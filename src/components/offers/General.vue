@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     showSetup () {
-      return this.$store.state.userConfig.showSetup
+      return this.$store.state.showSetup
     }
   }
 }

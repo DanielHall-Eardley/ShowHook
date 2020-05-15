@@ -119,7 +119,7 @@ export default {
     const idType = this.$route.query.idType
 
     if (this.$route.name === "admin-venue") {
-      const token = this.$store.state.userConfig.token
+      const token = this.$store.state.token
       const responseData = await getAdminDataFn(`admin/venue/${id}?idType=${idType}`, token)
       this.editable = true
       if (responseData.messages) {
@@ -166,7 +166,7 @@ export default {
   },
   computed: {
     venueData() {
-      return this.$store.state.userConfig.venueData
+      return this.$store.state.venueData
     }
   }
 }

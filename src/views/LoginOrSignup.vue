@@ -102,7 +102,7 @@ export default {
   },
   computed: {
     getErrors() {
-      return this.$store.state.userConfig.errors
+      return this.$store.state.errors
     },
   },
   methods: {

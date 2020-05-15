@@ -13,7 +13,7 @@
 <script>
 export default {
   created() {
-    const blog = this.$store.state.userConfig.selectedBlog
+    const blog = this.$store.state.selectedBlog
 
     if (!blog) {
       this.$store.dispatch("getBlogDetails", {
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     blog() {
-      return this.$store.state.userConfig.selectedBlog
+      return this.$store.state.selectedBlog
     }
   }
 }

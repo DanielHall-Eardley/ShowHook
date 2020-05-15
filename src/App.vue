@@ -13,7 +13,7 @@ export default {
     const defaultNameSpace = io.connect(BASE_URL)
     const namespaces = ['offer', 'offerSummary']
 
-    if (!this.$store.state.appConfig.namespaces) {
+    if (!this.$store.state.namespaces) {
     const nsObj = {}
 
     namespaces.forEach(ns => {

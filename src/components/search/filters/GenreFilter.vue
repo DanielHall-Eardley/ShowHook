@@ -37,7 +37,7 @@
     },
     computed: {
       genreFilters() {
-        return this.$store.state.appConfig.searchQuery.genreFilters
+        return this.$store.state.searchQuery.genreFilters
       }
     }
   }

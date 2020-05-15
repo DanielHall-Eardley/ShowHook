@@ -67,7 +67,7 @@
       return {
         message: "",
         priceInput: null,
-        offerType: this.$store.state.userConfig.baseUser.userType,
+        offerType: this.$store.state.baseUser.userType,
         dateArray: [],
         year: "",
         selectedDay: null,

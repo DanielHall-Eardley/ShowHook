@@ -45,7 +45,7 @@ export default {
     //figure out how to make this function work
     //needs close menu if clicked outside menu
     checkForOpenMenu(){
-      let array = this.$store.state.appConfig.filterMenu
+      let array = this.$store.state.filterMenu
       let newArray = array.map(el => {
         if(el.active){
           el.active = false
@@ -69,13 +69,13 @@ export default {
   },
   computed:{
     userType() {
-      return this.$store.state.userConfig.baseUser.userType
+      return this.$store.state.baseUser.userType
     },
     error() {
-      return this.$store.state.userConfig.error
+      return this.$store.state.error
     },
     results() {
-      return this.$store.state.appConfig.searchResults
+      return this.$store.state.searchResults
     }
   }
 }

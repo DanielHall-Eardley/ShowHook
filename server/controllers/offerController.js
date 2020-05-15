@@ -272,3 +272,49 @@ exports.deleteOffer = async (req, res, next) => {
     next(error)
   }
 }
+
+exports.finalizeOffer = async (req, res, next) => {
+  try {
+    const offer = await Offer.findById(req.body.offerId)
+    const userId = req.body.userId
+
+    if (!offer) {
+      errorHandler(404, ["Offer not found"])
+    }
+
+    if (
+      offer.receiverId.toString() !== userId.toString() &&
+      offer.offerorId.toString() !== userId.toString()
+    ) {
+      errorHandler(401, ["You are not authorized to modify this offer"])
+    }
+
+    if (offer.offerorId.toString() === userId.toString()) {
+      offer.offerorStatus = 'Accepted'
+    }
+
+    if (offer.receiverId.toString() === userId.toString()) {
+      offer.receiverStatus = 'Accepted'
+    }
+
+    if (offer.offerorStatus === "Accepted" && offer.receiverStatus === "Accepted") {
+      offer.status = 'Confirmed'
+    }
+
+    const updatedOffer = await offer.save()
+
+    const response ={ 
+      offer: updatedOffer,
+    }
+    
+    res.status(200).json({msg: 'Response returned via socket.io'})
+
+    socket.io().of('/offer').to(offer._id.toString()).emit('updateOffer', response)
+   
+  } catch (error) {
+    if (!error.status) {
+      error.status = 500
+    }
+    next(error)
+  }
+}

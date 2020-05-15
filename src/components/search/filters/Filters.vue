@@ -99,7 +99,7 @@
         })
       },
       refinedSearch() {
-        if (!this.$store.state.userConfig.token) {
+        if (!this.$store.state.token) {
           this.$store.dispatch("autoLogin", this.$route.fullPath)
         }
 

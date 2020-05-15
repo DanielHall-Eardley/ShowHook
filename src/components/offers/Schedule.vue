@@ -33,15 +33,11 @@
           <option v-for="time in timesArray">{{time}}</option>
         </select>
       </div>
-      <button class="primary-button">Update Schedule</button>
-      <div class="schedule-summary" v-if='checkScheduleExists'>
-        <h3 class="subheading">Summary</h3>
+      <div class="schedule-summary">
         <ul>
-          <template>
-            <li v-for='(task, key) in showSchedule' :key='key'>
-              {{key}}: {{task.start}} - {{task.end}}
-            </li>
-          </template>
+          <li v-for='(task, key) in showSchedule' :key='key'>
+            {{key}}: {{task.start}} - {{task.end}}
+          </li>
         </ul>
       </div>
     </div>
@@ -52,15 +48,7 @@
 export default {
   computed:{
     showSchedule () {
-      return this.$store.state.userConfig.showSetup.schedule
-    },
-    checkScheduleExists () {
-      if (this.showSchedule) {
-        const obj = Object.keys(this.showSchedule)
-        return obj.length
-      }
-      
-      return null
+      return this.$store.state.showSetup.schedule
     }
   },
   data(){

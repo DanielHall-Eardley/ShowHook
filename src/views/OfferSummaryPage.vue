@@ -74,7 +74,7 @@
       await this.$store.dispatch("autoLogin", this.$route.fullPath)
       const id = this.$route.params.id
 
-      const token = this.$store.state.userConfig.token
+      const token = this.$store.state.token
       const responseData = await getAdminDataFn("offers-summary/" + id, token)
       
       if (responseData.messages) {
@@ -100,7 +100,7 @@
     },
     computed:{
       receivedArray(){
-        const array = this.$store.state.userConfig.offerSummary.received
+        const array = this.$store.state.offerSummary.received
         console.log(array)
         if (this.receivedFilter.toLowerCase() === "all") {
           return array
@@ -115,7 +115,7 @@
         return filteredArray
       },
       offeredArray(){
-        const array = this.$store.state.userConfig.offerSummary.offered
+        const array = this.$store.state.offerSummary.offered
         console.log(array)
         if (this.offeredFilter.toLowerCase() === "all") {
           return array

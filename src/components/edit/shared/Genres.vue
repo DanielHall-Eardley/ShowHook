@@ -16,7 +16,7 @@ import GenreButton from "../shared/GenreButton"
 export default {
   data(){
     return {
-      genreArray: this.$store.state.appConfig.musicGenres
+      genreArray: this.$store.state.musicGenres
     }
   },
   components: {

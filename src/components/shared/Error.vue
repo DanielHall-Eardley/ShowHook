@@ -11,7 +11,7 @@
     props: ["errorType"],
     computed: {
       getError () {
-        return this.$store.state.userConfig.error
+        return this.$store.state.error
       }
     }
   }

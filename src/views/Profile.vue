@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     getUserInfo() {
-      return this.$store.state.userConfig.user;
+      return this.$store.state.user;
     },
     getVerifiedInfo(){
       let {name, email, location, phone} = this.getUserInfo

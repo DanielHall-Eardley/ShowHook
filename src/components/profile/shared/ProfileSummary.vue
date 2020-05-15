@@ -14,7 +14,7 @@
 export default {
   computed:{
     iconArray(){
-      let user = this.$store.state.userConfig.user
+      let user = this.$store.state.user
       let name = user.name
       let email = user.email
       let phone = user.phone
@@ -37,7 +37,7 @@ export default {
         return iconArray
     },
     responseData(){
-     return this.$store.state.userConfig.user.responseData
+     return this.$store.state.user.responseData
     }
   }
 }

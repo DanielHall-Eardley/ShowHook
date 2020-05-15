@@ -54,7 +54,7 @@
     },
     computed: {
       getProfiletype() {
-        const currentUserType = this.$store.state.userConfig.baseUser.userType 
+        const currentUserType = this.$store.state.baseUser.userType 
 
         if (currentUserType === "Venue") {
           return "act"

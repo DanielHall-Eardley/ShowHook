@@ -1,15 +1,7 @@
 <template lang="html">
   <section class="other">
-    <h2 class="subheading">
-      <span>Other</span>
-      <svg v-if="!showSection" @click='showSection = !showSection'>
-        <use xlink:href="@/assets/sprite.svg#icon-triangle-down"></use>
-      </svg>
-      <svg v-else @click='showSection = !showSection'>
-        <use xlink:href="@/assets/sprite.svg#icon-triangle-up"></use>
-      </svg>
-    </h2>
-    <div class="edit-offer" v-if='showSection'>
+    <h2 class="subheading">Other</h2>
+    <div class="container">
       <div class="add-guest">
         <label for="">Add to Guestlist</label>
         <input 
@@ -19,7 +11,7 @@
           v-model='guest'
           v-on:change='addGuest'>  
         <div class='guest-list' v-if='show.guestList.length > 0'> 
-          <h3 class='subheading'>Guest List</h3>
+          <h3>Guest List</h3>
           <ul>
             <li v-for='guest in show.guestList'>{{guest}}</li>
           </ul>
@@ -59,7 +51,6 @@ export default {
   props: ['userType'],
   data () {
     return { 
-      showSection: false,
       guest: "",
       condition: ""
     }
@@ -81,7 +72,7 @@ export default {
   },
   computed:{
     show () {
-      return this.$store.state.userConfig.showSetup
+      return this.$store.state.showSetup
     }
   },
 }

@@ -35,7 +35,7 @@
         <button class="alt-button" @click="deleteOffer(offer._id)">
           Cancel Offer
         </button>
-        <button @click="finalizeShow" class="primary-button">
+        <button @click="finalizeOffer" class="primary-button">
           Accept Show Setup
         </button>
       </div>
@@ -99,7 +99,7 @@ export default {
     }
     this.$store.commit("loadOffer", responseData)
 
-    const io = this.$store.state.appConfig.namespaces.offer
+    const io = this.$store.state.namespaces.offer
     
     io.emit('joinRoom', {
         roomId: responseData.offer._id.toString()
@@ -124,7 +124,7 @@ export default {
     })
   },
   beforeDestroy () {
-    const io = this.$store.state.appConfig.namespaces.offer
+    const io = this.$store.state.namespaces.offer
     
     io.emit('leaveRoom', {
         roomId: this.offer._id.toString()
@@ -154,16 +154,18 @@ export default {
         redirect: this.$route.fullPath
       })
     },
-    finalizeShow() {
-
+    finalizeOffer() {
+      this.$store.dispatch('finalizeOffer', {
+        offerId: this.offer._id
+      })
     }
   },
   computed: {
     offer() {
-      return this.$store.state.userConfig.offer
+      return this.$store.state.offer
     },
     checkUserType() {
-      const id = this.$store.state.userConfig.baseUser.userId
+      const id = this.$store.state.baseUser.userId
       
       if (id === this.offer.receiverId) {
         return "receiver"

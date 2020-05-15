@@ -55,7 +55,7 @@ export default {
   },
   computed:{
     getShowDetails(){
-      let shows = this.$store.state.userConfig.user.shows
+      let shows = this.$store.state.user.shows
       //let id = this.$route.params.showId
       for(let show of shows){
         if(show.id.toString() === '2'){

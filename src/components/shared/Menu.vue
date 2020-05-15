@@ -83,10 +83,10 @@
     },
     computed: {
       loginState(){
-        return this.$store.state.userConfig.token
+        return this.$store.state.token
       },
       user(){
-        return this.$store.state.userConfig.baseUser
+        return this.$store.state.baseUser
       }
     }
   };
