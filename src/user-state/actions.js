@@ -169,7 +169,7 @@ export default {
     const responseData = await postDataFn("delete-offer", body, headers, "DELETE")
 
     if (responseData.messages) {
-      return context.commit("updateError", responseData.messages)
+      return context.commit("updateError", responseData)
     }
 
     alert(responseData.response)
@@ -275,15 +275,17 @@ export default {
     }
 
     const body = context.rootState.userConfig.showSetup
+    console.log(body)
     body.offerId = payload.offerId
     body.userId = userId
     const stringifiedBody = JSON.stringify(body)
 
     const headers = {
       "Authorization": "Bearer " + context.rootState.userConfig.token,
+      "Content-Type": 'application/json'
     }
 
-    const responseData = await postDataFn("/update-show-setup", stringifiedBody, headers, "PUT")
+    const responseData = await postDataFn("update-show-setup", stringifiedBody, headers, "PUT")
     
     if (responseData.messages) {
       return context.commit("updateError", responseData)

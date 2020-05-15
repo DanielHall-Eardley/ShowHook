@@ -14,9 +14,8 @@ router.put(
   "/update-show-setup", 
   isAuth, 
   [
-    body('price', 'a price must be specified').custom(checkForFalse),
-    body('priceType', 'a price type must be selected').custom(checkForFalse),
-    body('ticketPrice', 'a ticket price must be specified').custom(checkForFalse),
+    body('price', 'a price must be specified').toInt().isInt({gt: 0}),
+    body('ticketPrice', 'a ticket price must be specified').toInt().isInt({gt: 0}),
   ],
   offerController.updateShowSetup)
 

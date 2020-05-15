@@ -184,8 +184,17 @@ exports.updateShowSetup = async (req, res, next) => {
       errorHandler(404, ["Your offer could not be found"])
     }
 
-    if (userId !== offer.offerorId && userId !== offer.receiverId) {
+    if (
+      userId.toString() !== offer.offerorId.toString() && 
+      userId.toString() !== offer.receiverId.toString()
+    ) {
       errorHandler(401, ["You are not authorized to modify this offer"])
+    }
+
+    if (req.body.priceType === 'Split') {
+      if (req.body.actProfit + req.body.venueProfit !== 100) {
+        errorHandler(422, ['Combined profit split must add up 100%'])
+      }
     }
 
     const show = await Show.findById(offer.show)
@@ -195,15 +204,17 @@ exports.updateShowSetup = async (req, res, next) => {
     }
 
     let guestNumber = req.body.numberOfTickets
-    if (guestNumber > show.numberOfTickets) {
+    if (guestNumber > show.capacity) {
       errorHandler(403, ['The number of guests must less than venue capacity'])
-      guestNumber = show.numberOfTickets
+    }
+
+    if (req.body.priceType === 'Split') {
+      show.actProfits = req.body.actProfits
+      show.venueProfits = req.body.venueProfits
     }
 
     show.title = req.body.title
     show.description = req.body.description
-    show.actProfits = req.body.actProfits
-    show.venueProfits = req.body.venueProfits
     show.guestList = req.body.guestList
     show.ticketPrice = req.body.ticketPrice
     show.price = req.body.price

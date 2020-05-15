@@ -28,12 +28,6 @@ export default {
   updateSearchResults: (state, payload) => {
     state.searchResults = payload.results
   },
-  searchError: (state, payload) => {
-    state.searchError = payload.messages
-  },
-  clearSearchError: state => {
-    state.searchError = null
-  },
   resetSearchQuery: state => {
     state.searchQuery = {
       keyword: null,

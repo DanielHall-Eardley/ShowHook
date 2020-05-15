@@ -29,20 +29,22 @@
       <label for="">Select price type</label>
       <select 
         class="default-input select-price-type" 
-        v-model="priceType"
+        v-on:input="updatePriceType($event)"
         v-on:change="updateShow($event)"
         name="priceType">
+        <option selected disabled>{{showSetup.priceType}}</option>
         <option>Split</option>
         <option>Fixed</option>
       </select>
       <div class="profits" v-if='priceType === "Split"'>
-        <label for="">Profit Split</label>
+        <label>Profit Split</label>
         <span>Act</span>
         <input 
           class='default-input'
           type="number" 
           :value='actProfit'
           name='act' 
+          :placeholder='showSetup.actProfit'
           v-on:input="changePercentage($event)"
           v-on:change="updatePercentage">
         <span>Venue</span>
@@ -51,6 +53,7 @@
           type="number"
           name='venue' 
           :value='venueProfit' 
+          :placeholder='showSetup.venueProfit'
           v-on:input="changePercentage($event)"
           v-on:change="updatePercentage">
       </div>
@@ -76,7 +79,7 @@
         class="default-input"
         name='numberOfTickets'
         v-model='numberOfTickets'
-        :placeholder="showSetup.numberOfTickets || 'Add ticket price'"
+        :placeholder="showSetup.numberOfTickets || 'Add number of tickets'"
         v-on:change='updateShow($event)'>
   </div>
   </section>
@@ -89,12 +92,12 @@ export default {
       showSection: false,
       title: "",
       description: "",
-      price: 0,
-      priceType: "Select price type",
-      ticketPrice: 0,
-      actProfit: 50,
-      venueProfit: 50,
-      numberOfTickets: 0
+      price: null,
+      priceType: null,
+      ticketPrice: null,
+      actProfit: null,
+      venueProfit: null,
+      numberOfTickets: null
     }
   },
   methods:{
@@ -134,6 +137,9 @@ export default {
       }
 
       this.$store.commit("updateShowProfits", payload)
+    },
+    updatedPriceType (e) {
+      this.priceType = e.target.value
     }
   },
   computed: {

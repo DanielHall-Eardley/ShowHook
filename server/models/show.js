@@ -57,8 +57,21 @@ const ShowSchema = Schema({
   schedule: {
     type: Object,
   },
-  actProfits: Number,
-  venueProfits: Number,
+  price: {
+    type: Number,
+  },
+  priceType: {
+    type: String,
+    default: 'Fixed'
+  },
+  actProfits: {
+    type: Number,
+    default: 50
+  },
+  venueProfits: {
+    type: Number,
+    default: 50
+  },
   venueId: {
     type: Schema.Types.ObjectId,
     required: true

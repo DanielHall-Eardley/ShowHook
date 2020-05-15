@@ -208,14 +208,16 @@ export default {
   },
   updateShowSetup: (state, payload) => {
     state.showSetup[payload.key] = payload.value;
-    console.log(state.showSetup)
+  },
+  updateShowProfits: (state, payload) => {
+    state.showSetup.actProfit = payload.actProfit
+    state.showSetup.venueProfit = payload.venueProfit
   },
   updateSchedule: (state, payload) => {
     state.showSetup.schedule = payload.schedule
   },
   toggleArtistVenue: (state, payload) => {
     state.offer[payload.name] = payload.type;
-    console.log(state.offer[payload.name]);
   },
   loginSuccessful: (state, payload) => {
     const expirationDate = new Date(Date.now() + payload.data.expiresIn)

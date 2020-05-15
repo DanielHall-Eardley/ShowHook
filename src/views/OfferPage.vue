@@ -41,7 +41,9 @@
       </div>
     </header>
     <section class="offer-page-conversation">
-      <div class="offer-page-details">
+      <div 
+        class="offer-page-details" 
+        :class="offer.status !== 'Negotiating' ? 'disable-interactions' : null">
         <General></General>
         <Schedule></Schedule>
         <Other :userType='offer[checkUserType + "Type"]'></Other>
@@ -93,7 +95,7 @@ export default {
     const responseData = await getDataFn("offer/" + offerId)
 
     if (responseData.messages) {
-      this.$store.commit("upateError", responseData.messages)
+      this.$store.commit("upateError", responseData)
     }
     this.$store.commit("loadOffer", responseData)
 
@@ -109,6 +111,7 @@ export default {
     })
 
     io.on('updateOffer', data => {
+      console.log('f')
       this.$store.commit('loadOffer', data)
     })
   },
@@ -175,6 +178,11 @@ export default {
 <style lang="scss">
   .offer-page {
     height: 100%;
+
+    .disable-interactions {
+      pointer-events: none;
+      opacity: 0.4;
+    }
 
     header {
       display: flex;

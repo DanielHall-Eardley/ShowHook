@@ -10,7 +10,7 @@
       of
       <span>{{summary[type + "Title"]}}</span>
       a booking on
-      <span>{{formatDate(summary.bookingDate, false)}}</span>
+      <span>{{readableDate(summary.bookingDate)}}</span>
     </h3>
     <div class="info">
       <span>${{summary.price}}</span>
@@ -46,6 +46,7 @@
 <script>
   import ReviewStars from "@/components/profile/shared/ReviewStars"
   import formatDate from '@/helper/formatDate'
+
   export default {
     props: ["summary", "type"],
     components: {
