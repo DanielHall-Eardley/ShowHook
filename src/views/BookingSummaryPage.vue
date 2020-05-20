@@ -1,62 +1,62 @@
  <template lang="html">
-  <section class="offer-summary">
+  <section class="booking-summary">
     <Menu></Menu>
     <Error/>
-    <div class="offer-summary-container">
+    <div class="booking-summary-container">
       <header>
         <h3>Received</h3>
         <select class="default-input select" v-model="receivedFilter">
-          <option value="All"  class="offer-summary-select-option">
+          <option value="All"  class="booking-summary-select-option">
             All 
           </option>
-          <option value="Pending" class="offer-summary-select-option">
+          <option value="Pending" class="booking-summary-select-option">
             Pending
           </option>
-          <option value="Accepted" class="offer-summary-select-option">
+          <option value="Accepted" class="booking-summary-select-option">
             Accepted
           </option>
-          <option value="Expired" class="offer-summary-select-option">
+          <option value="Expired" class="booking-summary-select-option">
             Expired
           </option>
-          <option value="Rejected" class="offer-summary-select-option">
+          <option value="Rejected" class="booking-summary-select-option">
             Rejected
           </option>
         </select>
       </header>
-      <OfferSummary 
+      <BookingSummary 
         v-for="summary in receivedArray"
         :summary="summary"
         :key="summary._id"
         type="offeror">
-      </OfferSummary>
+      </BookingSummary>
     </div>
-    <div class="offer-summary-container">
+    <div class="booking-summary-container">
       <header>
         <h3>Offered</h3>
-        <select class="default-input select" v-model="offeredFilter">
-          <option value="All"  class="offer-summary-select-option">
+        <select class="default-input select" v-model="bookingedFilter">
+          <option value="All"  class="booking-summary-select-option">
             All 
           </option>
-          <option value="Pending" class="offer-summary-select-option">
+          <option value="Pending" class="booking-summary-select-option">
             Pending
           </option>
-          <option value="Accepted" class="offer-summary-select-option">
+          <option value="Accepted" class="booking-summary-select-option">
             Accepted
           </option>
-          <option value="Expired" class="offer-summary-select-option">
+          <option value="Expired" class="booking-summary-select-option">
             Expired
           </option>
-          <option value="Rejected" class="offer-summary-select-option">
+          <option value="Rejected" class="booking-summary-select-option">
             Rejected
           </option>
         </select>
       </header>
-      <OfferSummary 
-        v-for="summary in offeredArray"
+      <BookingSummary 
+        v-for="summary in bookingedArray"
         :summary="summary"
         :key="summary._id"
         type="receiver">
-      </OfferSummary>
+      </BookingSummary>
     </div>
   </section>
 </template>
@@ -64,7 +64,7 @@
 <script>
   import Menu from "@/components/shared/Menu.vue"
   import Error from "@/components/shared/Error.vue"
-  import OfferSummary from "@/components/offers/OfferSummary"
+  import BookingSummary from "@/components/bookings/BookingSummary"
 
   import getAdminDataFn from "@/helper/getAdminDataFn"
 
@@ -75,32 +75,32 @@
       const id = this.$route.params.id
 
       const token = this.$store.state.token
-      const responseData = await getAdminDataFn("offers-summary/" + id, token)
+      const responseData = await getAdminDataFn("bookings-summary/" + id, token)
       
       if (responseData.messages) {
         return this.$store.commit('updateErrors')
       }
 
-      this.$store.commit("loadOfferSummary", {
-        data: responseData.offers,
+      this.$store.commit("loadBookingSummary", {
+        data: responseData.bookings,
       })
     },
     data(){
       return{
         receivedFilter: "All",
-        offeredFilter: "All",
+        bookingedFilter: "All",
         receivedError: null,
-        offeredError: null
+        bookingedError: null
       }
     },
     components:{
       Menu,
-      OfferSummary,
+      BookingSummary,
       Error
     },
     computed:{
       receivedArray(){
-        const array = this.$store.state.offerSummary.received
+        const array = this.$store.state.bookingSummary.received
         console.log(array)
         if (this.receivedFilter.toLowerCase() === "all") {
           return array
@@ -114,15 +114,15 @@
 
         return filteredArray
       },
-      offeredArray(){
-        const array = this.$store.state.offerSummary.offered
+      bookingedArray(){
+        const array = this.$store.state.bookingSummary.bookinged
         console.log(array)
-        if (this.offeredFilter.toLowerCase() === "all") {
+        if (this.bookingedFilter.toLowerCase() === "all") {
           return array
         }
 
         const filteredArray = array.filter(el => {
-          if(el.status.toLowerCase() === this.offeredFilter.toLowerCase()){
+          if(el.status.toLowerCase() === this.bookingedFilter.toLowerCase()){
             return el
           }
         })
@@ -135,14 +135,14 @@
 
 <style lang="scss" scoped>
 
-  .offer-summary {
+  .booking-summary {
     height: 90vh;
     font-size: 1.6rem;
 
     
   }
 
-  .offer-summary-container {
+  .booking-summary-container {
       height: 50%;
       overflow-y: scroll;
       position: relative;

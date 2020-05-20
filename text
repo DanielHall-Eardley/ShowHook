@@ -101,7 +101,7 @@
       ]
     },
     {
-      title: 'What amenities do you offer the artists?',
+      title: 'What amenities do you booking the artists?',
       inputType: 'input',
       information: 'Providing the essentials helps artists'
       + ' feel at home in your place. *'
@@ -329,7 +329,7 @@
             tag: 'profitSplit',
             name: 'split',
             placeholder: '*%*Price adapts to ticket sales'
-            + ' Set a base price for tickets and offer a'
+            + ' Set a base price for tickets and booking a'
             + ' split between you and the artists who is playing'
             + ' the show. We will automatically dispurce the percentage'
             + ' you agreed upon.**RECOMMENDED',

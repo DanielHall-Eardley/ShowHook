@@ -85,7 +85,7 @@ import Title from "@/components/profile/shared/Title"
 import Reviews from "@/components/profile/shared/Reviews"
 import About from "@/components/profile/shared/About"
 import BookShow from "@/components/profile/shared/BookShow"
-import MakeOffer from "@/components/profile/shared/MakeOffer"
+import MakeBooking from "@/components/profile/shared/MakeBooking"
 import Banner from "@/components/shared/Banner"
 import Menu from "@/components/shared/Menu"
 import Error from "@/components/shared/Error"
@@ -102,7 +102,7 @@ export default {
     BandMusic,
     Menu,
     Banner,
-    MakeOffer,
+    MakeBooking,
     BookShow,
     About,
     Reviews,

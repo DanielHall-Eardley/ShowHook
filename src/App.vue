@@ -11,7 +11,7 @@ import { BASE_URL } from '@/helper/variables'
 export default {
   async beforeCreate () {
     const defaultNameSpace = io.connect(BASE_URL)
-    const namespaces = ['offer', 'offerSummary']
+    const namespaces = ['booking', 'bookingSummary']
 
     if (!this.$store.state.namespaces) {
     const nsObj = {}

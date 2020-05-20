@@ -28,7 +28,7 @@
         </div>
       </div>
       <p class="error" v-if="error">{{error}}</p>
-      <div class="submit-offer-container">
+      <div class="submit-booking-container">
         <textarea 
           class="default-input"
           placeholder="Add an introductory message"
@@ -36,10 +36,10 @@
         </textarea>
         <input 
           v-model="priceInput"
-          placeholder="Enter an offer"
+          placeholder="Enter an booking"
           type="number"
           class="default-input"
-          v-if="offerType.toLowerCase() === 'venue'"
+          v-if="bookingType.toLowerCase() === 'venue'"
         >
         <button class="alt-button" @click="hideCalender">
           Back
@@ -67,7 +67,7 @@
       return {
         message: "",
         priceInput: null,
-        offerType: this.$store.state.baseUser.userType,
+        bookingType: this.$store.state.baseUser.userType,
         dateArray: [],
         year: "",
         selectedDay: null,
@@ -248,7 +248,7 @@
     }  
   }
 
-  .submit-offer-container {
+  .submit-booking-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

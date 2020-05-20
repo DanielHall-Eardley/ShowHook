@@ -21,7 +21,7 @@
     <p>
       Since you are responsible for your own decision to list or book,
       should get comfortable with the applicable rules before listing on
-      .shh. To get you started we offer some helpful resources under
+      .shh. To get you started we booking some helpful resources under
       <a>'Your City Laws'</a>
     </p>
     <p>

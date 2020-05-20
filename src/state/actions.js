@@ -98,7 +98,7 @@ export default {
       context.dispatch("autoLogin", payload.path)
     }
 
-    const offer = JSON.stringify({
+    const booking = JSON.stringify({
       ...payload,
       offerorId: context.rootState.baseUser.userId
     })
@@ -108,20 +108,20 @@ export default {
       "Content-Type": "application/json"
     }
     
-    const responseData = await postDataFn("admin/create-offer", offer, headers)
+    const responseData = await postDataFn("admin/create-booking", booking, headers)
     
     if (responseData.messages) {
       return context.commit("updateError", responseData)
     }
 
     router.push({
-      name: "offer",
+      name: "booking",
       params: {
         id: responseData.response
       }
     })
   },
-  updateOffer: async (context, payload) => {
+  updateBooking: async (context, payload) => {
     context.commit("clearError")
     const userId = context.rootState.baseUser.userId
 
@@ -131,7 +131,7 @@ export default {
 
     const body = JSON.stringify({
       status: payload.status,
-      offerId: payload.offerId,
+      bookingId: payload.bookingId,
       userId: userId
     })
 
@@ -140,15 +140,15 @@ export default {
       "Content-Type": "application/json"
     }
 
-    const responseData = await postDataFn("update-offer-status", body, headers, "PUT")
+    const responseData = await postDataFn("update-booking-status", body, headers, "PUT")
 
     if (responseData.messages) {
       return context.commit("updateError", responseData)
     }
 
-    context.commit("loadOffer", responseData)
+    context.commit("loadBooking", responseData)
   },
-  deleteOffer: async (context, payload) => { 
+  deleteBooking: async (context, payload) => { 
     context.commit("clearError")
     const userId = context.rootState.baseUser.userId
 
@@ -157,7 +157,7 @@ export default {
     }
 
     const body = JSON.stringify({
-      offerId: payload.offerId,
+      bookingId: payload.bookingId,
       userId: userId,
     })
 
@@ -166,7 +166,7 @@ export default {
       "Content-Type": "application/json"
     }
 
-    const responseData = await postDataFn("delete-offer", body, headers, "DELETE")
+    const responseData = await postDataFn("delete-booking", body, headers, "DELETE")
 
     if (responseData.messages) {
       return context.commit("updateError", responseData)
@@ -275,7 +275,7 @@ export default {
     }
 
     const body = context.rootState.showSetup
-    body.offerId = payload.offerId
+    body.bookingId = payload.bookingId
     body.userId = userId
     const stringifiedBody = JSON.stringify(body)
 
@@ -432,7 +432,7 @@ export default {
       content: payload.content,
       name: context.rootState.baseUser.name,
       userId: context.rootState.baseUser.userId,
-      offerId: payload.offerId
+      bookingId: payload.bookingId
     })
 
     const responseData = await postDataFn(payload.messageType + "/send-message", body, headers)
@@ -441,7 +441,7 @@ export default {
       return context.commit("updateError", responseData)
     }
   },
-  finalizeOffer: async (context, payload) => {
+  finalizeBooking: async (context, payload) => {
     context.commit("clearError")
     
     const token = context.rootState.token
@@ -452,14 +452,43 @@ export default {
 
     const body = JSON.stringify({
       userId: context.rootState.baseUser.userId,
-      offerId: payload.offerId,
+      bookingId: payload.bookingId,
       status: payload.status
     })
 
-    const responseData = await postDataFn('finalize-offer', body, headers, 'PUT')
+    const responseData = await postDataFn('finalize-booking', body, headers, 'PUT')
 
     if (responseData.messages) {
       return context.commit("updateError", responseData)
     }
-  } 
+  },
+  payBooking: async (context, payload) => {
+    context.commit("clearError")
+    
+    const token = context.rootState.token
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    }
+
+    const body = JSON.stringify({
+      userId: context.rootState.baseUser.userId,
+      bookingId: payload.bookingId,
+      //add Payment details when stripe has been integrated
+    })
+
+    const responseData = await postDataFn('payment/booking', body, headers, 'POST')
+
+    if (responseData.messages) {
+      return context.commit("updateError", responseData)
+    }
+
+    context.commit("loadShow", responseData)
+    router.push({
+      name: 'show', 
+      params: {
+        id: responseData.booking.show._id
+      }
+    })
+  }
 }

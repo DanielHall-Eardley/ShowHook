@@ -12,9 +12,10 @@ import SearchPage from './views/SearchPage.vue'
 import AboutHowTo from './views/AboutHowTo.vue'
 import ShowDetails from './views/ShowDetails.vue'
 import PageNotFound from './views/PageNotFound.vue'
-import OfferPage from './views/OfferPage'
+import BookingPage from './views/BookingPage'
 import ReadBlog from './views/ReadBlog.vue'
-import OfferSummaryPage from './views/OfferSummaryPage.vue'
+import Checkout from './views/Checkout.vue'
+import BookingSummaryPage from './views/BookingSummaryPage.vue'
 
 
 Vue.use(Router)
@@ -91,14 +92,14 @@ export default new Router({
       component: PageNotFound,
     },
     {
-      path: "/offer/:id",
-      name: "offer",
-      component: OfferPage,
+      path: "/booking/:id",
+      name: "booking",
+      component: BookingPage,
     },
     {
-      path: "/offer-summary/:id",
-      name: "offer-summary",
-      component: OfferSummaryPage,
+      path: "/booking-summary/:id",
+      name: "booking-summary",
+      component: BookingSummaryPage,
     },
     {
       path: "/show/:id",
@@ -109,6 +110,11 @@ export default new Router({
       path: "/profile/:id",
       name: "profile",
       component: Profile,
-    }
+    },
+    {
+      path: "/checkout/:id",
+      name: "checkout",
+      component: Checkout,
+    },
   ]
 })

@@ -4,17 +4,21 @@ export default {
   loadProfileData: (state, payload) => {
     state[payload.profileType] = payload.data
   },
-  loadOfferSummary: (state, payload) => {
-    state.offerSummary = payload.data
+  loadBookingSummary: (state, payload) => {
+    state.bookingSummary = payload.data
   },
   updateBannerPhoto: (state, payload) => {
     state.venueData.bannerPhoto = payload
   },
-  loadOffer: (state, payload) => {
-    state.offer = {...state.offer, ...payload.offer}
+  loadBooking: (state, payload) => {
+    state.booking = {...state.booking, ...payload.booking}
     if (payload.show) {
       state.showSetup = {...state.showSetup, ...payload.show}
     }
+  },
+  loadShow: (state, payload) => {
+    state.show = payload.show
+    state.show.showDetails = payload.booking
   },
   updateGuestList: (state, payload) => {
     state.showSetup.guestList = [...state.showSetup.guestList, payload]
@@ -23,8 +27,8 @@ export default {
     const key = payload.userType.toLowerCase() + 'Requirements'
     state.showSetup[key] = [...state.showSetup[key], payload.condition]
   },
-  loadOfferMessage: (state, payload) => {
-    state.offer.messageArray = [...state.offer.messageArray, payload]
+  loadBookingMessage: (state, payload) => {
+    state.booking.messageArray = [...state.booking.messageArray, payload]
   },
   getVideo: state => {
     fetch(
@@ -217,7 +221,7 @@ export default {
     state.showSetup.schedule[payload.currentTask][payload.timeType] = payload.time
   },
   toggleArtistVenue: (state, payload) => {
-    state.offer[payload.name] = payload.type;
+    state.booking[payload.name] = payload.type;
   },
   loginSuccessful: (state, payload) => {
     const expirationDate = new Date(Date.now() + payload.data.expiresIn)

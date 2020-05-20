@@ -27,8 +27,8 @@
       </span>
       <router-link 
         class="default-link"
-        :to="{ name: 'offer-summary', params: {id: user.userId}}">
-        Offers
+        :to="{ name: 'booking-summary', params: {id: user.userId}}">
+        Bookings
       </router-link>
       <router-link 
         class="default-link"

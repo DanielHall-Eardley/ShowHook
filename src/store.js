@@ -197,7 +197,7 @@ export default new Vuex.Store({
     ],
     token: null,
     selectedBlog: null,
-    offer: {
+    booking: {
       offerorId: null,
       receiverId: null,
       offerorName: "",
@@ -250,7 +250,7 @@ export default new Vuex.Store({
       venueRequirements: [],
       numberOfTickets: null
     },
-    offerSummary: {},
+    bookingSummary: {},
     baseUser: {},
     venueData: {
       address: null,
@@ -323,7 +323,10 @@ export default new Vuex.Store({
       ],
       bannerPhoto: "https://via.placeholder.com/1000",
       overallRating: 0,
-      shows: []
+      shows: [],
+      show: {
+        showDetails: {}
+      }
     },
     error: null
   },

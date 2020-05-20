@@ -8,8 +8,9 @@ const socket = require('./helper/socket.io')
 const adminRoutes = require("./routes/adminRoutes")
 const googleApiRoutes = require("./routes/googleApiRoutes")
 const profileRoutes = require("./routes/profileRoutes")
-const offerRoutes = require("./routes/offerRoutes")
+const bookingRoutes = require("./routes/bookingRoutes")
 const searchRoutes = require("./routes/searchRoutes")
+const paymentRoutes = require("./routes/paymentRoutes")
 
 env.config()
 app.use(fileUpload({
@@ -27,8 +28,9 @@ app.use((req, res, next) => {
 app.use("/admin", adminRoutes)
 app.use("/google-api", googleApiRoutes)
 app.use(profileRoutes)
-app.use(offerRoutes)
+app.use(bookingRoutes)
 app.use("/search", searchRoutes)
+app.use("/payment", paymentRoutes)
 
 app.use((error, req, res, next) => {
   console.log(error)

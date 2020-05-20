@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose")
 const Message = require("./message")
 
-const Offer = Schema({
+const Booking = Schema({
   offerorId: {
     type: Schema.Types.ObjectId,
     ref: "BaseUser",
@@ -64,6 +64,10 @@ const Offer = Schema({
     type: String,
     required: true
   },
+  paymentReceived: {
+    type: Boolean,
+    default: false
+  },
   mostRecentMessage: Object,
   messageArray: [
     Message
@@ -77,4 +81,4 @@ const Offer = Schema({
   timestamps: true  
 })
 
-module.exports = model("Offer", Offer)
+module.exports = model("Booking", Booking)

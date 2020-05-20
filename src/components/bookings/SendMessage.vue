@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  props: ['offerId'],
+  props: ['bookingId'],
   data () {
     return {
       input: ''
@@ -20,9 +20,9 @@ export default {
   methods: {
     sendMessage () {
       this.$store.dispatch('sendMessage', {
-        messageType: 'offer',
+        messageType: 'booking',
         content: this.input,
-        offerId: this.offerId
+        bookingId: this.bookingId
       })
 
       this.input = ""

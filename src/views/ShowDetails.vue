@@ -45,25 +45,13 @@ export default {
       toggle: false
     }
   },
-  beforeMount(){
-    let payload = {
-      location: this.getShowDetails.venueAddress,
-      name: this.getShowDetails.venueName,
-      mainPic: this.getShowDetails.banner,
-    }
-    this.$store.commit('showMap', payload)
+  async created () {
+
   },
   computed:{
-    getShowDetails(){
-      let shows = this.$store.state.user.shows
-      //let id = this.$route.params.showId
-      for(let show of shows){
-        if(show.id.toString() === '2'){
-          return show
-        }
-      }
-      this.$router.push('/page-not-found')
-    }
+    show(){
+      return this.$store.state.show
+    }  
   },
   methods:{
     toggleEdit(){

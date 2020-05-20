@@ -1,6 +1,6 @@
 const BaseUser = require("../models/baseUser")
 const Venue = require("../models/venue")
-const Offer = require("../models/offer")
+const Booking = require("../models/booking")
 const Act = require("../models/act")
 const Message = require("../models/message")
 
@@ -274,7 +274,7 @@ exports.editVenue = async (req, res, next) => {
 	}
 }
 
-exports.createOffer = async (req, res, next) => {
+exports.createBooking = async (req, res, next) => {
 	try {
 		checkForValidationErr(req)
 
@@ -292,20 +292,20 @@ exports.createOffer = async (req, res, next) => {
 
 		const [offeror, receiver] = result
 		if (!offeror.userData) {
-			errorHandler(404, ["You must have created a venue or act profile to make offers"])
+			errorHandler(404, ["You must have created a venue or act profile to make bookings"])
 		} 
 		
 		if (offeror._id === receiver._id) {
 			errorHandler(401, ["You cannot book any act or venues that are associated with your profile"])
 		}
 
-		const checkForDuplicateOffer = await Offer.findOne({ 
+		const checkForDuplicateBooking = await Booking.findOne({ 
 			offerorId: offeror._id,
 			receiverId: receiver._id,
 			bookingDate: req.body.date
 		})
 
-		if (checkForDuplicateOffer) {
+		if (checkForDuplicateBooking) {
 			errorHandler(401, ["You have already created a booking for this date"])
 		}
 
@@ -323,7 +323,7 @@ exports.createOffer = async (req, res, next) => {
 			content: messageContent
 		}
 		
-		const offer = new Offer({
+		const booking = new Booking({
 			offerorId: offeror._id,
 			offerorName: offeror.name,
 			offerorType: offeror.userType,
@@ -340,15 +340,15 @@ exports.createOffer = async (req, res, next) => {
 			mostRecentMessage: message.content,
 		})
 
-		offer.messageArray.push(message)
+		booking.messageArray.push(message)
 
-		const savedOffer = await offer.save()
+		const savedBooking = await booking.save()
 
-		if (!savedOffer) {
-			errorHandler(500, ["There was a problem creating your offer"])
+		if (!savedBooking) {
+			errorHandler(500, ["There was a problem creating your booking"])
 		}
 
-		res.status(200).json({response: savedOffer._id})
+		res.status(200).json({response: savedBooking._id})
 	} catch (error) {
 		if (!error.status) {
 			error.status = 500;
@@ -578,7 +578,7 @@ exports.createBlog = async (req, res, next) => {
 	}
 }
 
-exports.getOfferSummary = async (req, res, next) => {
+exports.getBookingSummary = async (req, res, next) => {
 	try {
 
 	} catch (error) {

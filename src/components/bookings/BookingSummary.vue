@@ -1,10 +1,10 @@
 <template>
-  <div class="offer-summary-item">
+  <div class="booking-summary-item">
     <h3 class="title">
       {{
         type === "offeror" ? 
-        "You have received an offer from" : 
-        "You have offered"
+        "You have received an booking from" : 
+        "You have bookinged"
       }}
       <span>{{summary[type + "Name"]}}</span>
       of
@@ -31,8 +31,8 @@
       </router-link>
       <router-link 
         class="default-link" 
-        :to="{name: 'offer', params: {id: summary._id}}">
-        View offer
+        :to="{name: 'booking', params: {id: summary._id}}">
+        View booking
       </router-link>
       <ReviewStars :rating="summary[type + 'Rating']"></ReviewStars>
     </div>
@@ -98,7 +98,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .offer-summary-item {
+  .booking-summary-item {
     margin: var(--alt-spacing) var(--spacing) var(--alt-spacing) var(--spacing);
     padding: var(--alt-spacing);
     border: var(--light-border);

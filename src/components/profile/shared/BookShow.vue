@@ -5,13 +5,13 @@
       per night
     </div>
     <div class="buttons">
-      <MakeOffer 
+      <MakeBooking 
         :shows="shows"
         :showCalender="showCalender"
         :price="price"
         :receiverId="profileId"
         v-on:hideCalender="showCalender = false">
-      </MakeOffer>
+      </MakeBooking>
       <button @click="showCalender = true" class="primary-button">
         Book
       </button>
@@ -26,16 +26,16 @@
 </template>
 
 <script>
-import MakeOffer from "./MakeOffer.vue"
+import MakeBooking from "./MakeBooking.vue"
 
 export default {
   components:{
-    MakeOffer
+    MakeBooking
   },
   props: ["price", "profileId", "editable"],
   data(){
     return{
-      toggleOfferForm: false,
+      toggleBookingForm: false,
       showCalender: false,
       shows: [
         {title: "some Show", date: new Date("April 23 2020")},
