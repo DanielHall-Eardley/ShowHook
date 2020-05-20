@@ -69,9 +69,6 @@
         :profileId="actData._id">
       </BookShow>
     </div>
-    <p class="venue-loading-error" v-else>
-      {{error ? error : "Loading"}}
-    </p>
   </section>
 </template>
 

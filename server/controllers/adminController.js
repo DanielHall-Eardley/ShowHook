@@ -200,7 +200,6 @@ exports.getEditVenue = async (req, res, next) => {
 	try  {
 		const id = req.params.id
 		const idType = req.query.idType || "_id"
-		console.log(idType)
 
 		const venue = await Venue.findOne({[idType]: id})
 		.populate({path: "userId", select: ["name", "_id", "userType"]})
@@ -498,7 +497,7 @@ exports.getEditAct = async (req, res, next) => {
 exports.editAct = async (req, res, next) => {
 	try {
 		const act = await Act.findOne({ userId: req.params.id })
-		console.log(req.body.actData)
+
 		if (!act) {
 			errorHandler(404, ["Your venue was unable to be retrieved"])
 		}

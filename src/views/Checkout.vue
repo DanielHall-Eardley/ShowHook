@@ -1,7 +1,7 @@
 <template>
   <main class="checkout">
-    Add Stripe 
-    <button @click='payBooking'>Pay</button>
+    Coming soon: Pay with Stripe
+    <button @click='payBooking'>Continue</button>
   </main>
 </template>
 
@@ -19,5 +19,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+  }
 </style>
