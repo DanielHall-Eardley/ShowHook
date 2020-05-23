@@ -1,19 +1,15 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import ActProfile from '@/views/ActProfile'
 import Vuex from 'vuex'
-import storeConfig from '@/store'
-import { cloneDeep } from 'lodash'
-console.log(cloneDeep)
+import store from '@/store'
+import defaultState from '@/state/state'
+
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('ActProfile.vue', () => {
-  let store;
-
   beforeEach(() => {
-    store = new Vuex.Store(cloneDeep(storeConfig))
-
-    console.log(store)
+    store.replaceState(defaultState())
   })
 
   it('tests the created lifecycle receives correct params for route admin-act', () => {
@@ -35,6 +31,6 @@ describe('ActProfile.vue', () => {
         $route: $route
       }
     })
-    console.log(wrapper)
+    console.log(wrapper.vm)
   })
 })
