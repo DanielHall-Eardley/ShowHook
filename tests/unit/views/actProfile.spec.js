@@ -1,11 +1,28 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import ActProfile from '@/views/ActProfile'
 import Vuex from 'vuex'
-import store from '@/store'
 import defaultState from '@/state/state'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+
+const actions = {
+  autoLogin: jest.fn(),
+  updateAct: jest.fn(),
+  deleteProfile: jest.fn()
+}
+
+const mutations = {
+  clearError: jest.fn(),
+  updateError: jest.fn(),
+  loadProfileData: jest.fn()
+}
+
+const store = new Vuex.Store({
+  actions,
+  mutations,
+  state: defaultState()
+})
 
 describe('ActProfile.vue', () => {
   beforeEach(() => {
@@ -31,6 +48,7 @@ describe('ActProfile.vue', () => {
         $route: $route
       }
     })
-    console.log(wrapper.vm)
+    
+    
   })
 })

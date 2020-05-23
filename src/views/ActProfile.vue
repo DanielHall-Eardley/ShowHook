@@ -32,7 +32,7 @@
       <BandMusic
         :trackId="actData.soundcloudLink"
         :editable="editable"
-        :userType="actData.userId.userType">
+        :userType="actData.userType">
       </BandMusic>
       <Blog 
         :editable="editable"
