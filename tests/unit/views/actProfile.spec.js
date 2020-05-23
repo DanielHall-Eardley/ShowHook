@@ -29,7 +29,7 @@ describe('ActProfile.vue', () => {
     store.replaceState(defaultState())
   })
 
-  it('tests the created lifecycle receives correct params for route admin-act', () => {
+  it('tests component dis', () => {
     const $route = {
       params: {
         id: "id",
@@ -42,13 +42,11 @@ describe('ActProfile.vue', () => {
     }
 
     const wrapper = shallowMount(ActProfile, { 
-      store, 
-      localVue,
       mocks: {
         $route: $route
       }
     })
     
-    
+    expect(wrapper.vm.$route.params)
   })
 })
