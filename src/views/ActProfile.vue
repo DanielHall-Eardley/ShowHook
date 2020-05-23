@@ -57,6 +57,7 @@
           Delete listing
         </button>
         <button 
+          id="update-act"
           class="primary-button" 
           @click="updateAct">
           Save changes

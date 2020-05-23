@@ -24,29 +24,47 @@ const store = new Vuex.Store({
   state: defaultState()
 })
 
+const $route = {
+  params: {
+    id: "id",
+  },
+  query: {
+    idType: 'userId'
+  },
+  name: 'admin-act',
+  fullPath: 'some/path'
+}
+
 describe('ActProfile.vue', () => {
   beforeEach(() => {
     store.replaceState(defaultState())
   })
 
-  it('tests component dis', () => {
-    const $route = {
-      params: {
-        id: "id",
-      },
-      query: {
-        idType: 'userId'
-      },
-      name: 'admin-act',
-      fullPath: 'some/path'
-    }
-
+  it('tests components created lifecycle hook', () => {
     const wrapper = shallowMount(ActProfile, { 
+      store,
+      localVue,
       mocks: {
         $route: $route
       }
     })
     
-    expect(wrapper.vm.$route.params)
+    expect(mutations.loadProfileData).toBeCalled()
+    expect(mutations.clearError).toBeCalled()
+    expect(actions.autoLogin).toBeCalled()
+  })
+
+  it('tests updateAct method', async () => {
+    const wrapper = shallowMount(ActProfile, { 
+      store,
+      localVue,
+      mocks: {
+        $route: $route
+      }
+    })
+
+    const button = wrapper.find('#update-act')
+    await button.trigger('click')
+    expect(mutations.updateAct).toBeCalled()
   })
 })
