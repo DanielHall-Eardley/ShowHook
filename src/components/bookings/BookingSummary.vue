@@ -21,6 +21,7 @@
         </span>
       </span>
       <router-link 
+        id='profile-link'
         class="default-link" 
         :to="{
           name: getProfiletype, 
@@ -30,6 +31,7 @@
         View profile
       </router-link>
       <router-link 
+        id='booking-link'
         class="default-link" 
         :to="{name: 'booking', params: {id: summary._id}}">
         View booking
@@ -57,10 +59,10 @@
         const currentUserType = this.$store.state.baseUser.userType 
 
         if (currentUserType === "Venue") {
-          return "act"
+          return "venue"
         }
 
-        return "venue"
+        return "act"
       }
     },
     methods: {

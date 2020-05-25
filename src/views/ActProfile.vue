@@ -2,7 +2,7 @@
   <section class="act-profile">
     <Menu></Menu>
     <Error/>
-    <div class="venue-profile" v-if="actData.userId">
+    <div>
       <Banner 
         :photoUrl="actData.bannerPhoto"
         :photoArray="photoArray" 

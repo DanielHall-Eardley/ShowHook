@@ -283,19 +283,21 @@ export default () => {
       shows: []
     },
     actData: {
-      address: null,
+      _id: null,
+      userId: 'userId',
+      address: {},
       genres: [],
       requirements: [],
       preferences: [],
       youtubeLink: "",
       soundcloudLink: "",
-      type: null,
+      type: "",
       priceType: "Open",
       blogs: [],
       photos: [],
-      title: null,
-      description: null,
-      price: null,
+      title: "",
+      description: "",
+      price: "",
       legalAgreement: false,
       reviews: [
         {

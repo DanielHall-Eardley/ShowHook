@@ -1,6 +1,6 @@
 import loginSignupFn from "../helper/loginSignupFn"
 import postDataFn from "../helper/postDataFn"
-//import router from "../router"
+import router from "../router"
 import getDataFn from "../helper/getDataFn";
 
 export default {
