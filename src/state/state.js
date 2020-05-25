@@ -242,9 +242,21 @@ export default () => {
       venueRequirements: [],
       numberOfTickets: null
     },
-    bookingSummary: {},
-    baseUser: {},
+    bookingSummary: {
+      _id: null,
+    },
+    baseUser: {
+      _id: null,
+      name : '',
+      email: '',
+      password: '',
+      userType: '',
+      createdAt: null,
+      updatedAt: null,
+      userData: null
+    },
     venueData: {
+      _id: null,
       address: null,
       genres: [],
       capacity: null,

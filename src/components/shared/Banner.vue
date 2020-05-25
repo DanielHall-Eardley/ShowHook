@@ -39,6 +39,7 @@
       selectBannerPhoto(photoUrl) {
         this.$emit("clearPhotoArray")
         this.$store.commit("updateBannerPhoto", photoUrl)
+        //dispatch action to store photos somewhere
       }
     }
   }

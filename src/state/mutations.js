@@ -8,7 +8,8 @@ export default {
     state.bookingSummary = payload.data
   },
   updateBannerPhoto: (state, payload) => {
-    state.venueData.bannerPhoto = payload
+    const type = state.baseUser.userType.toLowerCase() + 'Data'
+    state[type].bannerPhoto = payload
   },
   loadBooking: (state, payload) => {
     state.booking = {...state.booking, ...payload.booking}
