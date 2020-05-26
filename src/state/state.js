@@ -190,6 +190,7 @@ export default () => {
     token: null,
     selectedBlog: null,
     booking: {
+      _id: null,
       offerorId: null,
       receiverId: null,
       offerorName: "",
@@ -204,6 +205,7 @@ export default () => {
       messageArray: [],
     },
     showSetup: {
+      _id: null,
       title: null,
       description: null,
       price: null,

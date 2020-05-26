@@ -36,10 +36,43 @@ describe('Test mutations', () => {
 
   it('test update banner load mutation for venue profile', () => {
     store.state.baseUser.userType = 'Venue'
-    const urlRegex = new RegExp('#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#i')
 
     store.commit("updateBannerPhoto", 'https://photo-storage.com')
 
-    expect(store.state.venueData.bannerPhoto).toMatch(urlRegex)
+    expect(store.state.venueData.bannerPhoto).toBeTruthy()
+  })
+
+  it('test update banner load mutation for act profile', () => {
+    store.state.baseUser.userType = 'Act'
+
+    store.commit("updateBannerPhoto", 'https://photo-storage.com')
+
+    expect(store.state.actData.bannerPhoto).toBeTruthy()
+  })
+
+  it('test booking load mutation', () => {
+    store.commit("loadBooking", {
+      booking: {_id: 'someId'},
+    })
+
+    expect(store.state.booking._id).toBeTruthy()
+  })
+
+  it('test booking load mutation with show setup', () => {
+    store.commit("loadBooking", {
+      booking: {_id: 'someId'},
+      show: {_id: 'someId'},
+    })
+
+    expect(store.state.booking._id).toBeTruthy() && expect(store.state.showSetup._id).toBeTruthy()
+  })
+
+  it('test show load mutation', () => {
+    store.commit("loadBooking", {
+      booking: {_id: 'someId'},
+      show: {_id: 'someId'},
+    })
+
+    expect(store.state.booking._id).toBeTruthy() && expect(store.state.showSetup._id).toBeTruthy()
   })
 })
