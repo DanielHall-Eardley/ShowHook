@@ -17,9 +17,9 @@ export default {
     await this.$store.dispatch('autoLogin', this.$route.fullPath)
     const userId = this.$route.params.id
     const token = this.$store.state.token
-    const searchType = this.$route.query.searchType
+    const userType = this.$route.query.userType
    
-    const responseData = await getAdminDataFn(`show/summary/${userId}?searchType=${searchType}`, token)
+    const responseData = await getAdminDataFn(`show/summary/${userId}?userType=${userType}`, token)
 
     if (responseData.messages) {
       this.$store.commit("updateError", responseData)
@@ -41,9 +41,39 @@ export default {
   },
   computed: {
     showSummary() {
+      //compare showDate to now and get the difference in days
+      //sort the shows into their sections
+      //sort the individual section arrays
+
       const showList = this.$store.state.showSummary
       console.log(showList)
-      return showList 
+      const sectionArray = [
+        {
+          title: 'Past',
+          shows: []
+        },
+        {
+          title: 'This Week',
+          shows: []
+        },
+        {
+          title: 'This Month',
+          shows: []
+        },
+        {
+          title: 'This Year',
+          shows: []
+        },
+      ]
+
+      for(let show in showList) {
+        const now = new Date()
+        if (show.showDate < now) {
+          sectionArray[0].shows.push(show)
+        }
+
+        const getDays = 
+      }
     }
   }
 }

@@ -5,10 +5,22 @@ const errorHandler = require('../helper/errorHandler')
 exports.getShowSummary = async(req, res, next) => {
   try {
     checkForValidationErr(req)
-    const searchType = req.query.searchType
+    const userType = req.query.userType.toLowerCase()
+    const searchType = userType + "Id"
     const userId = req.params.id
+    let idToReturn;
+    
+    if (userType === 'act') {
+      idToReturn = 'venueId'
+    } else {
+      idToReturn = 'actId'
+    }
 
-    const showList = await Show.find({[searchType]: userId})
+    const fields = `${idToReturn} title description showDate actTitle venueTitle price _id`
+
+    const showList = await Show.find({[searchType]: userId, published: true}, fields, {
+      sort: {createdAt: 'desc'}
+    })
 
     if (!showList) {
       errorHandler(404, ['Unable to find your shows'])

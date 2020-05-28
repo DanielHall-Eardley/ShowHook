@@ -35,7 +35,7 @@
         :to="{ 
           name: 'show-summary', 
           params: {id: user.userData},
-          query: {searchType: user.userType.toLowerCase() + 'Id'}}">
+          query: {userType: user.userType}}">
         Shows
       </router-link>
       <router-link 

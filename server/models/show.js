@@ -83,7 +83,8 @@ const ShowSchema = Schema({
   published: {
     type: Boolean,
     default: false
-  }
+  },
+  bannerPhoto: String
 },
 {
   timestamps: true
