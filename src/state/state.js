@@ -259,7 +259,11 @@ export default () => {
     },
     venueData: {
       _id: null,
-      address: null,
+      address: {
+        description: "",
+        id: null,
+        place_id: null,
+      },
       genres: [],
       capacity: null,
       bathrooms: null,
@@ -294,12 +298,15 @@ export default () => {
       ],
       bannerPhoto: "https://via.placeholder.com/1000",
       overallRating: 0,
-      shows: []
     },
     actData: {
       _id: null,
       userId: 'userId',
-      address: {},
+      address: {
+        description: "",
+        id: null,
+        place_id: null,
+      },
       genres: [],
       requirements: [],
       preferences: [],
@@ -331,11 +338,12 @@ export default () => {
       ],
       bannerPhoto: "https://via.placeholder.com/1000",
       overallRating: 0,
-      shows: [],
-      show: {
-        showDetails: {}
-      }
     },
+    show: {
+      _id: null,
+      showDetails: null
+    },
+    showSummary: [],
     error: null
   }
 }

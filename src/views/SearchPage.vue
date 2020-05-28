@@ -25,9 +25,8 @@ export default {
   async created () {
     this.$store.commit('clearError')
     const token = localStorage.getItem("token") 
-    if (token) {
-      await this.$store.dispatch("autoLogin", this.$route.fullPath)
-    }
+    await this.$store.dispatch("autoLogin", this.$route.fullPath)
+  
   },
   components:{
     Filters,

@@ -3,14 +3,14 @@ const bookingController = require("../controllers/bookingController")
 const isAuth = require("../middleware/isAuth")
 const { body } = require("express-validator")
 
-router.get("/booking/:id", bookingController.getBooking)
+router.get("/:id", bookingController.getBooking)
 
-router.get("/bookings-summary/:id", isAuth, bookingController.getBookingsSummary)
+router.get("/summary/:id", isAuth, bookingController.getBookingsSummary)
 
-router.put("/update-booking-status", isAuth, bookingController.updateBookingStatus)
+router.put("/update/status", isAuth, bookingController.updateBookingStatus)
 
 router.put(
-  "/update-show-setup", 
+  "/update/show-setup", 
   isAuth, 
   [
     body('price', 'a price must be specified').toInt().isInt({gt: 0}),
@@ -19,10 +19,10 @@ router.put(
   bookingController.updateShowSetup
 )
 
-router.put('/finalize-booking', isAuth, bookingController.finalizeBooking)
+router.put('/finalize', isAuth, bookingController.finalizeBooking)
 
-router.post('/booking/send-message', isAuth, bookingController.updateBookingMessage)
+router.post('/send-message', isAuth, bookingController.updateBookingMessage)
 
-router.delete("/delete-booking", isAuth, bookingController.deleteBooking)
+router.delete("/delete", isAuth, bookingController.deleteBooking)
 
 module.exports = router

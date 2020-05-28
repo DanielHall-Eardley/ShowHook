@@ -116,7 +116,8 @@ export default {
   async created() {
     this.$store.commit('clearError')
 
-    await this.$store.dispatch("autoLogin", this.$route.fullPath)
+    await this.store.dispatch('autoLogin', this.$route.fullPath)
+    
     const id = this.$route.params.id
     const idType = this.$route.query.idType
 

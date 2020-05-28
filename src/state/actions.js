@@ -140,7 +140,7 @@ export default {
       "Content-Type": "application/json"
     }
 
-    const responseData = await postDataFn("update-booking-status", body, headers, "PUT")
+    const responseData = await postDataFn("booking/update/status", body, headers, "PUT")
 
     if (responseData.messages) {
       return context.commit("updateError", responseData)
@@ -166,7 +166,7 @@ export default {
       "Content-Type": "application/json"
     }
 
-    const responseData = await postDataFn("delete-booking", body, headers, "DELETE")
+    const responseData = await postDataFn("booking/delete", body, headers, "DELETE")
 
     if (responseData.messages) {
       return context.commit("updateError", responseData)
@@ -284,7 +284,7 @@ export default {
       "Content-Type": 'application/json'
     }
 
-    const responseData = await postDataFn("update-show-setup", stringifiedBody, headers, "PUT")
+    const responseData = await postDataFn("booking/update/show-setup", stringifiedBody, headers, "PUT")
     
     if (responseData.messages) {
       return context.commit("updateError", responseData)
@@ -456,7 +456,7 @@ export default {
       status: payload.status
     })
 
-    const responseData = await postDataFn('finalize-booking', body, headers, 'PUT')
+    const responseData = await postDataFn('booking/finalize', body, headers, 'PUT')
 
     if (responseData.messages) {
       return context.commit("updateError", responseData)
@@ -477,7 +477,7 @@ export default {
       //add Payment details when stripe has been integrated
     })
 
-    const responseData = await postDataFn('payment/booking', body, headers, 'POST')
+    const responseData = await postDataFn('/booking/payment', body, headers, 'POST')
 
     if (responseData.messages) {
       return context.commit("updateError", responseData)

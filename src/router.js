@@ -16,7 +16,7 @@ import BookingPage from './views/BookingPage'
 import ReadBlog from './views/ReadBlog.vue'
 import Checkout from './views/Checkout.vue'
 import BookingSummaryPage from './views/BookingSummaryPage.vue'
-
+import ShowSummaryPage from './views/ShowSummaryPage.vue'
 
 Vue.use(Router)
 
@@ -97,9 +97,14 @@ export default new Router({
       component: BookingPage,
     },
     {
-      path: "/booking-summary/:id",
+      path: "/booking/summary/:id",
       name: "booking-summary",
       component: BookingSummaryPage,
+    },
+    {
+      path: "/show/summary/:id",
+      name: "show-summary",
+      component: ShowSummaryPage,
     },
     {
       path: "/show/:id",

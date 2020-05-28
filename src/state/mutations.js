@@ -1,4 +1,4 @@
-//import router from "../router"
+import router from "../router"
 
 export default {
   loadProfileData: (state, payload) => {
@@ -39,7 +39,7 @@ export default {
       .then(res => console.log(res));
   },
   profileSuccess: (state, payload) => {
-    alert(payload.alert || "Profile creation failed")
+    alert(payload.alert)
     state.baseUser.userData = payload.userData
     localStorage.setItem('baseUserData', payload.userData)
     
@@ -58,11 +58,12 @@ export default {
     state[type].legalAgreement = payload
   },
   addVenueAmenities: (state, payload) => {
-    let amenitiesArray = []
+    const amenitiesArray = []
+    const keysArray = Object.keys(payload)
 
-    for (let a in payload) {
-      if (payload[a]) {
-        amenitiesArray.push(a)
+    for (let key of keysArray) {
+      if (payload[key]) {
+        amenitiesArray.push(payload[key])
       }
     }
 
@@ -77,11 +78,10 @@ export default {
   addAddress: (state, payload) => {
     const type = state.baseUser.userType.toLowerCase() + "Data"
     state[type].address = payload.data
-    console.log(state[type])
   },
   addGenre: (state, payload) => {
     const type = state.baseUser.userType.toLowerCase() + "Data"
-    state[type].genres.push(payload.data)
+    state[type].genres = [...state[type].genres, payload.data]
   },
   removeGenre: (state, payload) => {
     const type = state.baseUser.userType.toLowerCase() + "Data"
@@ -418,5 +418,8 @@ export default {
   },
   createNameSpaces: (state, payload) => {
     state.namespaces = payload
+  },
+  loadShowSummary: (state, payload) => {
+    state.showSummary = payload.showList
   }
 }

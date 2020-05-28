@@ -634,3 +634,4 @@ exports.deleteProfile = async (req, res, next) => {
 		next(error);
 	}
 }
+

@@ -28,11 +28,11 @@
     data() {
       return {
         photoPreviewArray: [],
-        error: null
       }
     },
     methods: {
       uploadPhoto(e) {
+        this.$store.commit('clearError')
         let photoArray = [...this.photoPreviewArray]
         this.error = null 
 
@@ -63,7 +63,7 @@
             }
             
             if (duplicatePhoto) {
-              this.error = "Error: A duplicate file was ommitted"
+              this.$store.commit('updateError', 'A duplicate file was ommitted') 
             } else {
             fileArray.push(e.target.files[i])
               photoArray.push({

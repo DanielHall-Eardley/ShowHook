@@ -32,6 +32,14 @@
       </router-link>
       <router-link 
         class="default-link"
+        :to="{ 
+          name: 'show-summary', 
+          params: {id: user.userData},
+          query: {searchType: user.userType.toLowerCase() + 'Id'}}">
+        Shows
+      </router-link>
+      <router-link 
+        class="default-link"
         :to="{ name: 'search'}">
         Search
       </router-link>

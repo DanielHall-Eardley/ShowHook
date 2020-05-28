@@ -75,7 +75,7 @@
       const id = this.$route.params.id
 
       const token = this.$store.state.token
-      const responseData = await getAdminDataFn("bookings-summary/" + id, token)
+      const responseData = await getAdminDataFn("booking/summary/" + id, token)
       
       if (responseData.messages) {
         return this.$store.commit('updateErrors')
