@@ -10,7 +10,7 @@ import ActProfile from './views/ActProfile.vue'
 import EditDetails from './views/EditDetails.vue'
 import SearchPage from './views/SearchPage.vue'
 import AboutHowTo from './views/AboutHowTo.vue'
-import ShowDetails from './views/ShowDetails.vue'
+import ShowDetail from './views/ShowDetail.vue'
 import PageNotFound from './views/PageNotFound.vue'
 import BookingPage from './views/BookingPage'
 import ReadBlog from './views/ReadBlog.vue'
@@ -109,7 +109,7 @@ export default new Router({
     {
       path: "/show/:id",
       name: "show",
-      component: ShowDetails,
+      component: ShowDetail,
     },
     {
       path: "/profile/:id",

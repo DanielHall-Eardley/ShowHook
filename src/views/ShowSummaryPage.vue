@@ -2,13 +2,39 @@
   <main>
     <Menu></Menu>
     <Error></Error>
-    <section>{{showSummary}}</section>
+    <button class='time-travel' @click='past = true'>
+      Travel back into the past...
+    </button>
+    <section class='show-section' v-if="past">
+      <h2>{{showSummary.past.title}}</h2>
+      <div class="flex-container">
+        <ShowSummary 
+          v-for='show in showSummary.past.shows' 
+          :key='show._id'
+          :show='show'>
+        </ShowSummary>      
+      </div>
+    </section>
+    <section 
+      v-for='section in showSummary.future' 
+      :key='section.title'
+      class='show-section'>
+      <h2>{{section.title}}</h2>
+      <div class="flex-container">
+        <ShowSummary 
+          v-for='show in section.shows' 
+          :key='show._id'
+          :show='show'>
+        </ShowSummary>      
+      </div>
+    </section>
   </main>
 </template>
 
 <script>
 import Menu from '@/components/shared/Menu'
 import Error from '@/components/shared/Error'
+import ShowSummary from '@/components/shows/ShowSummary'
 import getAdminDataFn from "@/helper/getAdminDataFn"
 
 export default {
@@ -29,11 +55,12 @@ export default {
   },
   components: {
     Menu,
-    Error
+    Error,
+    ShowSummary
   },
   data() {
     return {
-
+      past: false
     }
   },
   methods: {
@@ -41,44 +68,40 @@ export default {
   },
   computed: {
     showSummary() {
-      //compare showDate to now and get the difference in days
-      //sort the shows into their sections
-      //sort the individual section arrays
-
-      const showList = this.$store.state.showSummary
-      console.log(showList)
-      const sectionArray = [
-        {
-          title: 'Past',
-          shows: []
-        },
-        {
-          title: 'This Week',
-          shows: []
-        },
-        {
-          title: 'This Month',
-          shows: []
-        },
-        {
-          title: 'This Year',
-          shows: []
-        },
-      ]
-
-      for(let show in showList) {
-        const now = new Date()
-        if (show.showDate < now) {
-          sectionArray[0].shows.push(show)
-        }
-
-        const getDays = 
-      }
+      return this.$store.getters.getShowSummary
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
+  .show-section {
+    width: 100%;
+    overflow-x: auto;
 
+    h2 {
+      background-color: var(--primary);
+      color: white;
+      text-align: center;
+      padding: var(--alt-spacing);
+    }
+  }
+
+  .time-travel {
+    width: 100%;
+    padding: var(--alt-spacing);
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: var(--alt-primary);
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  .flex-container {
+    display: flex;
+    padding: var(--spacing);
+  }
 </style>
