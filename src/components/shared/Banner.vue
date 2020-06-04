@@ -1,23 +1,23 @@
 <template>
   <div class="banner">
-    <div class="choose-banner" v-if="photoArray">
+    <div class="choose-banner" v-if="showPhotoArray">
+      <p v-if='photoArray.length < 1'>Add More Photos</p>
       <img 
+        v-else
         :src="photo" 
         alt="Select Photo" 
         v-for="photo in photoArray" 
         :key="photo"
         class="select-photo"
-        @click="selectBannerPhoto(photo)"
-      >
+        @click="selectBannerPhoto(photo)">
     </div>
     <img 
       alt="Banner Photo"  
-      :src="photoUrl"
+      :src="bannerPhoto"
       v-else
-      class="banner-photo"
-    >
+      class="banner-photo">
     <svg 
-      @click="editBannerPhoto" 
+      @click="showPhotoArray = !showPhotoArray" 
       v-if="editable" 
       class="edit-icon">
       <use xlink:href="@/assets/sprite.svg#icon-edit"></use>
@@ -28,16 +28,22 @@
 <script>
   export default {
     props: ["photoUrl", "photoArray", "editable"],
-    methods: {
-      editBannerPhoto() {
-        if (this.photoArray) {
-          return
+    data(){
+      return {
+        showPhotoArray: false
+      }
+    },
+    computed: {
+      bannerPhoto() {
+        if (!this.photoUrl) {
+          return 'https://via.placeholder.com/1000'
         }
 
-        this.$emit("editBannerPhoto")
-      },
+        return this.photoUrl
+      }
+    },
+    methods: {
       selectBannerPhoto(photoUrl) {
-        this.$emit("clearPhotoArray")
         this.$store.commit("updateBannerPhoto", photoUrl)
         //dispatch action to store photos somewhere
       }
@@ -50,7 +56,7 @@
 
   .banner{
     width: 100%;
-    height: 67vh;
+    height: 50vh;
     box-sizing: border-box;
     background-size: cover;
     background-position: center;

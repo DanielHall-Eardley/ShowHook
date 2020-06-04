@@ -27,8 +27,8 @@ const ShowSchema = Schema({
   genre: {
     type: String,
   },
-  photoUrl:{
-    type: String,
+  photoArray:{
+    type: Array,
   },
   showDate:{
     type: Date,

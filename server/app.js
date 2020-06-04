@@ -10,7 +10,6 @@ const googleApiRoutes = require("./routes/googleApiRoutes")
 const profileRoutes = require("./routes/profileRoutes")
 const bookingRoutes = require("./routes/bookingRoutes")
 const searchRoutes = require("./routes/searchRoutes")
-const paymentRoutes = require("./routes/paymentRoutes")
 const showRoutes = require("./routes/showRoutes")
 
 env.config()
@@ -31,7 +30,6 @@ app.use("/google-api", googleApiRoutes)
 app.use(profileRoutes)
 app.use('/booking', bookingRoutes)
 app.use("/search", searchRoutes)
-app.use("/payment", paymentRoutes)
 app.use("/show", showRoutes)
 
 app.use((error, req, res, next) => {

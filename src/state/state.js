@@ -245,7 +245,8 @@ export default () => {
       numberOfTickets: null
     },
     bookingSummary: {
-      _id: null,
+      offered: [],
+      received: []
     },
     baseUser: {
       _id: null,
@@ -341,7 +342,6 @@ export default () => {
     },
     show: {
       _id: null,
-      showDetails: null
     },
     showSummary: [],
     error: null

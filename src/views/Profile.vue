@@ -2,19 +2,19 @@
   <div id="profile">
     <Menu v-bind:menuPos="menuPos"></Menu>
 
-    <ProfilePic v-bind:profilePic="getUserInfo.pic"
+    <ProfilePic v-bind:profilePic="user.pic"
     v-bind:picturePos="picturePos"></ProfilePic>
 
-    <About v-bind:about="getUserInfo"
+    <About v-bind:about="user"
     v-bind:aboutPos="aboutPos"></About>
 
     <VerifiedInfo v-bind:infoPos="infoPos"
     v-bind:contactInfo="getVerifiedInfo"></VerifiedInfo>
 
-    <Shows v-bind:shows="getUserInfo.shows"
+    <Shows v-bind:shows="user.shows"
     v-bind:showPos="showPos"></Shows>
 
-    <Reviews v-bind:reviews="getUserInfo.reviews"
+    <Reviews v-bind:reviews="user.reviews"
     v-bind:reviewPos="reviewPos"></Reviews>
   </div>
 </template>
@@ -38,50 +38,17 @@ export default {
   },
   data() {
     return {
-      menuPos: {
-        gridRow: "1/2",
-        gridColumn: "1/5"
-      },
-      picturePos:{
-        gridRow: "2/3",
-        gridColumn: "1/2"
-      },
-      aboutPos:{
-        gridRow: "2/3",
-        gridColumn: "2/5"
-      },
-      showPos:{
-        gridRow: "3/4",
-        gridColumn: "2/5"
-      },
-      reviewPos:{
-        gridRow: "4/5",
-        gridColumn: "2/5"
-      },
-      infoPos:{
-        gridRow: "3/4",
-        gridColumn: "1/2"
-      }
     };
   },
   computed: {
-    getUserInfo() {
-      return this.$store.state.user;
+    user() {
+      console.log(this.$store.state.baseUser)
+      return this.$store.state.baseUser;
     },
-    getVerifiedInfo(){
-      let {name, email, location, phone} = this.getUserInfo
-      let verifiedArray = [name, email, location, phone]
-      return verifiedArray
-    }
   }
 };
 </script>
 
 <style lang="scss">
-#profile {
-  display: grid;
-  grid-template-columns: repeat(4, 25%);
-  grid-template-rows: min-content minmax(30vh, auto) minmax(30vh, auto);
-  z-index: 0;
-}
+  
 </style>

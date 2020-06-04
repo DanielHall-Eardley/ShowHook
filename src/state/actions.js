@@ -5,16 +5,37 @@ import getDataFn from "../helper/getDataFn";
 
 export default {
   signUp: async ({ commit }, payload) => {
-    loginSignupFn(commit, payload, "signup");
+    commit("clearError");
+    const responseData = await loginSignupFn(payload, "signup");
+
+    if (responseData.messages) {
+      return commit("updateError", responseData);
+    }
+
+    commit("signupSuccessful", {
+      data: responseData,
+      redirect: payload.redirect
+    });
   },
   login: async ({ commit }, payload) => {
-    await loginSignupFn(commit, payload, "login", payload.redirect);
+    commit("clearError");
+    const responseData =  await loginSignupFn(payload, "login");
+    console.log(responseData)
+    if (responseData.messages) {
+      return commit("updateError", responseData);
+    }
+
+    commit("loginSuccessful", {
+      data: responseData,
+      redirect: payload.redirect
+    });
 
     setTimeout(() => {
       commit("logout")
     }, localStorage.getItem("expirationTime"))
   },
   autoLogin: ({ commit }, payload) => {
+    commit("clearError");
     const expiresIn = localStorage.getItem("expiresIn")
 
     return new Promise((resolve, reject) => {
@@ -27,6 +48,7 @@ export default {
             redirect: payload
           }
         })
+        commit('updateError', ['Session expired please login'])
         reject("Please log in")
       }
       commit("autoLogin")
@@ -97,7 +119,7 @@ export default {
     if (!context.rootState.baseUser.userId) {
       context.dispatch("autoLogin", payload.path)
     }
-
+    
     const booking = JSON.stringify({
       ...payload,
       offerorId: context.rootState.baseUser.userId
@@ -108,7 +130,7 @@ export default {
       "Content-Type": "application/json"
     }
     
-    const responseData = await postDataFn("admin/create-booking", booking, headers)
+    const responseData = await postDataFn("admin/booking/create", booking, headers)
     
     if (responseData.messages) {
       return context.commit("updateError", responseData)
@@ -462,7 +484,7 @@ export default {
       return context.commit("updateError", responseData)
     }
   },
-  payBooking: async (context, payload) => {
+  pay: async (context, payload) => {
     context.commit("clearError")
     
     const token = context.rootState.token
@@ -477,17 +499,20 @@ export default {
       //add Payment details when stripe has been integrated
     })
 
-    const responseData = await postDataFn('/booking/payment', body, headers, 'POST')
+    const responseData = await postDataFn(`${payload.paymentType}/payment`, body, headers, 'POST')
 
     if (responseData.messages) {
       return context.commit("updateError", responseData)
     }
 
-    context.commit("loadShow", responseData)
+    alert(responseData.msg)
+
+    const idType = context.rootState.baseUser.userType.toLowerCase() + 'Id'
     router.push({
-      name: 'show', 
-      params: {
-        id: responseData.booking.show._id
+      name: 'admin-show', 
+      params: {showId: payload.showId},
+      query: {
+        idType
       }
     })
   }

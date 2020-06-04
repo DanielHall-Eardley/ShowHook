@@ -5,26 +5,9 @@
     <div class="booking-summary-container">
       <header>
         <h3>Received</h3>
-        <select class="default-input select" v-model="receivedFilter">
-          <option value="All"  class="booking-summary-select-option">
-            All 
-          </option>
-          <option value="Pending" class="booking-summary-select-option">
-            Pending
-          </option>
-          <option value="Accepted" class="booking-summary-select-option">
-            Accepted
-          </option>
-          <option value="Expired" class="booking-summary-select-option">
-            Expired
-          </option>
-          <option value="Rejected" class="booking-summary-select-option">
-            Rejected
-          </option>
-        </select>
       </header>
       <BookingSummary 
-        v-for="summary in receivedArray"
+        v-for="summary in bookings.received"
         :summary="summary"
         :key="summary._id"
         type="offeror">
@@ -33,26 +16,9 @@
     <div class="booking-summary-container">
       <header>
         <h3>Offered</h3>
-        <select class="default-input select" v-model="bookingedFilter">
-          <option value="All"  class="booking-summary-select-option">
-            All 
-          </option>
-          <option value="Pending" class="booking-summary-select-option">
-            Pending
-          </option>
-          <option value="Accepted" class="booking-summary-select-option">
-            Accepted
-          </option>
-          <option value="Expired" class="booking-summary-select-option">
-            Expired
-          </option>
-          <option value="Rejected" class="booking-summary-select-option">
-            Rejected
-          </option>
-        </select>
       </header>
       <BookingSummary 
-        v-for="summary in bookingedArray"
+        v-for="summary in bookings.offered"
         :summary="summary"
         :key="summary._id"
         type="receiver">
@@ -80,17 +46,15 @@
       if (responseData.messages) {
         return this.$store.commit('updateErrors')
       }
-
+    
       this.$store.commit("loadBookingSummary", {
-        data: responseData.bookings,
+        data: responseData,
       })
     },
     data(){
       return{
         receivedFilter: "All",
-        bookingedFilter: "All",
-        receivedError: null,
-        bookingedError: null
+        offeredFilter: "All",
       }
     },
     components:{
@@ -99,36 +63,22 @@
       Error
     },
     computed:{
-      receivedArray(){
-        const array = this.$store.state.bookingSummary.received
-        console.log(array)
-        if (this.receivedFilter.toLowerCase() === "all") {
-          return array
-        }
-
-        const filteredArray = array.filter(el => {
-          if(el.status.toLowerCase() === this.receivedFilter.toLowerCase()){
-            return el
-          }
+      bookings(){
+        const bookings = this.$store.state.bookingSummary
+        console.log(bookings)
+        const received = bookings.received.filter(booking => {
+          return booking.status.toLowerCase() !== 'confirmed'
         })
 
-        return filteredArray
+        const offered = bookings.offered.filter(booking => {
+          return booking.status.toLowerCase() !== 'confirmed'
+        })
+
+        return {
+          offered,
+          received
+        }
       },
-      bookingedArray(){
-        const array = this.$store.state.bookingSummary.bookinged
-        console.log(array)
-        if (this.bookingedFilter.toLowerCase() === "all") {
-          return array
-        }
-
-        const filteredArray = array.filter(el => {
-          if(el.status.toLowerCase() === this.bookingedFilter.toLowerCase()){
-            return el
-          }
-        })
-
-        return filteredArray
-      }
     },
   }
 </script>
@@ -138,8 +88,6 @@
   .booking-summary {
     height: 90vh;
     font-size: 1.6rem;
-
-    
   }
 
   .booking-summary-container {
@@ -155,10 +103,6 @@
         position: sticky;
         top: 0;
         background-color: var(--light-grey);
-
-        select {
-          width: 30rem;
-        }
 
         h3 {
           margin-right: var(--spacing);

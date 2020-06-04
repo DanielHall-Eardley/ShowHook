@@ -2,7 +2,7 @@ const BaseUser = require("../models/baseUser")
 const Venue = require("../models/venue")
 const Booking = require("../models/booking")
 const Act = require("../models/act")
-const Message = require("../models/message")
+const Show = require("../models/show")
 
 const { validationResult } = require("express-validator")
 const errorHandler = require("../helper/errorHandler")
@@ -276,7 +276,7 @@ exports.editVenue = async (req, res, next) => {
 exports.createBooking = async (req, res, next) => {
 	try {
 		checkForValidationErr(req)
-
+		console.log(req.body)
 		const populate = {
 			populate: {
 				path: "userData",
@@ -633,5 +633,34 @@ exports.deleteProfile = async (req, res, next) => {
 		}
 		next(error);
 	}
+}
+
+exports.getEditShow = async (req, res, next) => {
+  try {
+    const profileId = req.params.profileId
+		const showId = req.params.showId
+		const idType = req.query.idType
+
+    const show = await Show.findById(showId)
+      .populate('show')
+		
+    if (!show) {
+      errorHandler(404, ['Booking not found'])
+    }  
+		
+		if (show[idType].toString() !== profileId.toString()) {
+			errorHandler(401, ['You are not authorized to edit this show'])
+		}
+
+    res.status(200).json({
+      show: show
+    })
+  } catch (error) {
+    if (!error.status) {
+      error.status = 500
+    }
+
+    next(error)
+  }
 }
 

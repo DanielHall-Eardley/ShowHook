@@ -2,7 +2,7 @@
   <main>
     <Menu></Menu>
     <Error></Error>
-    <button class='time-travel' @click='past = true'>
+    <button class='time-travel' @click='past = true' v-show='!past'>
       Travel back into the past...
     </button>
     <section class='show-section' v-if="past">
@@ -77,7 +77,6 @@ export default {
 <style lang='scss' scoped>
   .show-section {
     width: 100%;
-    overflow-x: auto;
 
     h2 {
       background-color: var(--primary);
@@ -101,7 +100,9 @@ export default {
   }
 
   .flex-container {
+    width: 100%;
     display: flex;
     padding: var(--spacing);
+    overflow-x: auto;
   }
 </style>

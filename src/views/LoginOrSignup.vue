@@ -100,11 +100,6 @@ export default {
       userType: ""
     };
   },
-  computed: {
-    getErrors() {
-      return this.$store.state.errors
-    },
-  },
   methods: {
     sendUserDetails() {
       let userObject = {

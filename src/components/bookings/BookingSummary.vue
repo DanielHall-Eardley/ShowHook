@@ -3,8 +3,8 @@
     <h3 class="title">
       {{
         type === "offeror" ? 
-        "You have received an booking from" : 
-        "You have bookinged"
+        "You have received an offer from" : 
+        "You have offered"
       }}
       <span>{{summary[type + "Name"]}}</span>
       of
@@ -72,24 +72,12 @@
       highlight(val){
         let color;
         switch(val){
-          case "Accepted":
-          color = 'green'
-          break
-
           case "Pending":
           color = 'gold'
           break
 
           case "Negotiating":
           color = 'blue'
-          break
-
-          case "Rejected":
-          color = 'grey'
-          break
-
-          case "Updated":
-          color = 'red'
           break
         }
 

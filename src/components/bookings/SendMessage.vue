@@ -41,6 +41,7 @@ export default {
     & input {
       flex: 1;
       margin-right: var(--spacing);
+      height: auto;
     }
   }
 </style>

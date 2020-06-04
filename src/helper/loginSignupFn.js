@@ -1,8 +1,7 @@
-const loginSignupFn = async (commit, payload, type, redirect) => {
-  commit("clearErrors");
+const loginSignupFn = async (body, type) => {
   try {
     const response = await fetch("http://localhost:3000/admin/" + type, {
-      body: JSON.stringify(payload),
+      body: JSON.stringify(body),
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -15,13 +14,9 @@ const loginSignupFn = async (commit, payload, type, redirect) => {
       error.messages = responseData;
       throw error;
     }
-
-    commit(type + "Successful", {
-      data: responseData,
-      redirect
-    });
+    return responseData
   } catch (error) {
-    commit("updateErrors", error);
+    return error
   }
 }
 

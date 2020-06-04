@@ -6,18 +6,16 @@
       <Banner 
         :photoUrl="venueData.bannerPhoto"
         :photoArray="photoArray" 
-        :editable="editable"
-        v-on:editBannerPhoto="editBannerPhoto"
-        v-on:clearPhotoArray="clearPhotoArray">
+        :editable="editable">
       </Banner>
       <Title 
         :data="venueData" 
         :editable="editable">
       </Title>
-      <FeatureIcons 
+      <!-- <FeatureIcons 
         :feature="venueData"
         :editable="editable">
-      </FeatureIcons>
+      </FeatureIcons> -->
       <About
         :text="venueData.description"
         :name="venueData.userId.name"
@@ -67,9 +65,6 @@
         :profileId="venueData._id">
       </BookShow>
     </div>
-    <p class="venue-loading-error" v-else>
-      {{error ? error : "Loading"}}
-    </p>
   </section>
 </template>
 
@@ -143,12 +138,6 @@ export default {
     })
   },
   methods: {
-    editBannerPhoto() {
-      this.photoArray = this.venueData.photos
-    },
-    clearPhotoArray() {
-      this.photoArray = null
-    },
     updateVenue() {
       this.$store.dispatch("updateVenue", this.$route.fullPath)
     },

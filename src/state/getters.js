@@ -6,7 +6,8 @@ import {
   lastDayOfMonth,
   format,
   toDate,
-  compareDesc
+  compareDesc,
+  parseISO
 } from 'date-fns'
 
 export default {
@@ -23,6 +24,10 @@ export default {
     return state[state.selectedUserType]
   },
   getShowSummary: state => {
+    let nextIndex = 0
+    let weekIndex = null
+    let monthIndex = null
+    let yearIndex = null
     const pastSection = {
       title: 'Past',
       shows: []
@@ -32,60 +37,69 @@ export default {
 
     for(let show of state.showSummary) {
       const now = toDate(new Date())
-      const showDate = toDate(Date.now(show.showDate))
-    
+      const showDate = parseISO(show.showDate)
+      
       if (isBefore(showDate, now)) {
         pastSection.shows.push(show)
+        continue;
       }
 
       const timeDiff = differenceInDays(showDate, now)
+
       if (timeDiff < 7) {
-        if (!sectionArray[0]) {
-          sectionArray[0] = {
+        if (weekIndex === null) {
+          weekIndex = nextIndex
+          nextIndex++
+          sectionArray[weekIndex] = {
             title: 'This Week',
             shows: [show]
           }
           continue;
         }
 
-        sectionArray[0].shows.push(show)
+        sectionArray[weekIndex].shows.push(show)
       }
 
-      const daysInMonth = format(lastDayOfMonth(now), "d")
-      if (timeDiff > daysInMonth) {
-        if (!sectionArray[1]) {
-          sectionArray[1] = {
+      const daysInMonth = parseInt(format(lastDayOfMonth(now), "d"))
+      if (timeDiff < daysInMonth && timeDiff > 7) {
+        if (monthIndex === null) {
+          monthIndex = nextIndex
+          nextIndex++
+          sectionArray[monthIndex] = {
             title: 'This Month',
             shows: [show]
           }
           continue;
         }
-
-        sectionArray[1].shows.push(show)
+        
+        sectionArray[monthIndex].shows.push(show)
       }
 
-      if (timeDiff > 365) {
-        if (!sectionArray[2]) {
-          sectionArray[2] = {
-            title: 'This Week',
+      if (timeDiff < 365 && timeDiff > daysInMonth) {
+        if (yearIndex === null) {
+          yearIndex = nextIndex
+          nextIndex++
+          sectionArray[yearIndex] = {
+            title: 'This Year',
             shows: [show]
           }
           continue;
         }
 
-        sectionArray[2].shows.push(show)
+        sectionArray[yearIndex].shows.push(show)
       }
     }
-
+    
     for (let section of sectionArray) {
-      section.shows.sort((a, b) => compareDesc(a.showDate, b.showDate))
+      section.shows = section.shows.sort((a, b) => {
+        return new Date(a.showDate) - new Date(b.showDate)
+      })
     }
 
     const obj = {
       future: sectionArray,
       past: pastSection
     }
-    console.log(obj)
     return obj
   }
 }

@@ -112,12 +112,22 @@ export default new Router({
       component: ShowDetail,
     },
     {
+      path: "/admin/show/:showId",
+      name: "admin-show",
+      component: ShowDetail,
+    },
+    {
+      path: "/admin/profile/:id",
+      name: "admin-profile",
+      component: Profile,
+    },
+    {
       path: "/profile/:id",
       name: "profile",
       component: Profile,
     },
     {
-      path: "/checkout/:id",
+      path: "/checkout/:bookingId/:showId",
       name: "checkout",
       component: Checkout,
     },

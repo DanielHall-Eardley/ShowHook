@@ -10,7 +10,7 @@
             <use xlink:href="@/assets/sprite.svg#icon-chevron-thin-left"></use>
           </svg>
           <div class="month">
-            <h4>{{dateArray[selectedMonth].month}}, {{year}}</h4>
+            <h4>{{dateArray[selectedMonth].monthName}}, {{year}}</h4>
             <DateButton
               v-for="n in dateArray[selectedMonth].days"
               :disable="checkDate(n, dateArray[selectedMonth].takenDays)"
@@ -34,19 +34,12 @@
           placeholder="Add an introductory message"
           v-model="message">
         </textarea>
-        <input 
-          v-model="priceInput"
-          placeholder="Enter an booking"
-          type="number"
-          class="default-input"
-          v-if="bookingType.toLowerCase() === 'venue'"
-        >
         <button class="alt-button" @click="hideCalender">
           Back
         </button>
         <button 
           class="primary-button" 
-          @click="createBooking(dateArray[selectedMonth].month)"
+          @click="createBooking(dateArray[selectedMonth].monthNumber)"
           :disabled="!selectedDay">
           Book
         </button>
@@ -66,10 +59,9 @@
     data(){
       return {
         message: "",
-        priceInput: null,
         bookingType: this.$store.state.baseUser.userType,
         dateArray: [],
-        year: "",
+        year: null,
         selectedDay: null,
         selectedMonth: 0,
         error: null
@@ -80,7 +72,7 @@
       const startDate = new Date()
       const startMonth = parseInt(startDate.getMonth())
       let months = startMonth + 3
-      const startYear = startDate.getFullYear()
+      const startYear = parseInt(startDate.getFullYear())
       const startDay = parseInt(startDate.toString().split(" ")[2])
       const array = []
       const takenDates = {}
@@ -132,7 +124,8 @@
         }
 
         const monthObj = {
-          month: monthName,
+          monthName: monthName,
+          monthNumber: i,
           days: new Date(startYear, i, 0).getDate(),
           takenDays,
         }
@@ -144,18 +137,13 @@
     },
     methods:{
       createBooking(month){
-        let price = 0
-        const date = new Date(this.selectedDay + month + this.year)
+        const date = new Date(this.year, month, this.selectedDay)
+        console.log(date)
         this.selectedDay = null
         this.error = null
-  
-        if (this.priceInput) {
-          price = this.priceInput
-        }
 
         this.$store.dispatch("createBooking", {
           date,
-          price,
           message: this.message,
           receiverId: this.receiverId,
           path: this.$route.fullPath
@@ -201,14 +189,6 @@
     padding: var(--spacing);
     border: var(--light-border);
     border-radius: var(--border-radius);
-    display: grid;
-    grid-row-gap: var(--spacing);
-
-    .error {
-      text-align: center;
-      font-size: 1.6rem;
-      color: red;
-    }
 
     h3 {
       font-size: 2.4rem;
@@ -218,6 +198,7 @@
 
     .select-date-container {
       display: flex;
+      margin-bottom: var(--spacing);
 
       svg {
         height: 4rem;
@@ -255,11 +236,8 @@
 
     textarea {
       height: 15vh;
-      margin-bottom: var(--alt-spacing);
-    }
-
-    input {
-      margin-bottom: var(--alt-spacing);
+      margin-bottom: var(--spacing);
+      padding: var(--alt-spacing)
     }
   }
 

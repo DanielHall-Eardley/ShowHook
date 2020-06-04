@@ -19,7 +19,6 @@ export default {
   },
   loadShow: (state, payload) => {
     state.show = payload.show
-    state.show.showDetails = payload.booking
   },
   updateGuestList: (state, payload) => {
     state.showSetup.guestList = [...state.showSetup.guestList, payload]
@@ -421,5 +420,62 @@ export default {
   },
   loadShowSummary: (state, payload) => {
     state.showSummary = payload.showList
+  },
+  clearBookingState: state => {
+    state.booking = {
+      _id: null,
+      offerorId: null,
+      receiverId: null,
+      offerorName: "",
+      offerorTitle: "",
+      offerorRating: "",
+      receiverName: "",
+      receiverTitle: "",
+      receiverRating: "",
+      bookingDate: "",
+      price: 0,
+      status: "Pending",
+      messageArray: [],
+    }
+    state.showSetup = {
+      _id: null,
+      title: null,
+      description: null,
+      price: null,
+      priceType: 'Fixed',
+      ticketPrice: null,
+      actProfit: 50,
+      venueProfit: 50,
+      schedule: {
+        'Load In': {
+          start: null,
+          end: null
+        },
+        'Set Up': {
+          start: null,
+          end: null
+        },
+        'Openers': {
+          start: null,
+          end: null
+        },
+        'Main Event': {
+          start: null,
+          end: null
+        },
+        'Teardown': {
+          start: null,
+          end: null
+        },
+        'Load Out': {
+          start: null,
+          end: null
+        },
+      },
+      guestList: [],
+      actRequirements: [],
+      venueRequirements: [],
+      numberOfTickets: null
+    }
   }
 }

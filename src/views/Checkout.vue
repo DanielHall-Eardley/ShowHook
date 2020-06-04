@@ -9,8 +9,10 @@
 export default {
   methods: {
     payBooking () {
-      this.$store.dispatch('payBooking', {
-        bookingId: this.$route.params.id
+      this.$store.dispatch('pay', {
+        bookingId: this.$route.params.bookingId,
+        showId: this.$route.params.showId,
+        paymentType: this.$route.query.paymentType
         //add Stripe payment details
       })
     }

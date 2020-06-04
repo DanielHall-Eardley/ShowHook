@@ -1,21 +1,15 @@
 <template lang="html">
   <section class="map-container">
-    <h3 class="section-heading">Location</h3>
+    <h3 class="section-heading">Location - {{address.description}}</h3>
     <div id="map"></div>
-    <p v-if="error">{{error}}</p>
   </section>
 </template>
 
 <script>
 export default {
   props: ["address", "name", "photo"],
-  data() {
-    return {
-      error: null
-    }
-  },
   mounted() {
-    console.log(this.address)
+    this.$store.commit('clearError')
     fetch("http://localhost:3000/google-api/map", {
       method: "GET",
     })
@@ -110,7 +104,6 @@ export default {
 
       //throw error if geolocation services are unavailble
       function geoError(error){
-        console.log(error)
         throw new Error("Unable to get user location")
       }
 
@@ -124,7 +117,7 @@ export default {
       }
     })
     .catch(error => {
-      this.error = error
+      this.commit('updateError', [error.mesage])
     })
   }
 }

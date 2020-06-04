@@ -2,18 +2,22 @@
   <div class="show-summary">
     <header>
       <span class="highlight">{{show.actTitle}}</span>
-      <span> will be performing at </span>
+      <span> performing at </span>
       <span class="highlight">{{show.venueTitle}}</span>
     </header>
     <p>{{show.description}}</p>
     <footer>
-      <span>$:{{show.price}}</span>
+      <span class='price'>${{show.price}}</span>
       <router-link 
         class='default-link'
-        :to='{name: "show", params: {id: show._id}}'>
+        :to='{
+          name: "admin-show", 
+          params: {showId: show._id},
+          query: {idType: userIdType}
+        }'>
         View details
       </router-link>
-      <span class="highlight">{{readableDate(show.showDate)}}</span>
+      <span class="date highlight">{{readableDate(show.showDate)}}</span>
     </footer>
   </div>
 </template>
@@ -26,6 +30,11 @@ export default {
   methods:{
     readableDate(date) {
       return formatDate(date, false)
+    },
+  },
+  computed: {
+    userIdType() {
+      return this.$store.state.baseUser.userType.toLowerCase() + 'Id'
     }
   }
 }
@@ -41,6 +50,8 @@ export default {
   height: 16rem;
   display: flex;
   flex-direction: column;
+  margin-right: var(--alt-spacing);
+  flex: 1 0 48rem;
 }
 
 header {
@@ -60,9 +71,17 @@ p {
 
 footer {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   padding-bottom: var(--alt-spacing);
   padding-right: var(--alt-spacing);
   padding-left: var(--alt-spacing);
+
+  .price {
+    margin-right: auto;
+  }
+
+  .date {
+    margin-left: var(--alt-spacing);
+  }
 }
 </style>

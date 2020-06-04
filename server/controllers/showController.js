@@ -36,3 +36,26 @@ exports.getShowSummary = async(req, res, next) => {
     next(error)
   }
 }
+
+exports.getShow = async (req, res, next) => {
+  try {
+    const showId = req.params.showId
+ 
+    const show = await Show.findById(showId)
+      .populate('show')
+
+    if (!show) {
+      errorHandler(404, ['Booking not found'])
+    }  
+
+    res.status(200).json({
+      show: show
+    })
+  } catch (error) {
+    if (!error.status) {
+      error.status = 500
+    }
+
+    next(error)
+  }
+}

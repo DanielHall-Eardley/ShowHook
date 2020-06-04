@@ -37,20 +37,14 @@ exports.getBooking = async (req, res, next) => {
 exports.getBookingsSummary = async (req, res, next) => {
   try {
     const id = req.params.id
+    const now = new Date()
+    
+    const receivedBookingsPromise = Booking.find({receiverId: id, bookingDate: {$gte: now}}) 
+    const offeredBookingsPromise = Booking.find({offerorId: id, bookingDate: {$gte: now}})
 
-    const receivedBookingsPromise = Booking.find({receiverId: id}) 
+    const results = await Promise.all([receivedBookingsPromise, offeredBookingsPromise])
 
-    const bookingsPromise = Booking.find({offerorId: id})
-
-    const result = await Promise.all([receivedBookingsPromise, bookingsPromise])
-
-    const bookings = {received: result[0], bookinged: result[1]}
-
-    if (!bookings.bookinged && !bookings.received) {
-      errorHandler(404, ["No bookings found"])
-    }
-
-    res.status(200).json({ bookings: bookings })
+    res.status(200).json({received: results[0], offered: results[1]})
   } catch (error) {
     if (!error.status) {
       error.status = 500
@@ -332,6 +326,34 @@ exports.finalizeBooking = async (req, res, next) => {
     if (!error.status) {
       error.status = 500
     }
+    next(error)
+  }
+}
+
+exports.payBooking = async (req, res, next) => {
+  try {
+    //make stripe payment
+
+    const bookingId = req.body.bookingId
+
+    const booking = await Booking.findById(bookingId)
+      .populate('show')
+
+    if (!booking) {
+      errorHandler(404, ['Booking not found'])
+    }  
+
+    booking.paymentReceived = true
+    const updatedBooking = await booking.save()
+
+    res.status(200).json({
+      msg: 'Payment successful'
+    })
+  } catch (error) {
+    if (!error.status) {
+      error.status = 500
+    }
+
     next(error)
   }
 }

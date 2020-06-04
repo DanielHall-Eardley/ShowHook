@@ -151,6 +151,7 @@ export default {
 
   textarea {
     height: 12rem;
+    padding: var(--alt-spacing);
   }
 }
 

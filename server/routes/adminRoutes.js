@@ -55,7 +55,7 @@ router.put(
 )
 
 router.post(
-  "/create-booking", 
+  "/booking/create", 
   isAuth, 
   [
     body("date", "Invalid date").custom(value => {
@@ -107,6 +107,8 @@ router.post(
 )
 
 router.get("/booking-summary/:id", isAuth, adminController.getBookingSummary)
+
+router.get('/show/:profileId/:showId', isAuth, adminController.getEditShow)
 
 router.delete("delete-profile/:id", isAuth, adminController.deleteProfile)
 module.exports = router

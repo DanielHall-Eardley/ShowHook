@@ -41,8 +41,12 @@
       </div>
     </header>
     <header v-if="booking.status === 'Review'">
-      <h1>Review Show</h1>
-      <div class="button-container">
+      <h1>
+        {{booking[checkUserType + "Status"] === "Review" ? 
+        "Review Show" : "Awaiting Confirmation"
+        }}
+      </h1>
+      <div class="button-container" v-if='booking[checkUserType + "Status"] === "Review"'>
         <button class="alt-button" @click="finalizeBooking('Negotiating')">
           Make a Change
         </button>
@@ -55,14 +59,16 @@
       <div 
         class="booking-page-details" 
         :class="booking.status !== 'Negotiating' ? 'disable-interactions' : null">
+        <div class="submit-booking-changes">
+          <button 
+            @click="submitShowChanges" 
+            class="primary-button">
+            Submit Changes
+          </button>
+        </div>
         <General></General>
         <Schedule></Schedule>
         <Other :userType='booking[checkUserType + "Type"]'></Other>
-        <button 
-          @click="submitShowChanges" 
-          class="primary-button submit-booking-changes">
-          Submit Changes
-        </button>
       </div>
       <div class="booking-page-messages">
         <Messages 
@@ -154,17 +160,24 @@ export default {
         return this.$router.push({
           name: 'checkout', 
           params: {
-            id: booking._id
+            bookingId: booking._id,
+            showId: booking.show._id
+          },
+          query: {
+            paymentType: 'booking'
           }
         })
       }
 
       return this.$router.push({
-        name: 'show', 
-        params: {
-          id: booking.show._id
+        name: 'admin-show', 
+        params: {showId: booking.show._id},
+        query: {
+          idType: this.$store.state.baseUser.userType.toLowerCase() + "Id"
         }
       })
+
+      this.$store.commit('clearBookingState')
     }
   },
   beforeDestroy () {
@@ -284,7 +297,12 @@ export default {
   }
 
   .submit-booking-changes {
-    margin: var(--alt-spacing);
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacing);
+    background-color: white;
   }
 
   .booking-page-messages {

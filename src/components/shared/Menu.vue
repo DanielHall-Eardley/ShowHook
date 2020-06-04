@@ -14,12 +14,11 @@
       </router-link>
     </div>
     <div class="menu-loggedin-links" v-else>
-      <span class='default-link'>{{user.name}}</span>
-      <!-- <router-link 
+      <router-link 
         class="default-link"
-        :to="{name: 'profile', params: {id: user._id}}">
+        :to="{name: 'admin-profile', params: {id: userId}}">
         {{user.name}}
-      </router-link> -->
+      </router-link>
       <span
         class="default-link"
         @click="routeLink">
