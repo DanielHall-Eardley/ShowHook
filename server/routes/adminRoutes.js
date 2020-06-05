@@ -61,7 +61,6 @@ router.post(
     body("date", "Invalid date").custom(value => {
       return checkForValidDate(value)
     }),
-    body("price", "invalid price").isInt()
   ],
   adminController.createBooking
 )

@@ -87,6 +87,10 @@
     },
     methods:{
       search() {
+        if (this.$route.query.searchType === "actJoin") {
+          return this.joinActSearch()
+        }
+
         if (!this.userType) {
           return this.basicSearch()
         }
@@ -106,6 +110,8 @@
         this.$store.dispatch("refinedSearchResults", this.page)
         this.showFilters = false
       },
+      joinActSearch(){},
+      
       cancelSelection() {
         this.$store.commit("resetSearchQuery")
         this.showFilters = false

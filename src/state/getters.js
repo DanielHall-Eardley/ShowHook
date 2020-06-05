@@ -100,6 +100,7 @@ export default {
       future: sectionArray,
       past: pastSection
     }
+    console.log(obj)
     return obj
   }
 }

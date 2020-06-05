@@ -334,7 +334,6 @@ exports.createBooking = async (req, res, next) => {
 			receiverTitle: receiver.userData.title,
 			receiverRating: receiver.userData.overallRating,
 			bookingDate: req.body.date,
-			price: price,
 			status: "Pending",
 			mostRecentMessage: message.content,
 		})
