@@ -7,7 +7,7 @@ import {format} from 'date-fns'
 export default {
   signUp: async ({ commit }, payload) => {
     commit("clearError");
-    const response = await loginSignupFn(payload, "/signup");
+    const response = await loginSignupFn(payload, "/admin/signup");
 
     if (response.error) {
       return commit("updateError", response);
@@ -26,7 +26,7 @@ export default {
       payload.userType = localStorage.getItem('tempUserType')
     }
 
-    const response =  await loginSignupFn(payload, "/login");
+    const response =  await loginSignupFn(payload, "/admin/login");
     if (response.error) {
       return commit("updateError", response);
     }
@@ -72,7 +72,7 @@ export default {
   getBlogs: async (context, payload) => {
     context.commit("clearError")
 
-    const response = await getDataFn(`blogs/${payload.id}?page=${payload.page}&userType=${payload.userType}`)
+    const response = await getDataFn(`/blogs/${payload.id}?page=${payload.page}&userType=${payload.userType}`)
  
     if (response.error) {
       return context.commit("updateError", response)
@@ -83,7 +83,7 @@ export default {
   getBlogDetails: async (context, payload) => {
     context.commit("clearError")
 
-    const response = await getDataFn(`blog/${payload.blogId}?&userType=${payload.userType}&profileId=${payload.profileId}`)
+    const response = await getDataFn(`/blog/${payload.blogId}?&userType=${payload.userType}&profileId=${payload.profileId}`)
   
     if (response.error) {
       return context.commit("updateError", response)

@@ -54,7 +54,7 @@ export default {
     const actOrVenueId = this.$route.params.id
     const token = this.$store.state.token
    
-    const response = await getAdminDataFn(`show/summary/${actOrVenueId}`, token)
+    const response = await getAdminDataFn(`/admin/show/summary/${actOrVenueId}`, token)
 
     if (response.error) {
       this.$store.commit("updateError", response)

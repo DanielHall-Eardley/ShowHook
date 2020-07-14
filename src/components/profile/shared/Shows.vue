@@ -53,7 +53,7 @@ export default {
   async created() {
     this.$store.commit('clearError')
 
-    const response = await getDataFn(`show/summary/act-or-venue/${this.userId}`)
+    const response = await getDataFn(`/show/summary/act-or-venue/${this.userId}`)
       
     if (response.error) {
       return this.$store.commit('updateError', response.error) 

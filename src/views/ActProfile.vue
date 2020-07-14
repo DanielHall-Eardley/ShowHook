@@ -137,10 +137,10 @@ export default {
     let response
 
     if (this.$route.name === "admin-act") {
-      response = await getAdminDataFn(`admin/act/${id}`, token)
+      response = await getAdminDataFn(`/admin/act/${id}`, token)
       this.editable = true
     } else {
-      response = await getDataFn(`act/${id}`)
+      response = await getDataFn(`/act/${id}`)
     }
 
     if (response.error) {

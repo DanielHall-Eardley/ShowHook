@@ -129,7 +129,7 @@ export default {
     const token = this.$store.state.token
 
     if (this.$route.name === "admin-venue") {
-      const response = await getAdminDataFn(`admin/venue/${id}`, token)
+      const response = await getAdminDataFn(`/admin/venue/${id}`, token)
       this.editable = true
       if (response.error) {
         return this.$store.commit('updateError', response.error)

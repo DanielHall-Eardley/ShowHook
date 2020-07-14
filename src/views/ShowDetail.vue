@@ -56,7 +56,7 @@ export default {
     let response
 
     if (this.$route.name === 'admin-show') {
-      const url = `admin/show/${profileId}/${showId}`
+      const url = `/admin/show/${profileId}/${showId}`
       response = await getAdminDataFn(url, token)
       this.editable = true
     } else {

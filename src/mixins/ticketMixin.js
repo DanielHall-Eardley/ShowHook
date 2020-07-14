@@ -17,7 +17,7 @@ export default {
         showId,
       })
 
-      const response = await postDataFn(`payment/ticket/create`, body, headers, 'POST')
+      const response = await postDataFn(`/payment/ticket/create`, body, headers, 'POST')
   
       if (response.error) {
         return this.$store.commit('updateError', response.error)

@@ -75,10 +75,10 @@ export default {
     const profileType = this.$store.state.baseUser.userType
     let response
     if (this.$route.name === "admin-profile") {
-      response = await getAdminDataFn(`admin/profile/${profileType}/${id}`, token)
+      response = await getAdminDataFn(`/admin/profile/${profileType}/${id}`, token)
       this.editable = true
     } else {
-      response = await getDataFn(`profile/${profileType}/${id}`)
+      response = await getDataFn(`/profile/${profileType}/${id}`)
     }
 
     if (response.error) {

@@ -109,7 +109,7 @@ export default {
         paymentId
       })
 
-      const response = await postDataFn(`payment/${this.paymentType}/purchase`, body, headers, 'POST')
+      const response = await postDataFn(`/payment/${this.paymentType}/purchase`, body, headers, 'POST')
 
       if (response.error) {
         this.disabled = false
@@ -147,7 +147,7 @@ export default {
         'Content-Type': 'application/json'
       }
 
-      const response = await postDataFn(`payment/ticket/`, body, headers, 'POST')
+      const response = await postDataFn(`/payment/ticket/`, body, headers, 'POST')
       if (response.error) {
         return this.$store.commit('updateError', response.error)
       }
