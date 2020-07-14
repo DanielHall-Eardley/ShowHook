@@ -5,7 +5,7 @@
       <div class="guestlist">
         <p>Guestlist</p>
         <ul>
-          <li v-for="guest in show.guestlist" :key='guest'>
+          <li v-for="guest in show.guestList" :key='guest'>
             {{guest}}
           </li>
         </ul>
@@ -50,7 +50,7 @@
       <span class='highlight-pink'>{{show.venueTitle}}</span>
       <span> will receive {{show.venueProfit}}%  and </span>
       <span class='highlight-pink'>{{show.actTitle}}</span>
-      <span class='highlight-pink'>will receive {{show.actProfit}} </span>
+      <span> will receive {{show.actProfit}}% </span>
       <span> of the profits from ticket sales</span>
     </div>
   </section>
@@ -88,7 +88,7 @@ export default {
       margin-right: var(--spacing);
     }
 
-    .schedule-summary ul{
+    ul{
       margin-left: 2rem;
       font-size: 1.6rem;
     }

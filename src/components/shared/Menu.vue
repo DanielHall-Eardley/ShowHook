@@ -22,10 +22,30 @@
         {{user.name}}
       </router-link>
       <span
+        v-if='user.userType === "Venue"'
         class="default-link"
         @click="routeLink">
+        {{user.userData === 'undefined' ? 'Create': null}}
         {{user.userType}}
       </span>
+      <div v-if="user.userType === 'Act'">
+        <span
+          
+          class="default-link"
+          @click="routeLink">
+          {{user.userData === 'undefined' ? 'Create': null}}
+          {{user.userType}}
+        </span>
+        <router-link 
+          style="marginRight: var(--spacing);"
+          :to="{
+            name: 'search', 
+            query: {searchType: 'actJoin'}
+          }" 
+          class="default-link">
+          Join Act
+        </router-link>
+      </div>
       <router-link 
         class='default-link'
         :to='{name: "join-act", params: {id: user.userId}}'
@@ -105,7 +125,6 @@
         this.$store.commit("logout")
       },
       routeLink(){
-        console.log(this.user)
         if (this.user.userData === "undefined") {
           return this.$router.push({name: "edit"})
         }
@@ -148,9 +167,9 @@
     margin-left: auto;
     display: flex;
     align-items: center;
+  }
 
-    a:not(:last-child), span{
-      margin-right: var(--spacing);
-    }
+  a:not(:last-child), span{
+    margin-right: var(--spacing);
   }
 </style>

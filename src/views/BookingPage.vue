@@ -23,22 +23,25 @@
       </div>
     </header>
     <header v-if="booking.status === 'Negotiating'">
-      <h1>
-        You are negotiating with 
-        {{ checkUserType === 'receiver' ?
-          booking.offerorName :
-          booking.receiverName
-        }} for a show at 
-        {{readableDate(booking.show.showDate)}}
-      </h1>
-      <div class="button-container">
-        <button class="alt-button" @click="deleteBooking(booking._id)">
-          Cancel Booking
-        </button>
-        <button @click="finalizeBooking('Review')" class="primary-button">
-          Accept Show Setup
-        </button>
+      <div v-if='booking[checkUserType + "Status"] === "Negotiating"'>
+        <h1>
+          You are negotiating with 
+          {{ checkUserType === 'receiver' ?
+            booking.offerorName :
+            booking.receiverName
+          }} for a show at 
+          {{readableDate(booking.show.showDate)}}
+        </h1>
+        <div class="button-container">
+          <button class="alt-button" @click="deleteBooking(booking._id)">
+            Cancel Booking
+          </button>
+          <button @click="finalizeBooking('Review')" class="primary-button">
+            Accept Show Setup
+          </button>
+        </div>
       </div>
+      <h1 v-else>Awaiting confirmation</h1>
     </header>
     <header v-if="booking.status === 'Review'">
       <h1>
