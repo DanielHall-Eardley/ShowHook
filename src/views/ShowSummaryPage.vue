@@ -40,18 +40,27 @@ import getAdminDataFn from "@/helper/getAdminDataFn"
 export default {
   async created() {
     this.$store.commit("clearError")
-    await this.$store.dispatch('autoLogin', this.$route.fullPath)
-    const userId = this.$route.params.id
+    const loggedIn = await this.$store.dispatch('checkLogin')
+    if (!loggedIn) {
+      this.$router.push({
+        name: 'admin',
+        query: {
+          type: 'login',
+          redirect: this.$route.fullPath
+        }
+      })
+    }
+    
+    const actOrVenueId = this.$route.params.id
     const token = this.$store.state.token
-    const userType = this.$route.query.userType
    
-    const responseData = await getAdminDataFn(`show/summary/${userId}?userType=${userType}`, token)
+    const response = await getAdminDataFn(`show/summary/${actOrVenueId}`, token)
 
-    if (responseData.messages) {
-      this.$store.commit("updateError", responseData)
+    if (response.error) {
+      this.$store.commit("updateError", response)
     }
 
-    this.$store.commit('loadShowSummary', responseData)
+    this.$store.commit('loadShowSummary', response)
   },
   components: {
     Menu,

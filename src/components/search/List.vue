@@ -21,6 +21,8 @@
 
 <style lang="scss" scoped>
   .list {
+    height: 70vh;
+    overflow-y: auto;
     display: grid;
     grid-auto-rows: 22rem;
     grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));

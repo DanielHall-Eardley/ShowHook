@@ -1,5 +1,7 @@
 <template lang="html">
-  <section class="pictures">
+  <section 
+    class="pictures" 
+    v-if='checkIfGalleryShown(photoUrlArray ? photoUrlArray.length : null)'>
     <div class="title-edit-container">
       <h3 class="paragraph-heading">Pictures</h3>
       <svg 
@@ -8,9 +10,13 @@
         <use xlink:href="@/assets/sprite.svg#icon-edit"></use>
       </svg>
     </div>
-    <img v-for="pic in pictures"
-    v-bind:src="pic" alt="Gallery picture">
-    <Photos v-if="showEdit" :editable="editable"></Photos>
+    <div class="gallery">
+      <img 
+        v-for="url in photoUrlArray"
+        :src="url"
+        alt="Gallery picture">
+    </div>
+    <Photos v-if="showEdit" :editable="editable" :existingPhotos='photoUrlArray'/>
   </section>
 </template>
 
@@ -23,28 +29,39 @@
         showEdit: false
       }
     },
-    props: ["pictures", "editable"],
+    props: ["photoUrlArray", "editable"],
     components: {
       Photos
+    },
+    methods: {
+      checkIfGalleryShown(photoCount) {
+        const routeType = this.$route.name.split("-")[0]
+        if (routeType === 'admin' || photoCount > 0) {
+          return true
+        }
+        return false
+      },
     }
   }
 </script>
 
-<style lang="scss" scoped>
-  @import "@/globalStyles/helper";
-
+<style scoped>
   .pictures{
     padding: var(--spacing);
     border-bottom: var(--light-border);
-    
-    img{
-      height: 30vh;
-      display: inline-block;
-      width: calc(98.5% / 4);
-      margin-right: 0.5%;
-    }
-    img:nth-child(4), img:nth-child(8){
-      margin-right: 0px;
-    }
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    grid-auto-rows: 20rem;
+    gap: var(--alt-spacing);
+    margin-bottom: var(--spacing);
+  }
+
+  .gallery img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 </style>

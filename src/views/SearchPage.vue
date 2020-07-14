@@ -20,13 +20,12 @@ import Filters from '@/components/search/filters/Filters.vue'
 import List from '@/components/search/List.vue'
 import Menu from '@/components/shared/Menu.vue'
 import Error from '@/components/shared/Error.vue'
+import checkLoginMixin from '@/mixins/checkLoginMixin'
 
 export default {
+  mixins: [checkLoginMixin],
   async created () {
-    this.$store.commit('clearError')
-    const token = localStorage.getItem("token") 
-    await this.$store.dispatch("autoLogin", this.$route.fullPath)
-  
+    this.checkLogin()
   },
   components:{
     Filters,
@@ -87,13 +86,12 @@ export default {
     position: relative;
 
     .page-controls {
-      bottom: 0;
-      left: 0;
-      right: 0;
-      position: absolute;
       display: flex;
       justify-content: space-between;
-      padding: var(--spacing);
+      padding: 0 var(--spacing);
+      height: 10vh;
+      align-items: center;
+      border-top: var(--light-border);
     }
   }
 </style>

@@ -13,7 +13,6 @@
       :name="show.venueTitle"
       :address='show.address'>
     </Map>
-     
   </main>
 </template>
 
@@ -24,11 +23,15 @@ import Map from '@/components/shared/Map.vue'
 import ShowText from '@/components/shows/ShowText.vue'
 import ShowHeader from '@/components/shows/ShowHeader.vue'
 import AdminDetails from '@/components/shows/AdminDetails'
+import Ticket from '@/components/shared/Ticket'
 import Error from '@/components/shared/Error'
 
 import getAdminDataFn from '@/helper/getAdminDataFn'
+import getDataFn from '@/helper/getAdminDataFn'
+import checkLoginMixin from '@/mixins/checkLoginMixin'
 
 export default {
+  mixins: [checkLoginMixin],
   components:{
     Menu,
     Banner,
@@ -36,45 +39,39 @@ export default {
     ShowText,
     Error,
     ShowHeader,
-    AdminDetails
+    AdminDetails,
+    Ticket
   },
   data(){
     return{
       editable: false
     }
   },
-  async beforeCreate () {
-    this.$store.commit('clearError')
-
-    if (this.$route.name === 'admin-show') {
-      await this.$store.dispatch('autoLogin', this.$route.fullPath)
-      const showId = this.$route.params.showId
-      const token = this.$store.state.token
-      const profileId = this.$store.state.baseUser.userData
-      const url = `admin/show/${profileId}/${showId}?idType=${this.$route.query.idType}`
-      const responseData = await getAdminDataFn(url, token)
-
-      if (responseData.messages) {
-        return this.$store.dispatch('updateError', responseData)
-      }
-
-      this.editable = true
-      return this.$store.commit('loadShow', responseData)
-    }
+  async created () {
+    await this.checkLogin()
 
     const showId = this.$route.params.id
-    const url = `/show/${showId}`
-    const responseData = await getDataFn(url)
+    const token = this.$store.state.token
+    const profileId = this.$store.state.baseUser.userData
+    let response
 
-    if (responseData.messages) {
-      return this.$store.dispatch('updateError', responseData)
+    if (this.$route.name === 'admin-show') {
+      const url = `admin/show/${profileId}/${showId}`
+      response = await getAdminDataFn(url, token)
+      this.editable = true
+    } else {
+      const url = `show/${showId}`
+      response = await getDataFn(url)
     }
 
-    this.$store.commit('loadShow', responseData)
+    if (response.error) {
+      return this.$store.commit('updateError', response)
+    }
+
+    this.$store.commit('loadShow', response)
   },
   computed:{
     show(){
-      console.log(this.$store.state.show)
       return this.$store.state.show
     }, 
   },

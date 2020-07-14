@@ -1,15 +1,17 @@
 const Venue = require("../models/venue")
 const Act = require("../models/act")
+const BaseUser = require('../models/baseUser')
+const Showgoer = require('../models/showgoer')
 const calculateRating = require("../helper/calculateRating")
 const errorHandler = require("../helper/errorHandler")
 const paginate = require("../helper/paginate")
+const checkUserType = require("../helper/checkUserType")
 
 exports.getVenue = async (req, res, next) => {
   try {
     const id = req.params.id
-    const idType = req.query.idType || "_id" 
-  
-    venue = await Venue.findOne({[idType]: id})
+    
+    venue = await Venue.findById(id)
       .populate({ path: "userId", select: ["name", "_id", "userType"] })
     if (!venue) {
       errorHandler(404, ["Venue not found"])
@@ -37,9 +39,8 @@ exports.getVenue = async (req, res, next) => {
 exports.getAct = async (req, res, next) => {
   try {
     const id = req.params.id
-    const idType = req.query.idType || "_id"
 
-    const act = await Act.findOne({[idType]: id })
+    const act = await Act.findById(id)
       .populate({ path: "userId", select: ["name", "_id", "userType"] })
 
     if (!act) {
@@ -135,4 +136,61 @@ exports.getBlog = async (req, res, next) => {
     }
     next(error);
   }
+}
+
+exports.requestToJoinAct = async (req, res, next) => {
+  try {
+    const actId = req.body.actId
+    const userId = req.body.userId
+
+    const act = await Act.findById(actId)
+
+    if (!act) {
+      errorHandler(404, ['Unable to find act'])
+    }
+
+    if (act.userId.toString() === userId) {
+      errorHandler(401, ['You cannot join your own act'])
+    }
+
+    let loopLength = act.members.length
+    if (act.memberRequests.length > act.members.length) {
+      loopLength = act.memberRequests.length
+    }
+
+    for (let i = 0; i < loopLength; i++) {
+      if (
+        (act.members[i] && act.members[i].toString()) === userId || 
+        (act.memberRequests[i] && act.memberRequests[i].toString()) === userId
+      ) {
+        return errorHandler(401, ['You are already a member or have a pending member request for this act'])
+      }
+    }
+
+    act.memberRequests.push(userId)
+    const updatedAct = await act.save()
+
+    if (!updatedAct) {
+      errorHandler(500, ['There was a problem sending your request'])
+    }
+
+    res.status(200).json({msg: 'Request to join ' + updatedAct.title + ' has been sent'})
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.getProfile = async (req, res, next) => {
+	try {
+		const selectedUserFields = ['-email', '-password']
+    const profile = await checkUserType(req.params.profileType, req.params.id, selectedUserFields)
+    
+    if (!profile) {
+			errorHandler(404, ['Unable to find profile'])
+		}
+
+		res.status(200).json({profile: profile})
+	} catch (error) {
+		next(error)
+	}
 }

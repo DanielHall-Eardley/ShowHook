@@ -23,11 +23,7 @@
       <router-link 
         id='profile-link'
         class="default-link" 
-        :to="{
-          name: getProfiletype, 
-          params: {id: summary[type + 'Id']},
-          query: {idType: 'userId'}
-        }">
+        :to='getProfileLink(summary, type)'>
         View profile
       </router-link>
       <router-link 
@@ -47,27 +43,23 @@
 
 <script>
   import ReviewStars from "@/components/profile/shared/ReviewStars"
-  import formatDate from '@/helper/formatDate'
-
+  import readableDateMixin from '@/mixins/readableDateMixin'
+  
   export default {
+    mixins: [readableDateMixin],
     props: ["summary", "type"],
     components: {
       ReviewStars,
     },
-    computed: {
-      getProfiletype() {
-        const currentUserType = this.$store.state.baseUser.userType 
-
-        if (currentUserType === "Venue") {
-          return "venue"
-        }
-
-        return "act"
-      }
-    },
     methods: {
-      readableDate(date) {
-        return formatDate(date, true)
+      getProfileLink (summary, type) {
+        const profileType = summary[type + 'Type'].toLowerCase()
+        const profileId = summary[profileType + 'Id']
+        console.log(profileType, profileId)
+        return {
+          name: profileType,
+          id: profileId
+        }
       },
       highlight(val){
         let color;
@@ -95,7 +87,6 @@
     border-radius: var(--border-radius);
 
     h3 {
-
       span {
         color: var(--primary);
       }

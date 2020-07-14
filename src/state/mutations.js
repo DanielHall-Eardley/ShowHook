@@ -92,7 +92,7 @@ export default {
   },
   addPhotos: (state, payload) => {
     const type = state.baseUser.userType.toLowerCase() + "Data"
-    state[type].photos = [...state[type].photos, ...payload.photos]
+    state[type].photoUrlArray = [...state[type].photoUrlArray, ...payload.photoUrlArray]
   },
   updateBlogs: (state, payload) => {
     const type = payload.userType.toLowerCase() + "Data"
@@ -224,10 +224,8 @@ export default {
     state.booking[payload.name] = payload.type;
   },
   loginSuccessful: (state, payload) => {
-    const expirationDate = new Date(Date.now() + payload.data.expiresIn)
     localStorage.setItem("token", payload.data.token)
-    localStorage.setItem("expiresIn", expirationDate);
-    localStorage.setItem("expirationTime", payload.data.expiresIn);
+    localStorage.setItem("expiresIn", payload.data.expiresIn);
     localStorage.setItem("baseUserId", payload.data.baseUser.userId);
     localStorage.setItem("baseUserName", payload.data.baseUser.name);
     localStorage.setItem("baseUserType", payload.data.baseUser.userType);
@@ -244,21 +242,13 @@ export default {
   signupSuccessful: (state, payload) => {
     router.push({ path: "admin", query: { type: "login" } });
   },
-  updateError: (state, payload) => {
-    state.error = payload.messages;
+  updateError: (state, error) => {
+    state.error = error;
   },
   clearError: state => {
     state.error = null;
   },
-  logout: state => {
-    console.log("logged out")
-    state.token = null
-    state.baseUser = null;
-    localStorage.clear()
-  },
   autoLogin: state => {
-    state.token = localStorage.getItem("token")
-
     const baseUser = {
       userId: localStorage.getItem("baseUserId"),
       userType: localStorage.getItem("baseUserType"),
@@ -266,7 +256,13 @@ export default {
       userData: localStorage.getItem("baseUserData")
     }
 
+    state.token = localStorage.getItem("token")
     state.baseUser = baseUser
+  },
+  logout: state => {
+    state.token = null
+    state.baseUser = null;
+    localStorage.clear()
   },
   editProfile: (state, payload) => {
     const key = payload.name
@@ -337,13 +333,10 @@ export default {
   addGenreFilter: (state, payload) => {
     const updatedArray = state.searchQuery.genreFilters
     state.searchQuery.genreFilters = [...updatedArray, payload]
-    console.log(state.searchQuery.genreFilters)
   },
   removeGenreFilter: (state, payload) => {
-    console.log(payload)
     const updatedArray = state.searchQuery.genreFilters
     state.searchQuery.genreFilters = updatedArray.filter(el => el !== payload)
-    console.log(state.searchQuery.genreFilters)
   },
   profileError: (state, payload) => {
     state.profileCreationPage = 0
@@ -394,7 +387,6 @@ export default {
   },
   addSingleFilter: (state, payload) => {
     state.searchQuery[payload.key] = payload.value
-    console.log(state.searchQuery)
   },
   addRangedFilter: (state, payload) => {
     if (payload.resetRangedFilter) {
@@ -477,5 +469,8 @@ export default {
       venueRequirements: [],
       numberOfTickets: null
     }
+  },
+  loadTicket: (state, payload) => {
+    state.ticket = payload.ticket
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <nav class="menu">
     <AppName></AppName>
-    <div class="menu-loggedout-links" v-if="!loginState">
+    <div class="logged-out" v-if="!loginState">
       <router-link  
         class="default-link" 
         :to="{ name: 'admin', query: {type: 'signUp'} }">
@@ -13,10 +13,12 @@
         Log in
       </router-link>
     </div>
-    <div class="menu-loggedin-links" v-else>
+    <div 
+      class="act-or-venue" 
+      v-if='loginState && (user.userType.toLowerCase() === "act" || user.userType.toLowerCase() === "venue")'>
       <router-link 
         class="default-link"
-        :to="{name: 'admin-profile', params: {id: userId}}">
+        :to="{name: 'admin-profile', params: {id: user.userId}}">
         {{user.name}}
       </router-link>
       <span
@@ -24,6 +26,12 @@
         @click="routeLink">
         {{user.userType}}
       </span>
+      <router-link 
+        class='default-link'
+        :to='{name: "join-act", params: {id: user.userId}}'
+        v-if='user.userType.toLowerCase() === "act"'>
+        Join Existing Act
+        </router-link>
       <router-link 
         class="default-link"
         :to="{ name: 'booking-summary', params: {id: user.userId}}">
@@ -33,9 +41,29 @@
         class="default-link"
         :to="{ 
           name: 'show-summary', 
-          params: {id: user.userData},
-          query: {userType: user.userType}}">
+          params: {id: user.userData}
+        }">
         Shows
+      </router-link>
+      <router-link 
+        class="default-link"
+        :to="{ name: 'search'}">
+        Search
+      </router-link>
+      <span class="default-link" @click="logout">
+        Log out
+      </span>
+      <img 
+        src="https://via.placeholder.com/100" 
+        alt="Profile pic"
+        @click="routeLink"
+      >
+    </div>
+    <div class="showgoer" v-if='loginState && user.userType.toLowerCase() === "showgoer"'>
+      <router-link 
+        class="default-link"
+        :to="{name: 'admin-profile', params: {id: user.userId}}">
+        {{user.name}}
       </router-link>
       <router-link 
         class="default-link"
@@ -70,9 +98,6 @@
           params: {
             id: this.user.userId
           },
-          query: {
-            idType: "userId"
-          }
         })
       },
       logout() {
@@ -110,7 +135,16 @@
   height: 10vh;
   border-bottom: var(--light-border);
 
-  &-loggedin-links, &-loggedout-links{
+  img{
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.logged-out, .act-or-venue, .showgoer{
     margin-left: auto;
     display: flex;
     align-items: center;
@@ -119,12 +153,4 @@
       margin-right: var(--spacing);
     }
   }
-
-  img{
-    height: 5rem;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-  }
-}
 </style>

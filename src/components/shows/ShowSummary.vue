@@ -12,8 +12,7 @@
         class='default-link'
         :to='{
           name: "admin-show", 
-          params: {showId: show._id},
-          query: {idType: userIdType}
+          params: {id: show._id},
         }'>
         View details
       </router-link>

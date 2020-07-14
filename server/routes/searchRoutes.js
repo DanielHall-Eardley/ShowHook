@@ -6,5 +6,6 @@ router.post("/", searchController.basicSearch)
 router.post("/venue", isAuth, searchController.searchVenue)
 router.post("/act", isAuth, searchController.searchAct)
 router.post("/showgoer", isAuth, searchController.searchShowgoer)
+router.get('/join-act/:query', searchController.joinActSearch)
 
 module.exports = router

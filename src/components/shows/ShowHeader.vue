@@ -9,7 +9,8 @@
     </h2>
     <p>{{show.description}}</p>
     <div class="tickets">
-      <span>Tickets Remaining: {{show.ticketsRemaining}}</span>
+      <span>Tickets Remaining: {{show.numberOfTickets - show.ticketsPurchased}}</span>
+      <span>Tickets Purchased: {{show.ticketsPurchased}}</span>
       <span>Ticket Price: ${{show.ticketPrice}}</span>
        <router-link 
         :to="{
@@ -29,24 +30,25 @@
         class='default-link'>
         View Act
       </router-link>
-      <button @click='buyTicket' class="primary-button">Buy Ticket</button>
+      <button @click='createTicketPayment(show._id)' class="primary-button">
+        Buy Ticket
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import formatDate from '@/helper/formatDate'
+import ticketMixin from '@/mixins/ticketMixin'
 
 export default {
+  mixins: [ticketMixin],
   props: [
     'show'
   ],
   methods: {
     readableDate(date) {
       return formatDate(date, true)
-    },
-    buyTicket() {
-
     }
   }
 }

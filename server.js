@@ -1,23 +1,26 @@
-const app = require("express")()
+const express = require('express')
+const app = express()
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const env = require("dotenv")
-const fileUpload = require("express-fileupload")
-const socket = require('./helper/socket.io')
+const socket = require('./server/helper/socket.io')
 
-const adminRoutes = require("./routes/adminRoutes")
-const googleApiRoutes = require("./routes/googleApiRoutes")
-const profileRoutes = require("./routes/profileRoutes")
-const bookingRoutes = require("./routes/bookingRoutes")
-const searchRoutes = require("./routes/searchRoutes")
-const showRoutes = require("./routes/showRoutes")
+if (process.env.USERNAME === 'daniel') {
+  const result = env.config({path: __dirname + '/.env'})
+  if (result.error) {
+    throw result.error
+  }
+}
 
-env.config()
-app.use(fileUpload({
-  createParentPath: true
-}))
+const adminRoutes = require("./server/routes/adminRoutes")
+const googleApiRoutes = require("./server/routes/googleApiRoutes")
+const profileRoutes = require("./server/routes/profileRoutes")
+const bookingRoutes = require("./server/routes/bookingRoutes")
+const searchRoutes = require("./server/routes/searchRoutes")
+const showRoutes = require("./server/routes/showRoutes")
+const paymentRoutes = require("./server/routes/paymentRoutes")
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 app.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH");
@@ -31,13 +34,29 @@ app.use(profileRoutes)
 app.use('/booking', bookingRoutes)
 app.use("/search", searchRoutes)
 app.use("/show", showRoutes)
+app.use("/payment", paymentRoutes)
+
+//Server static assets
+app.use(express.static('dist'))
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+}) 
 
 app.use((error, req, res, next) => {
   console.log(error)
-  res.status(error.status).json(error.messages)
+  const status = error.status || 500
+  res.status(status).json({error: error.messageArray})
 })
 
-mongoose.connect("mongodb://localhost:27017/showhook")
+/*Connect to a cloud database or local database
+depending on if the app is in a development or production
+environment*/
+let databaseConnect = process.env.MONGODB_URI
+if (process.env.NODE_ENV === 'development') {
+  databaseConnect = process.env.DATABASE_URL
+}
+
+mongoose.connect(databaseConnect)
 .then(result => {
   const server = app.listen(process.env.PORT || 3000, () => {
     console.log("listening on port 3000")  

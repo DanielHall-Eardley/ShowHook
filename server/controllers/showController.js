@@ -1,16 +1,20 @@
 const Show = require('../models/show')
-const checkForValidationErr = require('../helper/checkForValidationErr')
+const BaseUser = require('../models/baseUser')
 const errorHandler = require('../helper/errorHandler')
+const {sub, add} = require('date-fns')
 
-exports.getShowSummary = async(req, res, next) => {
+exports.userShowSummary = async(req, res, next) => {
   try {
-    checkForValidationErr(req)
-    const userType = req.query.userType.toLowerCase()
-    const searchType = userType + "Id"
-    const userId = req.params.id
+    const actOrVenueId = req.params.id
+    const user = await BaseUser.findOne({userData: actOrVenueId})
+    if (!user) {
+      errorHandler(404, ['Unable to find your user information'])
+    }
+
+    const searchType = user.userType.toLowerCase() + "Id"
     let idToReturn;
     
-    if (userType === 'act') {
+    if (user.userType === 'act') {
       idToReturn = 'venueId'
     } else {
       idToReturn = 'actId'
@@ -18,8 +22,8 @@ exports.getShowSummary = async(req, res, next) => {
 
     const fields = `${idToReturn} title description showDate actTitle venueTitle price _id`
 
-    const showList = await Show.find({[searchType]: userId, published: true}, fields, {
-      sort: {createdAt: 'desc'}
+    const showList = await Show.find({[searchType]: actOrVenueId, published: true}, fields, {
+      sort: {showDate: 'asc'}
     })
 
     if (!showList) {
@@ -39,13 +43,10 @@ exports.getShowSummary = async(req, res, next) => {
 
 exports.getShow = async (req, res, next) => {
   try {
-    const showId = req.params.showId
- 
-    const show = await Show.findById(showId)
-      .populate('show')
+    const show = await Show.findById(req.params.id)
 
     if (!show) {
-      errorHandler(404, ['Booking not found'])
+      errorHandler(404, ['Show not found'])
     }  
 
     res.status(200).json({
@@ -56,6 +57,50 @@ exports.getShow = async (req, res, next) => {
       error.status = 500
     }
 
+    next(error)
+  }
+}
+
+exports.venueOrActShows = async (req, res, next) => {
+  try {
+    const userId = req.params.id
+    const user = await BaseUser.findById(userId)
+    if (!user) {
+      errorHandler(404, ['Unable to find your user information'])
+    }
+
+    const searchType = user.userType.toLowerCase() + "Id"
+    const searchId = user.userData
+    let profileSpecificFields;
+    
+    if (searchType === 'actId') {
+      profileSpecificFields = 'venueId venueTitle'
+    } else {
+      profileSpecificFields = 'actId actTitle'
+    }
+
+    const fields = `${profileSpecificFields} title showDate ticketPrice ticketsPurchased numberOfTickets _id`
+
+    const startDateInterval = sub(new Date(), {months: 2})
+    const endDateInterval = add(new Date(), {months: 2})
+    const shows = await Show.find(
+      {
+        [searchType]: searchId, 
+        published: true, 
+        showDate: {$gte: startDateInterval, $lte: endDateInterval}
+      }, 
+      fields, 
+      {sort: {showDate: 'asc'}}
+    )
+
+    if (!shows) {
+      errorHandler(404, ['Unable to find shows for this ' + user.userType])
+    }
+
+    res.status(200).json({
+      shows: shows
+    })
+  } catch (error) {
     next(error)
   }
 }

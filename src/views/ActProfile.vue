@@ -16,19 +16,25 @@
         :userType="actData.userId.userType">
       </Title>
       <About
+        v-if='actData._id'
         :text="actData.description"
         :name="actData.userId.name"
         :userId="actData.userId._id"
         :userType="actData.userId.userType"
         :joinedAt="actData.createdAt"
-        :editable="editable">       
+        :editable="editable"
+        :members='actData.members'>       
       </About>
+      <Shows 
+        v-if='actData._id'
+        :userId="actData.userId._id" 
+        :profileId='actData._id'
+        :linkType='actData.selfType === "venue" ? "act" : "venue"'/>
       <Video 
         :videoId="actData.youtubeLink"
         :editable="editable"
         :userType="actData.userId.userType">
       </Video>
-      <Shows></Shows>
       <BandMusic
         :trackId="actData.soundcloudLink"
         :editable="editable"
@@ -41,7 +47,7 @@
         :userType="actData.userId.userType">
       </Blog>
       <Gallery 
-        :pictures="actData.photos" 
+        :photoUrlArray="actData.photos" 
         :editable="editable">
       </Gallery>
       <Reviews :reviews="actData.reviews"></Reviews>
@@ -115,33 +121,34 @@ export default {
   },
   async created() {
     this.$store.commit('clearError')
-
-    await this.$store.dispatch('autoLogin', this.$route.fullPath)
-    
-    const id = this.$route.params.id
-    const idType = this.$route.query.idType
-
-    if (this.$route.name === "admin-act") {
-      const token = this.$store.state.token
-      const responseData = await getAdminDataFn(`admin/act/${id}?idType=${idType}`, token)
-      this.editable = true
-      if (responseData.messages) {
-        return this.$store.commit('updateError', responseData.messages) 
-      }
-
-      return this.$store.commit("loadProfileData", {
-        data: responseData.act,
-        profileType: "actData"
+    const loggedIn = await this.$store.dispatch('checkLogin')
+    if (!loggedIn) {
+      this.$router.push({
+        name: 'admin',
+        query: {
+          type: 'login',
+          redirect: this.$route.fullPath
+        }
       })
     }
+    
+    const id = this.$route.params.id
+    const token = this.$store.state.token
+    let response
 
-    const responseData = await getDataFn(`act/${id}?idType=${idType}`)
-    if (responseData.messages) {
-      return this.$store.commit('updateError', responseData.messages) 
+    if (this.$route.name === "admin-act") {
+      response = await getAdminDataFn(`admin/act/${id}`, token)
+      this.editable = true
+    } else {
+      response = await getDataFn(`act/${id}`)
     }
 
+    if (response.error) {
+      return this.$store.commit('updateError', response.error) 
+    }
+    console.log(response)
     this.$store.commit("loadProfileData", {
-      data: responseData.act,
+      data: response.act,
       profileType: "actData"
     })
   },

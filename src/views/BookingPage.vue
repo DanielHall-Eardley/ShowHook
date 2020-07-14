@@ -120,20 +120,30 @@ export default {
   },
   async created() {
     this.$store.commit("clearError")
-    const bookingId = this.$route.params.id
-    await this.$store.dispatch("autoLogin", this.$route.fullPath)
 
-    const responseData = await getDataFn("booking/" + bookingId)
-
-    if (responseData.messages) {
-      this.$store.commit("upateError", responseData)
+    const loggedIn = await this.$store.dispatch('checkLogin')
+    if (!loggedIn) {
+      this.$router.push({
+        name: 'admin',
+        query: {
+          type: 'login',
+          redirect: this.$route.fullPath
+        }
+      })
     }
-    this.$store.commit("loadBooking", responseData)
+
+    const bookingId = this.$route.params.id
+    const response = await getDataFn("/booking/" + bookingId)
+
+    if (response.error) {
+      this.$store.commit("upateError", response)
+    }
+    this.$store.commit("loadBooking", response)
 
     const io = this.$store.state.namespaces.booking
     
     io.emit('joinRoom', {
-        roomId: responseData.booking._id.toString()
+        roomId: response.booking._id.toString()
       }
     )
 
@@ -146,7 +156,7 @@ export default {
       this.$store.commit('loadBooking', data)
     })
   },
-  updated () {
+  async updated () {
     const list = document.querySelector('.booking-page-messages')
     list.scroll({
       top: list.scrollHeight,
@@ -155,26 +165,31 @@ export default {
     })
 
     const booking = this.$store.state.booking
-    if (booking.status === 'Confirmed') {
-      if (this.checkUserType === 'offeror') {
-        return this.$router.push({
-          name: 'checkout', 
-          params: {
-            bookingId: booking._id,
-            showId: booking.show._id
-          },
-          query: {
-            paymentType: 'booking'
-          }
-        })
+    if (booking.status === 'Confirmed' && this.checkUserType === 'offeror') {
+      const payload = {
+        bookingId: booking._id,
+        showId: booking.show._id
       }
 
-      return this.$router.push({
+      const createPayment = await this.$store.dispatch('createBookingPayment', payload)
+
+      if (!createPayment) {
+        return this.$store.commit('updateError', 'There was a problem creating the payment for your booking')
+      }
+
+      this.$router.push({
+        name: 'checkout', 
+        params: {
+          type: 'booking',
+          id: booking._id
+        },
+      })
+
+      this.$store.commit('clearBookingState')
+    } else if (booking.status === 'Confirmed') {
+      this.$router.push({
         name: 'admin-show', 
-        params: {showId: booking.show._id},
-        query: {
-          idType: this.$store.state.baseUser.userType.toLowerCase() + "Id"
-        }
+        params: {id: booking.show._id},
       })
 
       this.$store.commit('clearBookingState')

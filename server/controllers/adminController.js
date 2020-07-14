@@ -1,4 +1,5 @@
 const BaseUser = require("../models/baseUser")
+const Showgoer = require("../models/showgoer")
 const Venue = require("../models/venue")
 const Booking = require("../models/booking")
 const Act = require("../models/act")
@@ -6,20 +7,37 @@ const Show = require("../models/show")
 
 const { validationResult } = require("express-validator")
 const errorHandler = require("../helper/errorHandler")
+const checkUserType = require("../helper/checkUserType")
 const checkForValidationErr = require("../helper/checkForValidationErr")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const calculateRating = require("../helper/calculateRating")
 const paginate = require("../helper/paginate")
+const {add, format} = require('date-fns')
+
+const aws = require('aws-sdk')
+
+//configure aws sdk
+aws.config.update({
+  region: 'ca-central-1',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY
+})
 
 exports.signUp = async (req, res, next) => {
 	try {
 		checkForValidationErr(req)
 
-		const checkEmailAvailibity = await BaseUser.findOne({
+		const userPromise = BaseUser.findOne({
 			email: req.body.email
 		});
-		if (checkEmailAvailibity) {
+		const showgoerPromise = Showgoer.findOne({
+			email: req.body.email
+		});
+
+		const [baseUser, showgoer] = await Promise.all([userPromise, showgoerPromise])
+
+		if (baseUser || showgoer) {
 			errorHandler(403, ["Email is not available"]);
 		}
 
@@ -28,12 +46,22 @@ exports.signUp = async (req, res, next) => {
 			errorHandler(500, ["Error saving password"])
 		}
 
-		const user = new BaseUser({
-			name: req.body.name,
-			email: req.body.email,
-			password: hashedPassword,
-			userType: req.body.userType,
-		})
+		let user;
+		if (req.body.userType.toLowerCase() === 'showgoer') {
+			user = new Showgoer({
+				name: req.body.name,
+				email: req.body.email,
+				password: hashedPassword,
+				userType: req.body.userType,
+			})
+		} else {
+			user = new BaseUser({
+				name: req.body.name,
+				email: req.body.email,
+				password: hashedPassword,
+				userType: req.body.userType,
+			})
+		}
 
 		const savedUser = await user.save()
 		if (!savedUser) {
@@ -55,52 +83,54 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
 	try {
-		const findUser = await BaseUser.findOne({email: req.body.email})
-		if (!findUser) {
-			errorHandler(404, ["No user associated with" + req.body.email])
+		let user;
+	
+		const userActVenuePromise = BaseUser.findOne({email: req.body.email})
+    const userShowgoerPromise = Showgoer.findOne({email: req.body.email})
+    const [actOrVenue, showgoer] = await Promise.all([userActVenuePromise, userShowgoerPromise])
+  
+    if (!actOrVenue && showgoer) {
+      user = showgoer
+    } 
+
+    if (actOrVenue && !showgoer) {
+      user = actOrVenue
+    }
+
+		if (!user) {
+			errorHandler(404, ["No user associated with " + req.body.email])
 		}
 		
-		const confirmedPassword = await bcrypt.compare(req.body.password, findUser.password)
+		const confirmedPassword = await bcrypt.compare(req.body.password, user.password)
 		if (!confirmedPassword) {
 			errorHandler(401, ["There was a problem verifying your password"])
 		}
 
 		const token = jwt.sign({
-			name: findUser.name,
-		}, process.env.JWT_SECRET, {expiresIn: "4h"})
+			name: user.name,
+			type: user.userType
+		}, process.env.JWT_SECRET, {expiresIn: "7 days"})
 
+		const expiration = format(add(new Date(), {days: 7}), 'T')
 		res.status(200).json({ 
 			token: token, 
 			baseUser: {
-				userId: findUser._id.toString(),
-				name: findUser.name,
-				userType: findUser.userType,
-				userData: findUser.userData
+				userId: user._id.toString(),
+				name: user.name,
+				userType: user.userType,
+				userData: user.userData
 			},
-			expiresIn: 3600 * 1000 * 4
+			expiresIn: expiration
 		});
 
 	} catch (error) {
-		if (!error.status) {
-      error.status = 500;
-    }
     next(error);
 	}
 }
 
 exports.createVenue = async (req, res, next) => {
 	try {
-		const errors = validationResult(req);
-		if (!req.files) {
-			errors.errors.push({
-				msg: "At least one photo of your venue is required",
-				param: "VenueData.photos"
-			})
-		}
-		
-		if (!errors.isEmpty()) {
-			errorHandler(422, errors.array());
-		}
+		checkForValidationErr(req)
 
 		if (req.body.userType.toLowerCase() !== "venue") {
 			errorHandler("403", ["Incorrect user type"])
@@ -111,19 +141,7 @@ exports.createVenue = async (req, res, next) => {
 		if (checkForVenue) {
 			errorHandler("403", ["You already have venue associated with your account"])
 		}
-		//test this if logic
-		let photos;
-		if (req.files.photos && !Array.isArray(req.files.photos)) {
-			photos = req.files.photos.name
-		}
-
-		if (req.files.photos && Array.isArray(req.files.photos)) {
-			photos = req.files.photos.map(file => {
-				return file.name
-			}) 
-		} 
-		//store photo file somewhere
-
+	
 		const {
 			address,
 			type,
@@ -143,7 +161,8 @@ exports.createVenue = async (req, res, next) => {
 			bannerPhoto,
 			price,
 			priceType,
-		} = req.body.venueData
+			photoUrlArray
+		} = req.body
 		
 		const venue = new Venue({
 			userId: req.body.userId,
@@ -154,7 +173,7 @@ exports.createVenue = async (req, res, next) => {
 			description: description,
 			frequency: frequency,
 			rules: rules,
-			photos: photos,
+			photoUrlArray: photoUrlArray,
 			experience: experience,
 			genres: genres,
 			reviews: reviews,
@@ -190,7 +209,6 @@ exports.createVenue = async (req, res, next) => {
 		})
 	} catch (error) {
 		if (!error.status) {
-			error.status = 500;
 		}
 		next(error);
 	}
@@ -199,9 +217,8 @@ exports.createVenue = async (req, res, next) => {
 exports.getEditVenue = async (req, res, next) => {
 	try  {
 		const id = req.params.id
-		const idType = req.query.idType || "_id"
 
-		const venue = await Venue.findOne({[idType]: id})
+		const venue = await Venue.findOne({userId: id})
 		.populate({path: "userId", select: ["name", "_id", "userType"]})
 	
 		if (!venue) {
@@ -234,29 +251,15 @@ exports.editVenue = async (req, res, next) => {
 		if(!venue) {
 			errorHandler(404, ["Your venue was unable to be retrieved"])
 		}
-
-		if (req.files) {
-			const photoFiles = req.files.photoFiles
-
-			if (Array.isArray(photoFiles)) {
-				const photos = photoFiles.map(file => {
-					return file.name
-				})
-
-				venue.photos = [...venue.photos, ...photos]
-			} else {
-				venue.photos = [...venue.photos, photoFiles.name]
-			}
-		}
-		//store photo file somewhere, remove old photo
-
-		venue.genres = req.body.venueData.genres
-		venue.title = req.body.venueData.title
-		venue.description = req.body.venueData.description
-		venue.amenities = req.body.venueData.amenities
-		venue.price = req.body.venueData.price
-		venue.priceType = req.body.venueData.priceType
-		venue.rules = req.body.venueData.rules
+		console.log(req.body)
+		venue.photoUrlArray = req.body.photoUrlArray
+		venue.genres = req.body.genres
+		venue.title = req.body.title
+		venue.description = req.body.description
+		venue.amenities = req.body.amenities
+		venue.price = req.body.price
+		venue.priceType = req.body.priceType
+		venue.rules = req.body.rules
 
 		const updatedVenue = await venue.save()
 
@@ -276,7 +279,6 @@ exports.editVenue = async (req, res, next) => {
 exports.createBooking = async (req, res, next) => {
 	try {
 		checkForValidationErr(req)
-		console.log(req.body)
 		const populate = {
 			populate: {
 				path: "userData",
@@ -287,9 +289,8 @@ exports.createBooking = async (req, res, next) => {
 		const offerorPromise = BaseUser.findOne({_id: req.body.offerorId}, "name userType", populate)
 		const receiverPromise = BaseUser.findOne({userData: req.body.receiverId}, "name userType", populate)
 
-		const result = await Promise.all([offerorPromise, receiverPromise])
+		const [offeror, receiver]  = await Promise.all([offerorPromise, receiverPromise])
 
-		const [offeror, receiver] = result
 		if (!offeror.userData) {
 			errorHandler(404, ["You must have created a venue or act profile to make bookings"])
 		} 
@@ -321,8 +322,21 @@ exports.createBooking = async (req, res, next) => {
 			name: offeror.name,
 			content: messageContent
 		}
+
+		let venueId
+		let actId
+
+		if (offeror.userType.toLowerCase() === 'venue') {
+			venueId = offeror.userData
+			actId = receiver.userData
+		} else {
+			actId = offeror.userData
+			venueId = receiver.userData
+		}
 		
 		const booking = new Booking({
+			venueId: venueId,
+			actId: actId,
 			offerorId: offeror._id,
 			offerorName: offeror.name,
 			offerorType: offeror.userType,
@@ -380,17 +394,6 @@ exports.createAct = async (req, res, next) => {
 			errorHandler("403", ["You already have act associated with your account"])
 		}
 		
-		let photos;
-		if (req.files.photos && !Array.isArray(req.files.photos)) {
-			photos = req.files.photos.name
-		}
-
-		if (req.files.photos && Array.isArray(req.files.photos)) {
-			photos = req.files.photos.map(file => {
-				return file.name
-			}) 
-		} 
-		//store photo file somewhere
 		const {
 			address,
 			title,
@@ -407,14 +410,15 @@ exports.createAct = async (req, res, next) => {
 			overallRating,
 			bannerPhoto,
 			blogs,
-			type
-		} = req.body.actData
+			type,
+			photoUrlArray
+		} = req.body
 
 		const act = new Act({
 			userId: req.body.userId,
 			address: address,
 			title: title,
-			photos: photos,
+			photoUrlArray: photoUrlArray,
 			description: description,
 			requirements: requirements,
 			preferences: preferences,
@@ -462,9 +466,11 @@ exports.createAct = async (req, res, next) => {
 exports.getEditAct = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const idType = req.query.idType || "_id"
 
-		const act = await Act.findOne({[idType]: id })
+		const act = await Act.findOne({$or: [
+				{userId: id}, 
+				{members: {$in: id}}
+			]})
 			.populate({ path: "userId", select: ["name", "_id", "userType"] })
 
 		if (!act) {
@@ -499,29 +505,16 @@ exports.editAct = async (req, res, next) => {
 		const act = await Act.findOne({ userId: req.params.id })
 
 		if (!act) {
-			errorHandler(404, ["Your venue was unable to be retrieved"])
+			errorHandler(404, ["Your act was unable to be retrieved"])
 		}
 		
-		if (req.files.photoFiles) {
-			const photoFiles = req.files.photoFiles
-
-			if (Array.isArray(photoFiles)){
-				const photos = photoFiles.map(file => {
-					return file.name
-				})
-
-				act.photos = [...act.photos, ...photos]
-			} else {
-				act.photos = [...act.photos, photoFiles.name]
-			}
-		}
-		//store photo file somewhere
-		act.genres = req.body.actData.genres
-		act.title = req.body.actData.title
-		act.description = req.body.actData.description
-		act.soundcloudLink = req.body.actData.soundcloudLink
-		act.description = req.body.actData.description
-		act.price = req.body.actData.price
+		act.photoUrlArray = req.body.photoUrlArray
+		act.genres = req.body.genres
+		act.title = req.body.title
+		act.description = req.body.description
+		act.soundcloudLink = req.body.soundcloudLink
+		act.description = req.body.description
+		act.price = req.body.price
 
 		const updatedAct = await act.save()
 
@@ -639,7 +632,6 @@ exports.getEditShow = async (req, res, next) => {
   try {
     const profileId = req.params.profileId
 		const showId = req.params.showId
-		const idType = req.query.idType
 
     const show = await Show.findById(showId)
       .populate('show')
@@ -648,7 +640,7 @@ exports.getEditShow = async (req, res, next) => {
       errorHandler(404, ['Booking not found'])
     }  
 		
-		if (show[idType].toString() !== profileId.toString()) {
+		if (show.actId.toString() !== profileId && show.venueId.toString() !== profileId) {
 			errorHandler(401, ['You are not authorized to edit this show'])
 		}
 
@@ -663,4 +655,96 @@ exports.getEditShow = async (req, res, next) => {
     next(error)
   }
 }
+
+exports.getEditProfile = async (req, res, next) => {
+	try {
+		const selectedUserFields = ['-email', '-password']
+    const profile = await checkUserType(req.params.profileType, req.params.id, selectedUserFields)
+
+		if (!profile) {
+			errorHandler(404, ['Unable to find profile'])
+		}
+
+		res.status(200).json({profile: profile})
+	} catch (error) {
+		next(error)
+	}
+}
+
+
+exports.updateProfile = async (req, res, next) => {
+	try {
+    const profile = await checkUserType(req.body.profileType, req.body.userId)
+
+		if (!profile) {
+			errorHandler(404, ['Unable to find profile'])
+		}
+
+		profile.bio = req.body.bio
+		profile.profilePhoto = req.body.profilePhoto
+
+		const updatedProfile = await profile.save()
+
+		if (!updatedProfile) {
+			errorHandler(404, ['Unable to update profile'])
+		}
+
+		const keys = Object.keys(updatedProfile.toObject())
+		const removeSensitiveFields = {}
+
+		for (let key of keys) {
+			if (updatedProfile[key] !== 'email' && updatedProfile[key] !== 'password') {
+				removeSensitiveFields[key] = updatedProfile[key]
+			}
+		}
+
+		res.status(200).json({profile: removeSensitiveFields})
+	} catch (error) {
+		next(error)
+	}
+}
+
+exports.getS3Signatures = async (req, res, next) => {
+	try {
+    let s3SignatureArray;
+    if(req.body.s3PhotoInfo.length > 0) {
+			
+      //Create an array of promises
+      const s3PromiseArray = []
+      for (let photo of req.body.s3PhotoInfo) {
+        const fileName = photo.fileName
+        const fileExtension = photo.fileExtension
+        
+        const s3Params = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: fileName,
+          Expires: 60,
+          ContentType: fileExtension,
+          ACL: 'public-read'
+        }
+
+        const s3 = new aws.S3()
+        const signedUrl = s3.getSignedUrl('putObject', s3Params)
+        s3PromiseArray.push(signedUrl)
+      }
+
+      //Resolve all promises concurrently
+      s3SignatureArray = await Promise.all(s3PromiseArray)
+    }
+
+    res.status(200).json({signatures: s3SignatureArray})
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.markTicketAttended = async (req, res, next) => {
+  try {
+    //upon successful payment update the ticket with show, venue and act info
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 

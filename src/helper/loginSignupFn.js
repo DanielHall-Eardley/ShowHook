@@ -1,23 +1,16 @@
-const loginSignupFn = async (body, type) => {
-  try {
-    const response = await fetch("http://localhost:3000/admin/" + type, {
-      body: JSON.stringify(body),
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
+import {apiHost} from '../global.js'
 
-    const responseData = await response.json();
-    if (response.status !== 200) {
-      const error = new Error();
-      error.messages = responseData;
-      throw error;
+const loginSignupFn = async (body, type) => {
+  const res = await fetch(apiHost + type, {
+    body: JSON.stringify(body),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
     }
-    return responseData
-  } catch (error) {
-    return error
-  }
+  });
+
+  const response = await res.json();
+  return response
 }
 
 export default loginSignupFn

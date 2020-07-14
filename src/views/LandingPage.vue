@@ -15,8 +15,9 @@ export default {
     SearchLink,
   },
   created() {
-    if(localStorage.getItem("token")) {
-      this.$store.dispatch("autoLogin")
+    const token = this.$store.state.token
+    if(!token) {
+      this.$store.commit("autoLogin")
     }
   },
 };

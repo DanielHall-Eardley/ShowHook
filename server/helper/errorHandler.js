@@ -1,6 +1,6 @@
 module.exports = (status, messageArray) => {
   const error = new Error()
   error.status = status
-  error.messages = messageArray
+  error.messageArray = messageArray
   throw error
 }

@@ -2,58 +2,40 @@ import loginSignupFn from "../helper/loginSignupFn"
 import postDataFn from "../helper/postDataFn"
 import router from "../router"
 import getDataFn from "../helper/getDataFn";
+import {format} from 'date-fns'
 
 export default {
   signUp: async ({ commit }, payload) => {
     commit("clearError");
-    const responseData = await loginSignupFn(payload, "signup");
+    const response = await loginSignupFn(payload, "/signup");
 
-    if (responseData.messages) {
-      return commit("updateError", responseData);
+    if (response.error) {
+      return commit("updateError", response);
     }
 
+    localStorage.setItem('tempUserType', response.user.type)
     commit("signupSuccessful", {
-      data: responseData,
+      data: response,
       redirect: payload.redirect
     });
   },
   login: async ({ commit }, payload) => {
     commit("clearError");
-    const responseData =  await loginSignupFn(payload, "login");
-    console.log(responseData)
-    if (responseData.messages) {
-      return commit("updateError", responseData);
+
+    if (!payload.userType) {
+      payload.userType = localStorage.getItem('tempUserType')
     }
 
+    const response =  await loginSignupFn(payload, "/login");
+    if (response.error) {
+      return commit("updateError", response);
+    }
+
+    localStorage.clear()
     commit("loginSuccessful", {
-      data: responseData,
+      data: response,
       redirect: payload.redirect
     });
-
-    setTimeout(() => {
-      commit("logout")
-    }, localStorage.getItem("expirationTime"))
-  },
-  autoLogin: ({ commit }, payload) => {
-    commit("clearError");
-    const expiresIn = localStorage.getItem("expiresIn")
-
-    return new Promise((resolve, reject) => {
-      if (new Date() > new Date(expiresIn) || !expiresIn) {
-        commit("logout")
-        router.push({
-          name: "admin",
-          query: {
-            type: "login",
-            redirect: payload
-          }
-        })
-        commit('updateError', ['Session expired please login'])
-        reject("Please log in")
-      }
-      commit("autoLogin")
-      resolve("Autologin sucessful")
-    })
   },
   deleteProfile: (context, payload) => {
     const token = context.rootState.baseUser.token
@@ -61,16 +43,12 @@ export default {
     if (!token) {
       context.dispatch("autoLogin", payload.fullPath)
     }
-    alert(deleteFn("admin/delete-profile/" + payload.id + "/?deleteType=" + payload.deleteType, token))
+    alert(deleteFn("/admin/delete-profile/" + payload.id + "/?deleteType=" + payload.deleteType, token))
     router.push("/")
   },
   createBlog: async (context, payload) => {
     context.commit("clearError")
     const userId = context.rootState.baseUser.userId
-
-    if (!userId) {
-      context.dispatch("autoLogin", payload.path)
-    }
 
     const body = JSON.stringify({
       title: payload.title,
@@ -83,42 +61,38 @@ export default {
       "Content-Type": "application/json"
     }
 
-    const responseData = await postDataFn("admin/blog/" + userId, body, headers)
+    const response = await postDataFn("/admin/blog/" + userId, body, headers)
 
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
-    context.commit("updateBlogs", responseData)
+    context.commit("updateBlogs", response)
   },
   getBlogs: async (context, payload) => {
     context.commit("clearError")
 
-    const responseData = await getDataFn(`blogs/${payload.id}?page=${payload.page}&userType=${payload.userType}`)
+    const response = await getDataFn(`blogs/${payload.id}?page=${payload.page}&userType=${payload.userType}`)
  
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
-    context.commit("updateBlogs", responseData)
+    context.commit("updateBlogs", response)
   },
   getBlogDetails: async (context, payload) => {
     context.commit("clearError")
 
-    const responseData = await getDataFn(`blog/${payload.blogId}?&userType=${payload.userType}&profileId=${payload.profileId}`)
+    const response = await getDataFn(`blog/${payload.blogId}?&userType=${payload.userType}&profileId=${payload.profileId}`)
   
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
-    context.commit("updateSelectedBlog", responseData)
+    context.commit("updateSelectedBlog", response)
   },
   createBooking: async (context, payload) => {
     context.commit("clearError")
-
-    if (!context.rootState.baseUser.userId) {
-      context.dispatch("autoLogin", payload.path)
-    }
     
     const booking = JSON.stringify({
       ...payload,
@@ -130,26 +104,22 @@ export default {
       "Content-Type": "application/json"
     }
     
-    const responseData = await postDataFn("admin/booking/create", booking, headers)
+    const response = await postDataFn("/admin/booking/create", booking, headers)
     
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
     router.push({
       name: "booking",
       params: {
-        id: responseData.response
+        id: response.response
       }
     })
   },
   updateBooking: async (context, payload) => {
     context.commit("clearError")
     const userId = context.rootState.baseUser.userId
-
-    if (!userId) {
-      context.dispatch("autoLogin", payload.path)
-    }
 
     const body = JSON.stringify({
       status: payload.status,
@@ -162,21 +132,17 @@ export default {
       "Content-Type": "application/json"
     }
 
-    const responseData = await postDataFn("booking/update/status", body, headers, "PUT")
+    const response = await postDataFn("/booking/update/status", body, headers, "PUT")
 
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
-    context.commit("loadBooking", responseData)
+    context.commit("loadBooking", response)
   },
   deleteBooking: async (context, payload) => { 
     context.commit("clearError")
     const userId = context.rootState.baseUser.userId
-
-    if (!userId) {
-      context.dispatch("autoLogin", payload.path)
-    }
 
     const body = JSON.stringify({
       bookingId: payload.bookingId,
@@ -188,69 +154,57 @@ export default {
       "Content-Type": "application/json"
     }
 
-    const responseData = await postDataFn("booking/delete", body, headers, "DELETE")
+    const response = await postDataFn("/booking/delete", body, headers, "DELETE")
 
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
-    alert(responseData.response)
+    alert(response.response)
     router.push("/")
   },
-  updateVenue: async (context, payload) => {
+  updateVenue: async (context) => {
     context.commit("clearError")
     const userId = context.rootState.baseUser.userId
-
-    if (!userId) {
-      context.dispatch("autoLogin", payload)
-    }
 
     const { 
       genres,
       title,
       description,
-      pricing,
+      price,
+      priceType,
       amenities,
       rules,
-      photos
+      photoUrlArray
     } = context.rootState.venueData
 
-    const photoFileArray = photos.filter(el => typeof el === "object")
-
-    const venueData = JSON.stringify({
+    const body = JSON.stringify({
       genres,
       title,
       description,
-      pricing,
       amenities,
       rules,
-    })
-
-    const formData = new FormData()
-    formData.append("venueData", venueData)
-    
-    photoFileArray.forEach(photo => {
-      formData.append("photoFiles", photo)
-    })    
+      photoUrlArray,
+      userId,
+      price,
+      priceType
+    }) 
 
     const headers = {
       "Authorization": "Bearer " + context.rootState.token,
+      'Content-Type': 'application/json'
     }
 
-    const responseData = await postDataFn("admin/update-venue/" + userId, formData, headers, "PUT")
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    const response = await postDataFn("/admin/update-venue/" + userId, body, headers, "PUT")
+    if (response.error) {
+      return context.commit("updateError", response)
     }
     
     router.go()
   },
-  updateAct: async (context, payload) => {
+  updateAct: async (context) => {
     context.commit("clearError")
     const userId = context.rootState.baseUser.userId
-
-    if (!userId) {
-      context.dispatch("autoLogin", payload)
-    }
 
     const {
       genres,
@@ -258,32 +212,29 @@ export default {
       description,
       souncloudLink,
       youtubeLink,
-      photos
+      photoUrlArray,
+      price
     } = context.rootState.actData
 
-    const photoFileArray = photos.filter(el => typeof el !== "object")
-
-    const actData = JSON.stringify({
+    const body = JSON.stringify({
       genres,
       title,
       description,
       souncloudLink,
       youtubeLink,  
-    })
-
-    const formData = new FormData()
-    formData.append("actData", actData)
-    photoFileArray.forEach(photo => {
-      formData.append("photoFiles", photo)
+      userId,
+      photoUrlArray,
+      price
     })
 
     const headers = {
       "Authorization": "Bearer " + context.rootState.token,
+      'Content-Type': 'application/json'
     }
 
-    const responseData = await postDataFn("admin/update-act/" + userId, formData, headers, "PUT")
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    const response = await postDataFn("/admin/update-act/" + userId, body, headers, "PUT")
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
     router.go()
@@ -291,10 +242,6 @@ export default {
   updateShowSetup: async (context, payload) => {
     context.commit('clearError')
     const userId = context.rootState.baseUser.userId
-
-    if (!userId) {
-      context.dispatch("autoLogin", payload.redirect)
-    }
 
     const body = context.rootState.showSetup
     body.bookingId = payload.bookingId
@@ -306,10 +253,10 @@ export default {
       "Content-Type": 'application/json'
     }
 
-    const responseData = await postDataFn("booking/update/show-setup", stringifiedBody, headers, "PUT")
+    const response = await postDataFn("/booking/update/show-setup", stringifiedBody, headers, "PUT")
     
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
   },
   changeStepOrPage: (context, payload) => {
@@ -351,44 +298,26 @@ export default {
   submitProfile: async (context) => {
     context.commit("clearError")
 
-    if (
-      !context.rootState.baseUser.userId ||
-      !context.rootState.baseUser
-    ) {
-      return router.push({
-        name: "admin",
-        query: {
-          type: "login",
-          redirect: "edit"
-        }
-      })
-    }
-
     const user = context.rootState.baseUser
     const dataType = user.userType.toLowerCase() + "Data"
-    const data = context.rootState[dataType]
-
-    let formData = new FormData()
-    formData.append("userId", user.userId)
-    formData.append("userType", user.userType)
-    formData.append(dataType, JSON.stringify(data))
-
-    data.photos.forEach(photo => {
-      formData.append("photos", photo)
+    const body = JSON.stringify({
+      ...context.rootState[dataType], 
+      userId: user.userId
     })
 
     const token = context.rootState.token
     const headers = {
       "Authorization": "Bearer " + token,
+      'Content-Type': 'application/json'
     }
 
-    const responseData = await postDataFn("admin/" + user.userType.toLowerCase(), formData, headers)
+    const response = await postDataFn("/admin/" + user.userType.toLowerCase(), body, headers)
 
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
-    context.commit("profileSuccess", responseData)
+    context.commit("profileSuccess", response)
     context.commit("resetEdit")
   },
   searchResults: async (context, payload) => {
@@ -407,13 +336,13 @@ export default {
       page: payload.page
     })
 
-    const responseData = await postDataFn("search", query, headers)
+    const response = await postDataFn("/search", query, headers)
 
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
     
-    context.commit("updateSearchResults", responseData)
+    context.commit("updateSearchResults", response)
     context.commit("resetSearchQuery")
   },
   refinedSearchResults: async (context, payload) => {
@@ -432,13 +361,13 @@ export default {
       page: payload.page
     })
 
-    const responseData = await postDataFn("search/" + userType.toLowerCase(), query, headers)
+    const response = await postDataFn("/search/" + userType.toLowerCase(), query, headers)
 
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
 
-    context.commit("updateSearchResults", responseData)
+    context.commit("updateSearchResults", response)
     context.commit("resetSearchQuery")
   },
   sendMessage: async (context, payload) => {
@@ -457,10 +386,10 @@ export default {
       bookingId: payload.bookingId
     })
 
-    const responseData = await postDataFn(payload.messageType + "/send-message", body, headers)
+    const response = await postDataFn(payload.messageType + "/send-message", body, headers)
 
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
   },
   finalizeBooking: async (context, payload) => {
@@ -478,42 +407,29 @@ export default {
       status: payload.status
     })
 
-    const responseData = await postDataFn('booking/finalize', body, headers, 'PUT')
+    const response = await postDataFn('/booking/finalize', body, headers, 'PUT')
 
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
+    if (response.error) {
+      return context.commit("updateError", response)
     }
   },
-  pay: async (context, payload) => {
-    context.commit("clearError")
-    
-    const token = context.rootState.token
-    const headers = {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token
-    }
+  checkLogin: context => {
+    const expiresIn = localStorage.getItem("expiresIn")
+    const now = format(new Date(), 'T')
 
-    const body = JSON.stringify({
-      userId: context.rootState.baseUser.userId,
-      bookingId: payload.bookingId,
-      //add Payment details when stripe has been integrated
-    })
-
-    const responseData = await postDataFn(`${payload.paymentType}/payment`, body, headers, 'POST')
-
-    if (responseData.messages) {
-      return context.commit("updateError", responseData)
-    }
-
-    alert(responseData.msg)
-
-    const idType = context.rootState.baseUser.userType.toLowerCase() + 'Id'
-    router.push({
-      name: 'admin-show', 
-      params: {showId: payload.showId},
-      query: {
-        idType
+    return new Promise((resolve, reject) => {
+      if (now > expiresIn) {
+        context.commit('logout')
+        resolve(false)
       }
+      context.commit('autoLogin')
+      resolve(true)
     })
+  },
+  createBookingPayment: async (context, payload) => {
+    const cb = (resolve, reject) => {
+
+    }
+    return new Promise(cb)
   }
 }

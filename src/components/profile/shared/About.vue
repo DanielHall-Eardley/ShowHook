@@ -9,14 +9,12 @@
     </svg>
     <div class="about-container">
       <div class="about-inline">
-        <p v-if="userInformation">
+        <p>
           {{userInformation}} {{name}}
         </p>
         <p>Joined: {{joinedAt}}</p>
       </div>
-      <div class="text-container">
-        <p class="text">{{text}}</p>
-      </div>
+      <p class="text">{{text}}</p>
       <div class="about-inline">
         <router-link 
           :to="{name: 'messages', params: {userId: userId}}"
@@ -24,11 +22,16 @@
           Contact {{userType}}
         </router-link>
         <router-link 
-          v-if="userInformation" 
           class="default-link"
-          :to="{name: 'profile', params: {userId: userId}}">
+          :to="{name: 'profile', params: {id: userId}}">
           View {{name}}'s Profile
         </router-link>
+        <router-link 
+          v-for='member in members'
+          :key='member._id'
+          :to="{name: 'profile', params: {id: member._id}}">
+          {{member.name}}
+          </router-link>
       </div>
     </div>
     <div class="about-edit" v-if="showEdit">
@@ -49,7 +52,7 @@
 
   export default {
     mixins: [editMixin],
-    props: ["text", "name", "userId", "joinedAt", "editable", "userType"],
+    props: ["text", "name", "userId", "joinedAt", "editable", "userType", 'members'],
     data() {
       return {
         showEdit: false,
@@ -63,8 +66,6 @@
         } else if (this.userType.toLowerCase() === "act") {
           return "Members:"
         }
-
-        return false
       }
     },
   };
@@ -79,21 +80,19 @@
     font-size: 1.8rem;
     position: relative;
 
-    .text-container {
-      display: flex;
-      justify-content: center;
-    }
     .text {
-      width: 50rem;
       overflow-wrap: break-word;
       margin-bottom: var(--alt-spacing);
       line-height: 150%;
+      word-spacing: 2px;
+      margin: var(--spacing) 5rem;
     }
 
     .about-inline {
       display: flex;
       font-weight: bold;
       margin-bottom: var(--alt-spacing);
+      align-items: center;
 
       p{
         margin-right: var(--spacing);

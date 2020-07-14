@@ -7,30 +7,32 @@
       class="edit-icon">
       <use xlink:href="@/assets/sprite.svg#icon-edit"></use>
     </svg>
-    <div class="details-category-container">
-      <h4>Amenities:</h4>
-      <div>
-        <span v-for="amenity in amenitiesArray" :key="amenity">
-          {{amenity}}
-        </span>
+    <div class="flex-container">
+       <div class="details-container">
+        <h4>Amenities:</h4>
+        <ul>
+          <li v-for="amenity in amenitiesArray" :key="amenity">
+            {{amenity}}
+          </li>
+        </ul>
       </div>
-    </div>
-    <div class="details-category-container">
-      <h4>Rules:</h4>
-      <div>
-        <span v-for="rule in rulesArray">
-          {{rule.rule}}: {{rule.enforced ? "Allowed" : "Not Allowed"}}
-        </span>
-        </div>
-    </div>
-    <div class="details-category-container">
-      <h4>Suitable For:</h4>
-      <div>
-        <span v-for="(actType, index) in suitableArray" :key="index">
-          {{actType}}
-        </span>
+      <div class="details-container">
+        <h4>Rules:</h4>
+        <ul>
+          <li v-for="rule in rulesArray">
+            {{rule.rule}}: {{rule.enforced ? "Allowed" : "Not Allowed"}}
+          </li>
+        </ul>
       </div>
-    </div> 
+      <div class="details-container">
+        <h4>Suitable For:</h4>
+        <ul>
+          <li v-for="(actType, index) in suitableArray" :key="index">
+            {{actType}}
+          </li>
+        </ul>
+      </div> 
+    </div>
     <div class="edit-venue-details" v-if="showEdit">
       <input 
         type="text"
@@ -44,7 +46,6 @@
       <Pricing :editable="editable"></Pricing>
       <Rules :editable="editable"></Rules>
     </div> 
-
   </section>
 </template>
 
@@ -87,47 +88,52 @@
     svg {
       top: var(--spacing);
     }
-  
-    .details-category-container {
-      display: grid;
-      grid-auto-flow: column;      
-      grid-template-columns: 15rem 1fr;
-      grid-template-rows: 10rem;
+  }
 
-      &:not(:last-child) {
-        margin-bottom: var(--alt-spacing);
-      }
+  .edit-venue-details {
+    display: grid;
+    grid-row-gap: var(--spacing);
 
-      div {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-      }
-
-      span {
-        margin-bottom: var(--alt-spacing);
-      }
+    input {
+      height: 4rem;
     }
 
-    .edit-venue-details {
-      display: grid;
-      grid-row-gap: var(--spacing);
+    #edit-amenity, #edit-rules {
+      width: 40rem;
+    }
 
-      input {
-        height: 4rem;
-      }
+    div {
+      display: flex;
 
-      #edit-amenity, #edit-rules {
-        width: 40rem;
-      }
-
-      div {
-        display: flex;
-
-        input:not(:last-child) {
-          margin-right: var(--alt-spacing);
-        }
+      input:not(:last-child) {
+        margin-right: var(--alt-spacing);
       }
     }
+  }
+
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    h4 {
+      margin-bottom: var(--alt-spacing);
+      font-size: 1.7rem;
+    }
+  }
+
+
+  .details-container {
+    flex: 1 0 30rem;
+    background-color: var(--light-pink);
+    min-height: 12rem;
+    border-radius: var(--border-radius);
+    padding: var(--alt-spacing);
+    margin-bottom: var(--spacing);
+    margin-right: var(--spacing);
+  }
+
+  .details-container ul{
+    margin-left: 2rem;
+    font-size: 1.6rem;
   }
 </style>

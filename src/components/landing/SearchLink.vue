@@ -7,11 +7,8 @@
       </div>
     </h1>
     <div class="landing-search-input">
-      <input placeholder="Try 'Ottawa'" v-model="searchQuery">
-      <svg>
-        <use xlink:href="@/assets/sprite.svg#icon-magnifying-glass"></use>
-      </svg>
-      <router-link v-bind:to="'/search?keyword='+ searchQuery">Search</router-link>
+      <input placeholder="Try 'Ottawa'" v-model="searchQuery"/>
+      <button class='primary-button' @click='navigateToSearch()'>Search</button>
     </div>
   </section>
 </template>
@@ -22,6 +19,17 @@ export default {
     return {
       searchQuery: ""
     };
+  },
+  methods: {
+    navigateToSearch() {
+      const payload = {
+        key: 'keyword',
+        value: this.searchQuery
+      }
+
+      this.$store.commit('addSingleFilter', payload)
+      this.$router.push({name: 'search'})
+    }
   }
 };
 </script>
@@ -52,30 +60,19 @@ export default {
   }
 
   &-input{
-    display: grid;
+    display: flex;
     width: 100%;
     height: 5rem;
 
-    svg{
-      height: 3.5rem;
-      width: 3.5rem;
-      fill: var(--alt-primary);
-      grid-column: 1 / 2;
-      grid-row: 1 / 2;
-      z-index: 1;
-      align-self: center;
-      margin-left: var(--alt-spacing);
-      transition: all .3s;
-    }
-
     input{
-      grid-column: 1 / 2;
-      grid-row: 1 / 2;
-      text-indent: 5rem;
+      flex: 1;
+      text-indent: var(--alt-spacing);
       outline: none;
       border-radius: var(--border-radius);
       border: solid 2px var(--light-grey);
       transition: all .3s;
+      margin-right: var(--spacing);
+      font-size: 2rem;
 
       &:active, &:focus{
         border: solid 2px var(--secondary-six);

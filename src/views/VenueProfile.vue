@@ -17,6 +17,7 @@
         :editable="editable">
       </FeatureIcons> -->
       <About
+        v-if='venueData._id'
         :text="venueData.description"
         :name="venueData.userId.name"
         :userId="venueData.userId._id"
@@ -24,7 +25,11 @@
         :joinedAt="venueData.createdAt"
         :editable="editable">       
       </About>
-      <Shows></Shows>
+      <Shows 
+        v-if='venueData._id'
+        :userId="venueData.userId._id" 
+        :profileId='venueData._id'
+        :linkType='venueData.selfType === "venue" ? "act" : "venue"'/>
       <VenueDetails 
         :amenitiesArray="venueData.amenities"
         :rulesArray="venueData.rules"
@@ -32,7 +37,7 @@
         :suitableArray="venueData.suitableActTypes">
       </VenueDetails>
       <Gallery 
-        :pictures="venueData.photos"
+        :photoUrlArray="venueData.photoUrlArray"
         :editable="editable">
       </Gallery>
       <Reviews :reviews="venueData.reviews"></Reviews>
@@ -109,31 +114,40 @@ export default {
   },
   async created() {
     this.$store.commit('clearError')
-    await this.$store.dispatch("autoLogin", this.$route.fullPath)
+    const loggedIn = await this.$store.dispatch('checkLogin')
+    if (!loggedIn) {
+      this.$router.push({
+        name: 'admin',
+        query: {
+          type: 'login',
+          redirect: this.$route.fullPath
+        }
+      })
+    }
+
     const id = this.$route.params.id
-    const idType = this.$route.query.idType
+    const token = this.$store.state.token
 
     if (this.$route.name === "admin-venue") {
-      const token = this.$store.state.token
-      const responseData = await getAdminDataFn(`admin/venue/${id}?idType=${idType}`, token)
+      const response = await getAdminDataFn(`admin/venue/${id}`, token)
       this.editable = true
-      if (responseData.messages) {
-        return this.$store.commit('updateError', responseData.messages)
+      if (response.error) {
+        return this.$store.commit('updateError', response.error)
       }
       
       return this.$store.commit("loadProfileData", {
-        data: responseData.venue,
+        data: response.venue,
         profileType: "venueData"
       })
     }
 
-    const responseData = await getDataFn("venue/" + id)
-    if (responseData.messages) {
-      return this.$store.commit('updateError', responseData.messages)
+    const response = await getDataFn("/venue/" + id)
+    if (response.error) {
+      return this.$store.commit('updateError', response.error)
     }
 
     this.$store.commit("loadProfileData", {
-      data: responseData.venue,
+      data: response.venue,
       profileType: "venueData"
     })
   },

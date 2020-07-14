@@ -49,7 +49,7 @@ const Venue = Schema({
       type: Object
     }
   ],
-  photos: {
+  photoUrlArray: {
     type: Array,
     required: true
   },

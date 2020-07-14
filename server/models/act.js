@@ -9,9 +9,17 @@ const ActSchema = Schema({
     required: true,
     ref: "BaseUser"
   },
+  members: [
+    Schema.Types.ObjectId
+  ],
+  memberRequests: [
+    {
+      _id: Schema.Types.ObjectId,
+      name: String
+    }
+  ],
   selfType: {
     type: String,
-    required: true,
     default: "act"
   },
   address: {
@@ -26,7 +34,7 @@ const ActSchema = Schema({
   blogs: [
     Blog
   ],
-  photos: {
+  photoUrlArray: {
     type: Array,
     required: true
   },

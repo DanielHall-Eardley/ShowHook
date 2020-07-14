@@ -12,12 +12,12 @@
     <div class="img-container">
       <img 
         :src="data.bannerPhoto" 
-        alt="Banner Photo"
+        alt="Profile photo"
         @click="goToProfile">
     </div>
     <div class="information-container">
-      <span>{{data.address.description.split(" ")[3]}}</span>
-      <span>{{data.type}}</span>
+      <span>{{data.address.description.split(",")[2]}}</span>
+      <span>{{data.selfType}}</span>
     </div>
   </div>
 </template>
@@ -27,14 +27,12 @@
     props: ["data"],
     methods: {
       goToProfile() {
+        console.log(this.data)
         this.$router.push({
           name: this.data.selfType, 
           params:{
             id: this.data._id
           },
-          query: {
-            idType: "_id"
-          }
         })
       }
     }

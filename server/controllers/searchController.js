@@ -169,7 +169,7 @@ exports.searchShowgoer = async (req, res, next) => {
     } = req.body
 
     const filters = {}
-    const selectedFields = "title address _id "
+    const selectedFields = "title address _id selfType "
     const paginate = {
       skip: page * 12,
       limit: 12
@@ -201,18 +201,36 @@ exports.searchShowgoer = async (req, res, next) => {
       }
     }
 
-    const showResults = await Show.find(filters, selectedFields + "ticketPrice photoUrl", paginate)
+    const venuePromise = Venue.find(filters, selectedFields + "price bannerPhoto", paginate)
 
-    if (!showResults) {
+    const actPromise = Act.find(filters, selectedFields + "price bannerPhoto", paginate)
+
+    const showPromise = Show.find(filters, selectedFields + "ticketPrice photoUrl", paginate)
+
+    const [act, venue, show] = await Promise.all([actPromise, venuePromise, showPromise])
+
+    const results = [...act, ...venue, ...show,]
+
+    if (!results) {
       errorHandler(404, ["No results found for this search"])
     }
 
-    res.status(200).json({ results: showResults })
+    res.status(200).json({ results: results })
   } catch (error) {
     if (!error.statusCode) {
       error.statusCode = 500
     }
+    next(error)
+  }
+}
 
+exports.joinActSearch = async (req, res, next) => {
+  try {
+    const userSearch = new RegExp(req.params.query, 'i')
+    const actResults = await Act.find({title: userSearch}, 'title _id')
+
+    res.status(200).json(actResults)
+  } catch (error) {
     next(error)
   }
 }

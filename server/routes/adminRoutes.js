@@ -6,7 +6,8 @@ const checkForFalse = require("../helper/checkForFalse")
 const checkForValidDate = require("../helper/checkForValidDate")
 
 router.post(
-  "/signup", [
+  "/signup", 
+  [
     body("name", "Invalid title").trim().isLength({min: 3}),
     body("email", "Invalid email").normalizeEmail().isEmail(),
     body("password", "Invalid password").custom((value, {req}) => {
@@ -19,14 +20,10 @@ router.post(
   adminController.signUp
 )
 
-router.post("/login", adminController.login
-)
+router.post("/login/", adminController.login)
+
 router.post(
   "/venue", 
-  (req, res, next) => {
-    req.body.venueData = JSON.parse(req.body.venueData)
-    next()
-  },
   isAuth, 
   [
     body("venueData.address", "Address cannot be empty").custom(checkForFalse),
@@ -46,10 +43,6 @@ router.get("/venue/:id", isAuth, adminController.getEditVenue)
 
 router.put(
   "/update-venue/:id", 
-  (req, res, next) => {
-    req.body.venueData = JSON.parse(req.body.venueData)
-    next()
-  },
   isAuth, 
   adminController.editVenue
 )
@@ -70,10 +63,6 @@ router.get("/act/:id", isAuth, adminController.getEditAct)
 
 router.post(
   "/act",
-  (req, res, next) => {
-    req.body.actData = JSON.parse(req.body.actData)
-    next()
-  },
   isAuth,
   [
     body("actData.address", "Address cannot be empty").custom(checkForFalse),
@@ -87,11 +76,6 @@ router.post(
 
 router.put(
   "/update-act/:id",
-  (req, res, next) => {
-    const parsedData = JSON.parse(req.body.actData)
-    req.body.actData = parsedData
-    next()
-  },
   isAuth,
   adminController.editAct
 )
@@ -106,9 +90,17 @@ router.post(
   adminController.createBlog
 )
 
+router.post('/photo/s3-signatures', isAuth, adminController.getS3Signatures)
+
 router.get("/booking-summary/:id", isAuth, adminController.getBookingSummary)
 
 router.get('/show/:profileId/:showId', isAuth, adminController.getEditShow)
 
-router.delete("delete-profile/:id", isAuth, adminController.deleteProfile)
+router.get('/profile/:profileType/:id', isAuth, adminController.getEditProfile)
+
+router.put('/profile/update', isAuth, adminController.updateProfile)
+
+router.delete("/delete-profile/:id", isAuth, adminController.deleteProfile)
+
+router.post('/ticket/attended', isAuth, adminController.markTicketAttended)
 module.exports = router

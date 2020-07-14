@@ -1,7 +1,7 @@
 const { model, Schema} = require("mongoose")
 const TicketSchema = require('./ticket')
 
-const BaseUserSchema = Schema({
+const ShowgoerSchema = Schema({
   name: {
     type: String,
     required: true
@@ -17,12 +17,7 @@ const BaseUserSchema = Schema({
   userType: {
     type: String,
     required: true
-	},
-	userData:{
-		type: Schema.Types.ObjectId,
-    refPath: "userType",
   },
-  bio: String,
   verified: {
     type: Boolean,
     default: false
@@ -38,4 +33,4 @@ const BaseUserSchema = Schema({
   timestamps: true
 });
 
-module.exports = model("BaseUser", BaseUserSchema)
+module.exports = model("Showgoer", ShowgoerSchema)

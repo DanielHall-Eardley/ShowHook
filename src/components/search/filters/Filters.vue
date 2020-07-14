@@ -85,6 +85,9 @@
         keyword: ""
       }
     },
+    mounted() {
+      this.search()
+    },
     methods:{
       search() {
         if (!this.userType) {
@@ -99,10 +102,6 @@
         })
       },
       refinedSearch() {
-        if (!this.$store.state.token) {
-          this.$store.dispatch("autoLogin", this.$route.fullPath)
-        }
-
         this.$store.dispatch("refinedSearchResults", this.page)
         this.showFilters = false
       },
@@ -116,9 +115,10 @@
 
 <style lang="scss" scoped>
   .search-filter-container{
-    padding: var(--spacing);
+    padding: 1.6rem var(--spacing);
     font-size: 1.6rem;
     border-bottom: var(--light-border);
+    min-height: 10vh;
   }
 
   .search-input {

@@ -9,7 +9,6 @@ import VenueProfile from './views/VenueProfile.vue'
 import ActProfile from './views/ActProfile.vue'
 import EditDetails from './views/EditDetails.vue'
 import SearchPage from './views/SearchPage.vue'
-import AboutHowTo from './views/AboutHowTo.vue'
 import ShowDetail from './views/ShowDetail.vue'
 import PageNotFound from './views/PageNotFound.vue'
 import BookingPage from './views/BookingPage'
@@ -17,6 +16,7 @@ import ReadBlog from './views/ReadBlog.vue'
 import Checkout from './views/Checkout.vue'
 import BookingSummaryPage from './views/BookingSummaryPage.vue'
 import ShowSummaryPage from './views/ShowSummaryPage.vue'
+import JoinAct from './views/JoinAct.vue'
 
 Vue.use(Router)
 
@@ -33,14 +33,10 @@ export default new Router({
       path: '/admin',
       component: LoginOrSignup,
       name: 'admin',
-    },
+    }, 
     {
       path: '/help',
       component: Help
-    },
-    {
-      path: '/profile/:id',
-      component: Profile
     },
     {
       path: "/blog/:blogId/:userType/:profileId",
@@ -82,11 +78,6 @@ export default new Router({
       component: SearchPage,
     },
     {
-      path: "/information",
-      name: "info",
-      component: AboutHowTo,
-    },
-    {
       path: "/page-not-found",
       name: "page-not-found",
       component: PageNotFound,
@@ -112,7 +103,7 @@ export default new Router({
       component: ShowDetail,
     },
     {
-      path: "/admin/show/:showId",
+      path: "/admin/show/:id",
       name: "admin-show",
       component: ShowDetail,
     },
@@ -127,9 +118,14 @@ export default new Router({
       component: Profile,
     },
     {
-      path: "/checkout/:bookingId/:showId",
+      path: "/checkout/:type/:id",
       name: "checkout",
       component: Checkout,
+    },
+    {
+      path: "/join-act/:id",
+      name: "join-act",
+      component: JoinAct,
     },
   ]
 })

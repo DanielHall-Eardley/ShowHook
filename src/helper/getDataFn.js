@@ -1,17 +1,9 @@
+import {apiHost} from '../global.js'
+
 const getDataFn = async (url) => {
-  try {
-    const response = await fetch("http://localhost:3000/" + url)
-    const responseData = await response.json();
-    
-    if (response.status !== 200) {
-      const error = new Error();
-      error.messages = responseData;
-      throw error;
-    }
-    return responseData
-  } catch (error) {
-    return error
-  }
+  const res = await fetch(apiHost + url)
+  const response = await res.json();
+  return response
 }
 
 export default getDataFn

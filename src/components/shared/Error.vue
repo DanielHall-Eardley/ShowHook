@@ -1,17 +1,20 @@
 <template>
-  <div class="error" v-if="getError && getError.length > 0">
-    <p v-for="error in getError" :key="error.param">
-      {{error.msg || error}}
+  <div class="error" v-if="errors && errors.length > 0">
+    <p v-for="error in errors" :key="error">
+      {{error}}
     </p>
   </div>
 </template>
 
 <script>
   export default {
-    props: ["errorType"],
     computed: {
-      getError () {
-        return this.$store.state.error
+      errors () {
+        const error = this.$store.state.error
+        if (!Array.isArray(error) && error) {
+          return [error]
+        }
+        return error
       }
     }
   }

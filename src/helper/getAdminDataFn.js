@@ -1,23 +1,15 @@
+import {apiHost} from '../global.js'
+
 const getAdminDataFn = async (url, token) => {
-  try {
-    const response = await fetch("http://localhost:3000/" + url, {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    })
-
-    const responseData = await response.json();
-
-    if (response.status !== 200) {
-      const error = new Error();
-      error.messages = responseData;
-      throw error;
+  const res = await fetch(apiHost + url, {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + token
     }
-    return responseData
-  } catch (error) {
-    return error
-  }
+  })
+
+  const response = await res.json();
+  return response
 }
 
 export default getAdminDataFn

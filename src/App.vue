@@ -6,18 +6,18 @@
 
 <script>
 import io from 'socket.io-client'
-import { BASE_URL } from '@/helper/variables'
+import { apiHost } from './global.js'
 
 export default {
   async beforeCreate () {
-    const defaultNameSpace = io.connect(BASE_URL)
+    const defaultNameSpace = io.connect(apiHost)
     const namespaces = ['booking', 'bookingSummary']
 
     if (!this.$store.state.namespaces) {
     const nsObj = {}
 
     namespaces.forEach(ns => {
-      nsObj[ns] = io.connect(BASE_URL + '/' + ns)
+      nsObj[ns] = io.connect(apiHost + '/' + ns)
     })
 
     this.$store.commit('createNameSpaces', nsObj)
@@ -55,6 +55,7 @@ export default {
   --text-color: white;
   --box-shadow-default: 0 1rem 3rem rgba(black, .4);
   --light-border: solid .5px var(--light-grey);
+  --pink-border: solid .5px var(--primary);
 }
 
 #app {
@@ -91,5 +92,57 @@ input[type="number"] {
   margin-bottom: var(--alt-spacing);
   font-size: 2.5rem;
   font-weight: 200;
+}
+
+.paragraph-heading{
+  margin-bottom: var(--alt-spacing);
+  font-size: 2rem;
+  font-weight: 200;
+  color: var(--primary);
+}
+
+.btn-disabled {
+  background-color: var(--light-grey);
+  color: var(--secondary-six);
+  padding: var(--alt-spacing);
+  border-radius: var(--border-radius);
+}
+
+.pink-highlight {
+  color: var(--primary);
+  margin: 0 6px;
+}
+
+.router-link-exact-active {
+  color: var(--primary) !important;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: relative;
+}
+
+img::after {
+  content: 'Image not found';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--light-pink);
+  color: var(--secondary-six);
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+p {
+  font-size: 1.6rem;
+  word-spacing: 3px;
+  line-height: 140%;
 }
 </style>

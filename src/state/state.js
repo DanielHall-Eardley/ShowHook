@@ -189,6 +189,19 @@ export default () => {
     ],
     token: null,
     selectedBlog: null,
+    ticket: {
+      actTitle: '',
+      venueTitle: '',
+      address: '',
+      showDate: '',
+      price: '',
+      venueId: null,
+      actId: null,
+      showId: null,
+      paymentIntentId: null,
+      paymentComplete: false,
+      attended: false
+    },
     booking: {
       _id: null,
       offerorId: null,
@@ -203,6 +216,7 @@ export default () => {
       price: 0,
       status: "Pending",
       messageArray: [],
+      paymentIntentId: null
     },
     showSetup: {
       _id: null,
@@ -270,7 +284,7 @@ export default () => {
       bathrooms: null,
       bathroomType: null,
       amenities: [],
-      photos: [],
+      photoUrlArray: [],
       suitableActTypes: [],
       title: null,
       description: null,
@@ -316,7 +330,7 @@ export default () => {
       type: "",
       priceType: "Open",
       blogs: [],
-      photos: [],
+      photoUrlArray: [],
       title: "",
       description: "",
       price: "",

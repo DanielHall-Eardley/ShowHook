@@ -46,7 +46,7 @@
         name="userType"
         class="default-input">
         <option selected disabled>Choose Profile Type</option>
-        <option>User</option>
+        <option>Showgoer</option>
         <option>Venue</option>
         <option>Act</option>
       </select>
@@ -105,7 +105,8 @@ export default {
       let userObject = {
         password: this.password,
         email: this.email,
-        redirect: this.$route.query.redirect
+        redirect: this.$route.query.redirect,
+        userType: this.userType,
       }
 
       if (this.loginType === "login") {
@@ -113,7 +114,6 @@ export default {
       }
 
       userObject.name = this.name,
-      userObject.userType = this.userType,
 
       this.$store.dispatch("signUp", userObject);
     },

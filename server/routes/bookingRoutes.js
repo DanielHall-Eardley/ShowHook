@@ -23,8 +23,6 @@ router.put('/finalize', isAuth, bookingController.finalizeBooking)
 
 router.post('/send-message', isAuth, bookingController.updateBookingMessage)
 
-router.post('/payment', isAuth, bookingController.payBooking)
-
 router.delete("/delete", isAuth, bookingController.deleteBooking)
 
 module.exports = router

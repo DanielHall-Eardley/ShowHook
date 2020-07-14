@@ -7,6 +7,14 @@ const Booking = Schema({
     ref: "BaseUser",
     required: true
   },
+  venueId: {
+    type: Schema.Types.ObjectId,
+    required: true
+  },
+  actId: {
+    type: Schema.Types.ObjectId,
+    required: true
+  },
   offerorName: {
     type: String,
     required: true

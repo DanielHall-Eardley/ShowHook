@@ -1,5 +1,5 @@
 <template lang="html">
-  <section class="blog">
+  <section class="blog" v-if='checkIfBlogShown(blogs.length)'>
     <div class="title-edit-container">
       <h3 class="paragraph-heading">
         {{blogs.length > 0 ? 'Blogs' : 'Add A Blog'}}
@@ -7,7 +7,7 @@
       <svg 
         @click="showEdit = !showEdit"
         v-if="editable">
-        <use xlink:href="@/assets/sprite.svg#icon-edit"></use>
+        <use href="@/assets/sprite.svg#icon-edit"></use>
       </svg>
     </div>
     <div class="blog-container" v-if="blogs.length > 0">
@@ -70,6 +70,13 @@
     },
     props: ["blogs", "editable", "profileId", "userType"],
     methods:{
+      checkIfBlogShown(blogCount) {
+        const routeType = this.$route.name.split("-")[0]
+        if (routeType === 'admin' || blogCount > 0) {
+          return true
+        }
+        return false
+      },
       blogDetails() {
         const blog = this.blogs[this.selectedBlog]
         this.$store.commit("updateSelectedBlog", {
@@ -128,7 +135,7 @@
           userType: this.userType
         })
       }
-    }
+    },
   }
 </script>
 

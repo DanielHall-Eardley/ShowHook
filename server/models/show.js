@@ -1,4 +1,5 @@
 const {Schema, model} = require("mongoose")
+const TicketSchema = require('./ticket')
 
 const ShowSchema = Schema({
   actTitle: {
@@ -14,7 +15,6 @@ const ShowSchema = Schema({
   },
   selfType: {
     type: String,
-    required: true,
     default: "show"
   },
   address: {
@@ -45,6 +45,10 @@ const ShowSchema = Schema({
   },
   ticketPrice: {
     type: Number,
+  },
+  ticketsPurchased: {
+    type: Number,
+    default: 0
   },
   numberOfTickets: {
     type: Number,
@@ -84,7 +88,10 @@ const ShowSchema = Schema({
     type: Boolean,
     default: false
   },
-  bannerPhoto: String
+  bannerPhoto: String,
+  tickets: [
+    TicketSchema
+  ]
 },
 {
   timestamps: true

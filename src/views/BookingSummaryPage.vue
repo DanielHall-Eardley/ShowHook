@@ -37,18 +37,29 @@
   export default {
     async created() {
       this.$store.commit('clearErrors')
-      await this.$store.dispatch("autoLogin", this.$route.fullPath)
+      
+      const loggedIn = await this.$store.dispatch('checkLogin')
+      if (!loggedIn) {
+        this.$router.push({
+          name: 'admin',
+          query: {
+            type: 'login',
+            redirect: this.$route.fullPath
+          }
+        })
+      }
+        
       const id = this.$route.params.id
 
       const token = this.$store.state.token
-      const responseData = await getAdminDataFn("booking/summary/" + id, token)
+      const response = await getAdminDataFn("/booking/summary/" + id, token)
       
-      if (responseData.messages) {
+      if (response.error) {
         return this.$store.commit('updateErrors')
       }
     
       this.$store.commit("loadBookingSummary", {
-        data: responseData,
+        data: response,
       })
     },
     data(){
