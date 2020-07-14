@@ -1,7 +1,7 @@
 import {apiHost} from '../global.js'
 
-const loginSignupFn = async (body, type) => {
-  const res = await fetch(apiHost + type, {
+const loginSignupFn = async (body, url) => {
+  const res = await fetch(apiHost + url, {
     body: JSON.stringify(body),
     method: "POST",
     headers: {
