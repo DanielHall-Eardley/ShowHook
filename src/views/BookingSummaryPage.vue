@@ -36,7 +36,7 @@
 
   export default {
     async created() {
-      this.$store.commit('clearErrors')
+      this.$store.commit('clearError')
       
       const loggedIn = await this.$store.dispatch('checkLogin')
       if (!loggedIn) {
@@ -52,12 +52,12 @@
       const id = this.$route.params.id
 
       const token = this.$store.state.token
-      const response = await getAdminDataFn("/admin/booking/summary/" + id, token)
-      
+      const response = await getAdminDataFn("/booking/summary/" + id, token)
+
       if (response.error) {
-        return this.$store.commit('updateErrors')
+        return this.$store.commit('updateError')
       }
-    
+   
       this.$store.commit("loadBookingSummary", {
         data: response,
       })

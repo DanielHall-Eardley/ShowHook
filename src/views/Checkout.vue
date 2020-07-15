@@ -113,7 +113,7 @@ export default {
 
       if (response.error) {
         this.disabled = false
-        return this.$store.commit("updateError", response)
+        return this.$store.commit("updateError", response.error)
       }
 
       this.disabled = false

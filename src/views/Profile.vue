@@ -19,9 +19,11 @@
       <textarea class='default-input' id="profile-bio" v-on:input='updateBio($event)'></textarea>
       <label for="photos">Choose a profile picture</label>
       <Photos maxPhoto='1' :emitResult='true' v-on:updatePhoto='updatePhoto($event)'/>
-      <button class='primary-button' @click='saveProfileChanges(profile._id)'>
-        Update profile
-      </button>
+      <div class='btn-container'>
+        <button class='primary-button' @click='saveProfileChanges(profile._id)'>
+          Update profile
+        </button>
+      </div>
     </div>
     <article class="bio">
       <img :src='profile.profilePhoto' alt="Profile image">
@@ -33,6 +35,7 @@
       role='navigation' 
       v-if='profile.userType === "Act" || profile.userType === "Venue"'>
       <router-link 
+        v-if='profile.userData'
         class='default-link'
         :to='{
           name: profile.userType.toLowerCase(),
@@ -203,6 +206,11 @@ export default {
     object-fit: cover;
     margin-right: var(--spacing);
     grid-row: 1 / 3;
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: flex-end;
   }
 
   .associated-account {

@@ -30,7 +30,7 @@
         :userId="actData.userId._id" 
         :profileId='actData._id'
         :linkType='actData.selfType === "venue" ? "act" : "venue"'/>
-      <Video 
+      <!-- <Video 
         :videoId="actData.youtubeLink"
         :editable="editable"
         :userType="actData.userId.userType">
@@ -39,7 +39,7 @@
         :trackId="actData.soundcloudLink"
         :editable="editable"
         :userType="actData.userId.userType">
-      </BandMusic>
+      </BandMusic> -->
       <Blog 
         :editable="editable"
         :blogs="actData.blogs"
@@ -50,7 +50,7 @@
         :photoUrlArray="actData.photos" 
         :editable="editable">
       </Gallery>
-      <Reviews :reviews="actData.reviews"></Reviews>
+      <!-- <Reviews :reviews="actData.reviews"></Reviews> -->
       <div class="save-changes-container" v-if="editable">
         <button 
           class="alt-button" 

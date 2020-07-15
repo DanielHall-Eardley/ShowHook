@@ -10,7 +10,7 @@ export default {
     const response = await loginSignupFn(payload, "/admin/signup");
 
     if (response.error) {
-      return commit("updateError", response);
+      return commit("updateError", response.error);
     }
 
     localStorage.setItem('tempUserType', response.user.type)
@@ -28,7 +28,7 @@ export default {
 
     const response =  await loginSignupFn(payload, "/admin/login");
     if (response.error) {
-      return commit("updateError", response);
+      return commit("updateError", response.error);
     }
 
     localStorage.clear()
@@ -64,7 +64,7 @@ export default {
     const response = await postDataFn("/admin/blog/" + userId, body, headers)
 
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     context.commit("updateBlogs", response)
@@ -75,7 +75,7 @@ export default {
     const response = await getDataFn(`/blogs/${payload.id}?page=${payload.page}&userType=${payload.userType}`)
  
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     context.commit("updateBlogs", response)
@@ -86,7 +86,7 @@ export default {
     const response = await getDataFn(`/blog/${payload.blogId}?&userType=${payload.userType}&profileId=${payload.profileId}`)
   
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     context.commit("updateSelectedBlog", response)
@@ -107,7 +107,7 @@ export default {
     const response = await postDataFn("/admin/booking/create", booking, headers)
     
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     router.push({
@@ -135,7 +135,7 @@ export default {
     const response = await postDataFn("/booking/update/status", body, headers, "PUT")
 
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     context.commit("loadBooking", response)
@@ -157,7 +157,7 @@ export default {
     const response = await postDataFn("/booking/delete", body, headers, "DELETE")
 
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     alert(response.response)
@@ -197,7 +197,7 @@ export default {
 
     const response = await postDataFn("/admin/update-venue/" + userId, body, headers, "PUT")
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
     
     router.go()
@@ -234,7 +234,7 @@ export default {
 
     const response = await postDataFn("/admin/update-act/" + userId, body, headers, "PUT")
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     router.go()
@@ -256,7 +256,7 @@ export default {
     const response = await postDataFn("/booking/update/show-setup", stringifiedBody, headers, "PUT")
     
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
   },
   changeStepOrPage: (context, payload) => {
@@ -265,7 +265,7 @@ export default {
       profileCreationStep,
     } = context.state
 
-    const userType = context.state.selectedUserType
+    const userType = context.rootState.baseUser.userType.toLowerCase() + 'ProfileCreation'
 
     let stepsLength = context.state[userType].length - 1
     let pagesLength = context.state[userType][profileCreationStep].pages.length - 1
@@ -314,7 +314,7 @@ export default {
     const response = await postDataFn("/admin/" + user.userType.toLowerCase(), body, headers)
 
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     context.commit("profileSuccess", response)
@@ -339,7 +339,7 @@ export default {
     const response = await postDataFn("/search", query, headers)
 
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
     
     context.commit("updateSearchResults", response)
@@ -364,7 +364,7 @@ export default {
     const response = await postDataFn("/search/" + userType.toLowerCase(), query, headers)
 
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
 
     context.commit("updateSearchResults", response)
@@ -389,7 +389,7 @@ export default {
     const response = await postDataFn(payload.messageType + "/send-message", body, headers)
 
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
   },
   finalizeBooking: async (context, payload) => {
@@ -410,7 +410,7 @@ export default {
     const response = await postDataFn('/booking/finalize', body, headers, 'PUT')
 
     if (response.error) {
-      return context.commit("updateError", response)
+      return context.commit("updateError", response.error)
     }
   },
   checkLogin: context => {

@@ -2,8 +2,8 @@
   <div class="edit-profile">
     <nav class="edit-profile-header">
       <AppName></AppName>
-      <button @click="saveAndExit" class="alt-button">
-        Save and Exit
+      <button @click="cancel" class="alt-button">
+        Cancel
       </button>
     </nav>
     <Error/>
@@ -23,11 +23,12 @@ import EditFooter from "@/components/edit/page-template/EditFooter.vue"
 import InputDetails from "@/components/edit/page-template/InputDetails.vue"
 import InputInfo from "@/components/edit/page-template/InputInfo.vue"
 import Error  from "@/components/shared/Error"
+import checkLoginMixin from '@/mixins/checkLoginMixin'
 
 export default {
-  created(){
-    this.$store.commit("selectUserType", localStorage.getItem("baseUserType"))
-    this.$store.dispatch("autoLogin", this.$route.fullPath)
+  mixins: [checkLoginMixin],
+  async created(){
+    await this.checkLogin()
   },
   components:{
     AppName,
@@ -38,9 +39,8 @@ export default {
     Error
   },
   methods:{
-    saveAndExit(){
+    cancel(){
       this.$router.push('/')
-      //submit details to server
     }
   }
 }

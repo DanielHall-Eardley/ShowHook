@@ -132,11 +132,18 @@ exports.createVenue = async (req, res, next) => {
 	try {
 		checkForValidationErr(req)
 
-		if (req.body.userType.toLowerCase() !== "venue") {
-			errorHandler("403", ["Incorrect user type"])
+		const userPromise = BaseUser.findById(req.body.userId)
+		const checkForVenuePromise = Venue.findOne({userId: req.body.userId})
+
+		const [user, checkForVenue] = await Promise.all([userPromise, checkForVenuePromise])
+
+		if (!user) {
+			errorHandler(404, ["Unable to retrieve your user profile"])
 		}
 
-		const checkForVenue = await Venue.findOne({userId: req.body.userId})
+		if (user.userType.toLowerCase() !== "venue") {
+			errorHandler("403", ["Incorrect user type"])
+		}
 		
 		if (checkForVenue) {
 			errorHandler("403", ["You already have venue associated with your account"])
@@ -158,7 +165,6 @@ exports.createVenue = async (req, res, next) => {
 			genres,
 			reviews,
 			overallRating,
-			bannerPhoto,
 			price,
 			priceType,
 			photoUrlArray
@@ -178,7 +184,7 @@ exports.createVenue = async (req, res, next) => {
 			genres: genres,
 			reviews: reviews,
 			overallRating: overallRating,
-			bannerPhoto: bannerPhoto,
+			bannerPhoto: photoUrlArray[0],
 			shows: [],
 			priceType: priceType,
 			price: price,
@@ -194,17 +200,16 @@ exports.createVenue = async (req, res, next) => {
 			errorHandler("500", ["Unable to store your venue information"])
 		}
 
-		const userProfile = await BaseUser.findById(req.body.userId)
-		if (!userProfile) {
-			errorHandler(404, ["Unable to retrieve your user profile"])
+		user.userData = savedVenue._id
+		const updatedUser = await user.save()
+
+		if(!updatedUser) {
+			errorHandler("500", ["Unable to update your profile"])
 		}
-
-		userProfile.userData = savedVenue._id
-		userProfile.save()
-
+		
 		res.status(200).json({
 			alert: "Sucessfully created your venue profile",
-			type: req.body.userType.toLowerCase(),
+			type: updatedUser.userType.toLowerCase(),
 			userData: savedVenue._id
 		})
 	} catch (error) {
@@ -251,7 +256,7 @@ exports.editVenue = async (req, res, next) => {
 		if(!venue) {
 			errorHandler(404, ["Your venue was unable to be retrieved"])
 		}
-		console.log(req.body)
+		
 		venue.photoUrlArray = req.body.photoUrlArray
 		venue.genres = req.body.genres
 		venue.title = req.body.title
@@ -371,28 +376,24 @@ exports.createBooking = async (req, res, next) => {
 
 exports.createAct = async (req, res, next) => {
 	try {
-		const errors = validationResult(req);
-		if (!req.files) {
-			errors.errors.push({
-				msg: "At least one photo of your act is required",
-				param: "actData.photos"
-			})
+		checkForValidationErr(req)
+
+		const userPromise = BaseUser.findById(req.body.userId)
+		const checkForActPromise = Act.findOne({userId: req.body.userId})
+
+		const [user, checkForAct] = await Promise.all([userPromise, checkForActPromise])
+
+		if (!user) {
+			errorHandler(404, ["Unable to retrieve your user profile"])
 		}
 
-		if (!errors.isEmpty()) {
-			errorHandler(422, errors.array());
-		}
-
-		if (req.body.userType.toLowerCase() !== "act") {
+		if (user.userType.toLowerCase() !== "act") {
 			errorHandler("403", ["Incorrect user type"])
 		}
-
-		const checkForAct = await Act.findOne({userId: req.body.userId})
-
+		
 		if (checkForAct) {
 			errorHandler("403", ["You already have act associated with your account"])
 		}
-		
 		const {
 			address,
 			title,
@@ -407,7 +408,6 @@ exports.createAct = async (req, res, next) => {
 			genres,
 			reviews,
 			overallRating,
-			bannerPhoto,
 			blogs,
 			type,
 			photoUrlArray
@@ -429,7 +429,7 @@ exports.createAct = async (req, res, next) => {
 			genres: genres,
 			reviews: reviews,
 			overallRating: overallRating,
-			bannerPhoto: bannerPhoto,
+			bannerPhoto: photoUrlArray[0],
 			shows: [],
 			blogs: blogs,
 			type: type
@@ -437,21 +437,20 @@ exports.createAct = async (req, res, next) => {
 
 		const savedAct = await act.save()
 
-		if (!savedAct) {
+		if(!savedAct) {
 			errorHandler("500", ["Unable to store your act information"])
 		}
 
-		const userProfile = await BaseUser.findById(req.body.userId)
-		if (!userProfile) {
-			errorHandler(404, ["Unable to retrieve your user profile"])
+		user.userData = savedAct._id
+		const updatedUser = await user.save()
+
+		if(!updatedUser) {
+			errorHandler("500", ["Unable to update your profile"])
 		}
-
-		userProfile.userData = savedAct._id
-		userProfile.save()
-
+		
 		res.status(200).json({
-			alert: "Sucessfully created your act profile",
-			type: req.body.userType.toLowerCase(),
+			alert: "Sucessfully created your venue profile",
+			type: updatedUser.userType.toLowerCase(),
 			userData: savedAct._id
 		})
 	} catch (error) {
@@ -569,17 +568,6 @@ exports.createBlog = async (req, res, next) => {
 	}
 }
 
-exports.getBookingSummary = async (req, res, next) => {
-	try {
-
-	} catch (error) {
-		if (!error.status) {
-			error.status = 500;
-		}
-		next(error);
-	}
-}
-
 exports.deleteProfile = async (req, res, next) => {
 	try {
 		const deleteType = req.query.deleteType || "full"
@@ -636,7 +624,7 @@ exports.getEditShow = async (req, res, next) => {
       .populate('show')
 		
     if (!show) {
-      errorHandler(404, ['Booking not found'])
+      errorHandler(404, ['Show not found'])
     }  
 		
 		if (show.actId.toString() !== profileId && show.venueId.toString() !== profileId) {

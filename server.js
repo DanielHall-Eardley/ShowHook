@@ -4,6 +4,7 @@ const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const env = require("dotenv")
 const socket = require('./server/helper/socket.io')
+const path = require('path')
 
 if (process.env.USERNAME === 'daniel') {
   const result = env.config({path: __dirname + '/.env'})

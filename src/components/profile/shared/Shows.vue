@@ -1,5 +1,5 @@
 <template>
-  <div class="shows" >
+  <div class="shows" v-if='shows.length > 0'>
     <h2 class='paragraph-heading'>Shows</h2>
     <ul class='show-list'>
       <li 

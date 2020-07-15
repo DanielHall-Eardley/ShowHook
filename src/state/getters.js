@@ -12,7 +12,8 @@ import {
 
 export default {
   getComponent: state => {
-    return state[state.selectedUserType][state.profileCreationStep].pages[state.profileCreationPage]
+    const profileType = state.baseUser.userType.toLowerCase() + 'ProfileCreation'
+    return state[profileType][state.profileCreationStep].pages[state.profileCreationPage]
   },
   getProfileCreationProgress: state => {
     return {
@@ -21,7 +22,8 @@ export default {
     }
   },
   getProfileCreationArray: state => {
-    return state[state.selectedUserType]
+    const profileType = state.baseUser.userType.toLowerCase() + 'ProfileCreation'
+    return state[profileType]
   },
   getShowSummary: state => {
     let nextIndex = 0
@@ -32,7 +34,7 @@ export default {
       title: 'Past',
       shows: []
     }
-
+    
     const sectionArray = []
 
     for(let show of state.showSummary) {
@@ -100,7 +102,7 @@ export default {
       future: sectionArray,
       past: pastSection
     }
-    console.log(obj)
+    
     return obj
   }
 }

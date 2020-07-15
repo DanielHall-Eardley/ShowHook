@@ -34,7 +34,7 @@ exports.getBooking = async (req, res, next) => {
   }
 }
 
-exports.getBookingsSummary = async (req, res, next) => {
+exports.getBookingSummary = async (req, res, next) => {
   try {
     const id = req.params.id
     const now = new Date()
@@ -43,12 +43,9 @@ exports.getBookingsSummary = async (req, res, next) => {
     const offeredBookingsPromise = Booking.find({offerorId: id, bookingDate: {$gte: now}})
 
     const [received, offered] = await Promise.all([receivedBookingsPromise, offeredBookingsPromise])
-
+    
     res.status(200).json({received: received, offered: offered})
   } catch (error) {
-    if (!error.status) {
-      error.status = 500
-    }
     next(error)
   }
 }

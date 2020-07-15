@@ -28,7 +28,7 @@
         {{user.userData === 'undefined' ? 'Create': null}}
         {{user.userType}}
       </span>
-      <div v-if="user.userType === 'Act'">
+      <div v-if="user.userType === 'Act'" class='act'>
         <span
           class="default-link"
           @click="routeLink">
@@ -38,18 +38,18 @@
         <router-link 
           class='default-link'
           :to='{name: "join-act", params: {id: user.userId}}'
-          v-if='user.userType.toLowerCase() === "act"'>
+          v-if='user.userType === "Act"'>
           Join Existing Act
         </router-link>
       </div>
       <router-link 
-        v-if='user.userData === "undefined"'
+        v-if='user.userData !== "undefined" && user.userData'
         class="default-link"
         :to="{ name: 'booking-summary', params: {id: user.userId}}">
         Bookings
       </router-link>
       <router-link 
-        v-if='user.userData === "undefined"'
+        v-if='user.userData !== "undefined" && user.userData'
         class="default-link"
         :to="{ 
           name: 'show-summary', 
@@ -160,8 +160,12 @@
     display: flex;
     align-items: center;
   }
+  
+.act {
+  margin-right: var(--spacing);
+}
 
-  a:not(:last-child), span{
-    margin-right: var(--spacing);
-  }
+a:not(:last-child), span{
+  margin-right: var(--spacing);
+}
 </style>

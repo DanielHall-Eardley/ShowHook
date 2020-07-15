@@ -1,7 +1,7 @@
 <template>
-  <div class="error" v-if="errors && errors.length > 0">
-    <p v-for="error in errors" :key="error">
-      {{error}}
+  <div class="error" v-if='errorArray.length > 0'>
+    <p v-for="errorMessage in errorArray" :key="errorMessage">
+      {{errorMessage}}
     </p>
   </div>
 </template>
@@ -9,9 +9,14 @@
 <script>
   export default {
     computed: {
-      errors () {
+      errorArray () {
         const error = this.$store.state.error
-        if (!Array.isArray(error) && error) {
+      
+        if (!error) {
+          return []
+        }
+
+        if (!Array.isArray(error)) {
           return [error]
         }
         return error

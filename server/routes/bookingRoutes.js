@@ -5,7 +5,7 @@ const { body } = require("express-validator")
 
 router.get("/:id", bookingController.getBooking)
 
-router.get("/summary/:id", isAuth, bookingController.getBookingsSummary)
+router.get("/summary/:id", isAuth, bookingController.getBookingSummary)
 
 router.put("/update/status", isAuth, bookingController.updateBookingStatus)
 

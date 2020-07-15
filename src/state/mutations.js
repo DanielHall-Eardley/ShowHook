@@ -47,9 +47,6 @@ export default {
       params: {
         id: state.baseUser.userId
       },
-      query: {
-        idType: "userId"
-      }
     })
   },
   addLegalAgreement: (state, payload) => {
@@ -284,9 +281,6 @@ export default {
 
     state[type][key] = value
   },
-  selectUserType: (state, payload) => {
-    state.selectedUserType = payload.toLowerCase() + "ProfileCreation"
-  }, 
   changeStepOrPage: (state, payload) => {
     state.profileCreationPage = payload.profileCreationPage
     state.profileCreationStep = payload.profileCreationStep

@@ -17,7 +17,6 @@
         :editable="editable">
       </FeatureIcons> -->
       <About
-        v-if='venueData._id'
         :text="venueData.description"
         :name="venueData.userId.name"
         :userId="venueData.userId._id"
@@ -26,7 +25,6 @@
         :editable="editable">       
       </About>
       <Shows 
-        v-if='venueData._id'
         :userId="venueData.userId._id" 
         :profileId='venueData._id'
         :linkType='venueData.selfType === "venue" ? "act" : "venue"'/>
@@ -40,7 +38,7 @@
         :photoUrlArray="venueData.photoUrlArray"
         :editable="editable">
       </Gallery>
-      <Reviews :reviews="venueData.reviews"></Reviews>
+      <!-- <Reviews :reviews="venueData.reviews"></Reviews> -->
       <Map 
         :address="venueData.address"
         :name="venueData.title"

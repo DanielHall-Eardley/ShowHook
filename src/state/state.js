@@ -39,8 +39,6 @@ export default () => {
       }
     },
     searchResults: [],
-    searchError: null,
-    selectedUserType: null,
     profileCreationStep: 0,
     profileCreationPage: 0,
     actProfileCreation: [
@@ -311,7 +309,6 @@ export default () => {
           userId: "5deeeeede5f14a1ad0361b73"
         },       
       ],
-      bannerPhoto: "https://via.placeholder.com/1000",
       overallRating: 0,
     },
     actData: {
@@ -351,7 +348,6 @@ export default () => {
           userId: "5deeeeede5f14a1ad0361b73"
         },
       ],
-      bannerPhoto: "https://via.placeholder.com/1000",
       overallRating: 0,
     },
     show: {

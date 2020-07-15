@@ -13,7 +13,7 @@
     </div>
     <img 
       alt="Banner Photo"  
-      :src="bannerPhoto"
+      :src="photoUrl"
       v-else
       class="banner-photo">
     <svg 
@@ -31,15 +31,6 @@
     data(){
       return {
         showPhotoArray: false
-      }
-    },
-    computed: {
-      bannerPhoto() {
-        if (!this.photoUrl) {
-          return 'https://via.placeholder.com/1000'
-        }
-
-        return this.photoUrl
       }
     },
     methods: {

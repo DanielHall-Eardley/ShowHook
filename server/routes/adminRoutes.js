@@ -26,15 +26,15 @@ router.post(
   "/venue", 
   isAuth, 
   [
-    body("venueData.address", "Address cannot be empty").custom(checkForFalse),
-    body("venueData.title", "These venue details are required").custom(checkForFalse).trim(),
-    body("venueData.description", "These venue details are required").custom(checkForFalse),
-    body("venueData.frequency", "Your frequency preference and experience level are required").custom(checkForFalse),
-    body("venueData.experience", "Your frequency preference and experience level are required").custom(checkForFalse),
-    body("venueData.price", "A payment type and base rate must be selected").isLength({ min: 2 }),
-    body("venueData.type", "These venue details are required").custom(checkForFalse),
-    body("venueData.capacity", "These venue details are required").isInt(),
-    body("venueData.legalAgreement", "You must confirm that you accept the Terms of Service").custom(checkForFalse)
+    body("address", "Address cannot be empty").custom(checkForFalse),
+    body("title", "These venue details are required").custom(checkForFalse).trim(),
+    body("description", "These venue details are required").custom(checkForFalse),
+    body("frequency", "Your frequency preference and experience level are required").custom(checkForFalse),
+    body("experience", "Your frequency preference and experience level are required").custom(checkForFalse),
+    body("price", "A payment type and base rate must be selected").isLength({ min: 2 }),
+    body("type", "These venue details are required").custom(checkForFalse),
+    body("capacity", "These venue details are required").isInt(),
+    body("legalAgreement", "You must confirm that you accept the Terms of Service").custom(checkForFalse)
   ], 
   adminController.createVenue
 )
@@ -64,11 +64,11 @@ router.post(
   "/act",
   isAuth,
   [
-    body("actData.address", "Address cannot be empty").custom(checkForFalse),
-    body("actData.title", "A title is required").custom(checkForFalse).trim(),
-    body("actData.description", "You must provide a short description of your act").custom(checkForFalse),
-    body("actData.price", "You must specify a base fee").custom(checkForFalse).isInt(),
-    body("actData.legalAgreement", "You must confirm that you accept the Terms of Service").custom(checkForFalse)
+    body("address", "Address cannot be empty").custom(checkForFalse),
+    body("title", "A title is required").custom(checkForFalse).trim(),
+    body("description", "You must provide a short description of your act").custom(checkForFalse),
+    body("price", "You must specify a base fee").custom(checkForFalse).isInt(),
+    body("legalAgreement", "You must confirm that you accept the Terms of Service").custom(checkForFalse)
   ],
   adminController.createAct
 )
@@ -90,8 +90,6 @@ router.post(
 )
 
 router.post('/photo/s3-signatures', isAuth, adminController.getS3Signatures)
-
-router.get("/booking-summary/:id", isAuth, adminController.getBookingSummary)
 
 router.get('/show/:profileId/:showId', isAuth, adminController.getEditShow)
 
