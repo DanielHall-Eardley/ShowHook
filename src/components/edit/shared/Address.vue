@@ -26,6 +26,8 @@
 </template>
 
 <script>
+  import { host } from '../../../global.js'
+
   export default {
     data(){
       return{
@@ -49,7 +51,7 @@
           lng: this.location.coords.longitude,
         }
 
-        const response = await fetch("http://localhost:3000/google-api/address-autocomplete", {
+        const response = await fetch(`${host}/google-api/address-autocomplete`, {
           method: "POST",
           body: JSON.stringify({
             location: userLocation,
